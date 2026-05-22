@@ -178,6 +178,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ButtonPrimary(
                       text: 'Continue with Google',
                       isLoading: isGoogleLoading,
+                      variant: ButtonVariant.light,
                       icon: Image.asset(
                         'images/google-icon.png',
                         height: 22,

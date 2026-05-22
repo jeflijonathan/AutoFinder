@@ -1,7 +1,7 @@
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:autofinder/config/app_colors.dart';
-import 'package:autofinder/widgets/custom_button.dart';
+import 'package:autofinder/widgets/button_primary.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
