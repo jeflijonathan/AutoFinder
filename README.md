@@ -45,7 +45,7 @@ lib/
 └── main.dart            # Titik awal aplikasi
 ```
 
-## depedency
+## dependency
 
 1. cloud_firestore: ^6.4.1
 2. firebase_core: ^4.9.0
