@@ -12,17 +12,25 @@ lib/
 │   ├── app_colors.dart
 │   └── app_routes.dart
 │
-├── controllers/         # Logika bisnis / State Management (Bloc, Provider, GetX, dll)
-│   └── auth_controller.dart
-│
 ├── models/              # Model data untuk konversi JSON (jika ada API)
-│   └── user_model.dart
+│   └── api_response.dart
+│   └── service_callback.dart
 │
 ├── services/            # Fungsi untuk API, database, atau share preferences
+│   |── users/
+|   |    |── models/
+|   |    |   └── login_model.dart
+|   |    |   └── user_model.dart
+|   |    └── user_service.dart
 │   └── api_service.dart
 │
 ├── views/               # Semua tampilan UI (Halaman & Widget)
 │   ├── auth/            # Khusus halaman terkait login/daftar
+|   |   ├── controllers
+|   |   |   └── auth_controller.dart
+|   |   ├── utils
+|   |   |   └── login_form.dart
+|   |   |   └── register_form.dart
 │   │   ├── welcome_screen.dart   <-- Halaman di gambar Anda
 │   │   ├── login_screen.dart
 │   │   └── register_screen.dart
@@ -36,14 +44,6 @@ lib/
 │
 └── main.dart            # Titik awal aplikasi
 ```
-
-# assets fitur
-
-## Gateway Screen
-
-1. background: images/background-1.png
-2. icon google : images/google-icon.png
-3. content : images/automotif-images.png
 
 ## Login screen
 
