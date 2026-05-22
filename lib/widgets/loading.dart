@@ -21,11 +21,17 @@ class Loading extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Lottie.asset(
-          'json/Cute-Mascot-Jumping-Character.json',
+          'json/Cute_Mascot_Jumping_Character.json',
           width: size,
           height: size,
           fit: BoxFit.contain,
           repeat: true,
+          // Show a red error icon if the animation fails to load
+          errorBuilder: (context, error, stackTrace) {
+            // Print the error for debugging during development
+            debugPrint('Lottie load error: $error');
+            return const Icon(Icons.error, color: Colors.red, size: 60);
+          },
         ),
         if (showMessage) ...[
           const SizedBox(height: 12),
@@ -48,7 +54,7 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     if (asOverlay) {
       return Container(
-        color: Colors.black.withValues(alpha: 0.35),
+        color: Colors.black.withOpacity(0.35),
         child: Center(child: _content()),
       );
     }

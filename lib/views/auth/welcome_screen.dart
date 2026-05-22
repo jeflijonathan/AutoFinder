@@ -2,6 +2,7 @@ import 'package:autofinder/config/app_colors.dart';
 import 'package:autofinder/services/users/models/user_model.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/widgets/button_primary.dart';
+import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final isGoogleLoading = context.watch<AuthController>().isLoading;
 
     return Scaffold(
-      body: Container(
+      body: Stack(
+        children: [
+          Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -242,6 +245,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
         ),
+      ),
+
+          // Loading Overlay dengan Mascot
+          if (isGoogleLoading) const Loading(asOverlay: true),
+        ],
       ),
     );
   }

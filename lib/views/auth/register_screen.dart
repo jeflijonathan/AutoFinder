@@ -2,6 +2,7 @@ import 'package:autofinder/config/app_colors.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
+import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:autofinder/views/auth/utils/register_form.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +56,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AuthController>().isLoading;
+
     return Scaffold(
-      body: Container(
+      body: Stack(
+        children: [
+          Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -258,6 +263,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+      ),
+
+          // Loading Overlay dengan Mascot
+          if (isLoading) const Loading(asOverlay: true),
+        ],
       ),
     );
   }
