@@ -15,3 +15,5 @@ The Welcome Screen serves as the initial entry point of the application. It intr
 1. **Sign in with Google:** Allows users to authenticate quickly using their Google account.
 2. **Sign Up Button:** Navigates users to the registration form to create a new account.
 3. **Login Link:** Directs existing users to the standard Sign-In page via email and password.
+
+[<- back](../../README.md)

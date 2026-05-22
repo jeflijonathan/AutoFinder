@@ -31,7 +31,7 @@ lib/
 |   |   ├── utils
 |   |   |   └── login_form.dart
 |   |   |   └── register_form.dart
-│   │   ├── welcome_screen.dart   <-- Halaman di gambar Anda
+│   │   ├── welcome_screen.dart
 │   │   ├── login_screen.dart
 │   │   └── register_screen.dart
 │   │
@@ -45,10 +45,17 @@ lib/
 └── main.dart            # Titik awal aplikasi
 ```
 
-## Login screen
+## depedency
 
-1. background: images/background-1.png
+1. cloud_firestore: ^6.4.1
+2. firebase_core: ^4.9.0
+3. form_validator: ^2.1.1
+4. google_sign_in: ^7.2.0
+5. http: ^1.6.0
+6. provider: ^6.1.5+1
 
-## Register Screen
+## Links
 
-1. background: images/background-1.png
+1. [Login Screen](docs/markdown/login_screen.md)
+2. [Register Screen](docs/markdown/register_screen.md)
+3. [Welcome Screen](docs/markdown/welcome_screen.md)
