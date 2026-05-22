@@ -37,11 +37,12 @@ class AuthController extends ChangeNotifier {
             );
           } else {
             final newUser = UserModel(
-              uid: "",
-              email: email.trim(),
-              username: username.trim(),
-              phoneNumber: phoneNumber.trim(),
-            );
+                uid: "",
+                email: email.trim(),
+                username: username.trim(),
+                phoneNumber: phoneNumber.trim(),
+                password: password,
+              );
 
             _usersService.createUser(
               newUser,
@@ -90,31 +91,26 @@ class AuthController extends ChangeNotifier {
 
     _usersService.getUserByEmail(
       email,
-      ServiceCallback(
+      ServiceCallback<UserModel?>(
         onSuccessData: (UserModel? user) {
           if (user == null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Email not found")));
-          } else {
-            if (user.email.isNotEmpty) {
-              // 2. Simpan ke State Management Lokal
-              _currentUser = user;
-              notifyListeners();
-
-              // 3. Langsung pindah halaman
-              Navigator.pushReplacementNamed(context, '/dashboard');
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Incorrect password")),
-              );
-            }
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Email not found")));
+            _setLoading(false);
+            return;
           }
+          // Verify password if stored
+          if (user.password != null && user.password != password) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Incorrect password")));
+            _setLoading(false);
+            return;
+          }
+          // Successful login
+          _currentUser = user;
+          notifyListeners();
+          Navigator.pushReplacementNamed(context, '/dashboard');
         },
         onErrorData: (error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(error)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
         },
         onFullFailed: () {
           _setLoading(false);

@@ -3,12 +3,14 @@ class UserModel {
   final String email;
   final String username;
   final String phoneNumber;
+  final String? password;
 
   UserModel({
     required this.uid,
     required this.email,
     required this.username,
     required this.phoneNumber,
+    this.password,
   });
 
   // Convert user info to a Map for saving to Firestore
@@ -18,6 +20,7 @@ class UserModel {
       'email': email,
       'username': username,
       'phoneNumber': phoneNumber,
+      'password': password,
     };
   }
 
@@ -28,6 +31,7 @@ class UserModel {
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
+      password: map['password'],
     );
   }
 }
