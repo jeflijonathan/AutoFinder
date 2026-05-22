@@ -1,14 +1,20 @@
 name: autofinder
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0+1
 
 environment:
   sdk: ^3.11.1
 
 dependencies:
+  cloud_firestore: ^6.4.1
+  firebase_core: ^4.9.0
   flutter:
     sdk: flutter
+  form_validator: ^2.1.1
+  google_sign_in: ^7.2.0
+  http: ^1.6.0
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +23,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - images/
