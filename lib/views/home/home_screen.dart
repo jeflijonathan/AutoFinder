@@ -1,4 +1,5 @@
 import 'package:autofinder/widgets/buttom_nav_bar.dart';
+import 'package:autofinder/widgets/header.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
@@ -28,19 +29,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             child: SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                      vertical: 16.0,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [const Text("Selamat Datang di Auto Finder!")],
-                    ),
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 16.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [Header(title: "Find the Workshop")],
                   ),
                 ),
               ),
