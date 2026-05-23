@@ -37,12 +37,12 @@ class AuthController extends ChangeNotifier {
             );
           } else {
             final newUser = UserModel(
-                uid: "",
-                email: email.trim(),
-                username: username.trim(),
-                phoneNumber: phoneNumber.trim(),
-                password: password,
-              );
+              uid: "",
+              email: email.trim(),
+              username: username.trim(),
+              phoneNumber: phoneNumber.trim(),
+              password: password,
+            );
 
             _usersService.createUser(
               newUser,
@@ -56,7 +56,7 @@ class AuthController extends ChangeNotifier {
                   notifyListeners();
 
                   // 3. Langsung pindah halaman dari sini karena data sudah aman di state
-                  Navigator.pushReplacementNamed(context, '/dashboard');
+                  Navigator.pushReplacementNamed(context, '/home');
                 },
                 onErrorData: (error) {
                   ScaffoldMessenger.of(
@@ -94,23 +94,29 @@ class AuthController extends ChangeNotifier {
       ServiceCallback<UserModel?>(
         onSuccessData: (UserModel? user) {
           if (user == null) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Email not found")));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Email not found")));
             _setLoading(false);
             return;
           }
           // Verify password if stored
           if (user.password != null && user.password != password) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Incorrect password")));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Incorrect password")));
             _setLoading(false);
             return;
           }
           // Successful login
           _currentUser = user;
           notifyListeners();
-          Navigator.pushReplacementNamed(context, '/dashboard');
+          Navigator.pushReplacementNamed(context, '/home');
         },
         onErrorData: (error) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error)));
         },
         onFullFailed: () {
           _setLoading(false);
@@ -132,7 +138,7 @@ class AuthController extends ChangeNotifier {
           if (user != null) {
             _currentUser = user;
             notifyListeners();
-            Navigator.pushReplacementNamed(context, '/dashboard');
+            Navigator.pushReplacementNamed(context, '/home');
           } else {
             _usersService.createUser(
               googleData,
@@ -143,7 +149,7 @@ class AuthController extends ChangeNotifier {
                     createdMap as Map<String, dynamic>,
                   );
                   notifyListeners();
-                  Navigator.pushReplacementNamed(context, '/dashboard');
+                  Navigator.pushReplacementNamed(context, '/home');
                 },
                 onErrorData: (error) {
                   ScaffoldMessenger.of(
@@ -179,11 +185,7 @@ class AuthController extends ChangeNotifier {
       _setLoading(false);
 
       if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/',
-          (route) => false,
-        );
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       }
     } catch (e) {
       _setLoading(false);

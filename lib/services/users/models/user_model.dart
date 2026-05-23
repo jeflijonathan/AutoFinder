@@ -4,6 +4,7 @@ class UserModel {
   final String username;
   final String phoneNumber;
   final String? password;
+  final String? profilePictureUrl;
 
   UserModel({
     required this.uid,
@@ -11,6 +12,7 @@ class UserModel {
     required this.username,
     required this.phoneNumber,
     this.password,
+    this.profilePictureUrl,
   });
 
   // Convert user info to a Map for saving to Firestore
@@ -21,6 +23,7 @@ class UserModel {
       'username': username,
       'phoneNumber': phoneNumber,
       'password': password,
+      'profilePictureUrl': profilePictureUrl,
     };
   }
 

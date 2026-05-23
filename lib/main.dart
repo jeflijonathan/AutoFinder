@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auto Finder',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.welcome,
       routes: AppRoutes.getRoutes(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
