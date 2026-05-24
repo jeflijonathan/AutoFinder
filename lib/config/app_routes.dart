@@ -1,4 +1,5 @@
 import 'package:autofinder/views/home/home_screen.dart';
+import 'package:autofinder/views/add_workshop/add_workshop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
@@ -47,6 +48,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String home = '/home';
   static const String profile = '/profile';
+  static const String addWorkshop = '/add-workshop';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -55,6 +57,7 @@ class AppRoutes {
       register: (context) => const GuestGuard(child: RegisterScreen()),
       home: (context) => const AuthGuard(child: HomeScreen()),
       profile: (context) => const AuthGuard(child: ProfileScreen()),
+      addWorkshop: (context) => const AuthGuard(child: AddWorkshopScreen()),
     };
   }
 }
