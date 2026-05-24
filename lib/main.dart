@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'config/app_routes.dart';
+import 'package:autofinder/controllers/location_controller.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 
 void main() async {
@@ -18,7 +19,10 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthController())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => LocationController()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auto Finder',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.welcome,
       routes: AppRoutes.getRoutes(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
