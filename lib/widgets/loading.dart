@@ -26,9 +26,7 @@ class Loading extends StatelessWidget {
           height: size,
           fit: BoxFit.contain,
           repeat: true,
-          // Show a red error icon if the animation fails to load
           errorBuilder: (context, error, stackTrace) {
-            // Print the error for debugging during development
             debugPrint('Lottie load error: $error');
             return const Icon(Icons.error, color: Colors.red, size: 60);
           },
@@ -65,7 +63,6 @@ class Loading extends StatelessWidget {
 class LoadingOverlay {
   static OverlayEntry? _entry;
 
-  /// Tampilkan overlay loading. Kembalikan fungsi untuk menutupnya.
   static VoidCallback show(
     BuildContext context, {
     String message = 'Mohon tunggu...',

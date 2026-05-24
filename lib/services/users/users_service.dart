@@ -27,7 +27,7 @@ class UsersService extends APIService {
         final userData = filteredDocs.first;
         callback.onSuccessData(UserModel.fromMap(userData));
       } else {
-        callback.onSuccessData(null); // Tidak ditemukan, kembalikan null
+        callback.onSuccessData(null);
       }
     }
 
