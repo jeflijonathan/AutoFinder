@@ -75,7 +75,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
         String formattedAddress = data['display_name'] ?? '';
 
-        // Try to build a better address prioritizing street name
         if (data['address'] != null) {
           final address = data['address'];
           final road =
@@ -112,7 +111,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     }
   }
 
-  // Geocoding search: nama jalan → koordinat
   Future<void> _searchAddress(String query) async {
     if (query.trim().isEmpty) {
       setState(() => _searchResults = []);
@@ -120,8 +118,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     }
     setState(() => _isSearching = true);
     try {
-      // Create a bounding box around the current location to prioritize local results
-      final double lngMin = _pickedLng - 0.2; // approx 22km
+      final double lngMin = _pickedLng - 0.2;
       final double latMax = _pickedLat + 0.2;
       final double lngMax = _pickedLng + 0.2;
       final double latMin = _pickedLat - 0.2;
@@ -232,7 +229,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       ),
       body: Stack(
         children: [
-          // Full-screen Map
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
@@ -262,7 +258,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ],
           ),
 
-          // Search Bar + Results
           Positioned(
             top: 12,
             left: 16,
@@ -325,7 +320,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   ),
                 ),
 
-                // Search Results Dropdown
                 if (_searchResults.isNotEmpty)
                   Container(
                     margin: const EdgeInsets.only(top: 6),
@@ -372,8 +366,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               ],
             ),
           ),
-
-          // My Location Button
           Positioned(
             bottom: 250,
             right: 16,
@@ -384,8 +376,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               child: const Icon(Icons.my_location, color: Color(0xFF0052CC)),
             ),
           ),
-
-          // Bottom Address Card + Confirm
           Positioned(
             bottom: 0,
             left: 0,
@@ -409,7 +399,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Drag handle
                   Center(
                     child: Container(
                       width: 40,

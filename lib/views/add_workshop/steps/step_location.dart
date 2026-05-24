@@ -50,7 +50,6 @@ class StepLocation extends StatelessWidget {
         ),
         const SizedBox(height: 32),
 
-        // Static map preview — tap to open full-screen picker
         GestureDetector(
           onTap: () => _openPicker(context, provider),
           child: Container(
@@ -63,7 +62,6 @@ class StepLocation extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: Stack(
               children: [
-                // Non-interactive map preview
                 IgnorePointer(
                   child: FlutterMap(
                     options: MapOptions(
@@ -99,7 +97,6 @@ class StepLocation extends StatelessWidget {
                     ],
                   ),
                 ),
-                // "Change" badge di sudut kanan atas
                 Positioned(
                   top: 10,
                   right: 10,
@@ -147,7 +144,6 @@ class StepLocation extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        // Address field — read-only, tap to open picker
         GestureDetector(
           onTap: () => _openPicker(context, provider),
           child: Container(

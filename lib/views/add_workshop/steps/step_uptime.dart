@@ -50,7 +50,6 @@ class StepUptime extends StatelessWidget {
     final invalidDays = provider.getInvalidUptimeDays();
     final bool hasError = isOpen && invalidDays.contains(day);
 
-    // Find the time model for this day if it exists, otherwise use defaults for display
     final timeModel = provider.activeOperationTimes.firstWhere(
       (element) => element.day == day,
       orElse: () => OperationTimeModel(
@@ -83,7 +82,7 @@ class StepUptime extends StatelessWidget {
               Switch(
                 value: isOpen,
                 onChanged: (val) => provider.toggleDayOpen(day, val),
-                activeColor: const Color(0xFF0052CC),
+                activeTrackColor: const Color(0xFF0052CC),
               ),
               const SizedBox(width: 8),
               Text(
@@ -106,8 +105,7 @@ class StepUptime extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (day ==
-                          'Monday') // Only show label on first item if we follow the design strictly, but for clarity let's just keep it simple or match design closely
+                      if (day == 'Monday')
                         const Text(
                           'OPENING TIME',
                           style: TextStyle(
