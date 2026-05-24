@@ -172,13 +172,7 @@ class AddWorkshopView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (provider.isLoading)
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        child: const Loading(),
-                      ),
-                    ),
+                  if (provider.isLoading) const Loading(asOverlay: true),
                 ],
               ),
             ],

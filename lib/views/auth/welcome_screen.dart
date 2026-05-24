@@ -207,7 +207,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         const SizedBox(height: 20),
 
                         ButtonPrimary(
-                          text: 'Sign In with Email & Password',
+                          text: 'Sign In with Email',
                           onPressed: () {
                             Navigator.pushNamed(context, AppRoutes.login);
                           },
