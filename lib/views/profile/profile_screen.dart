@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const ButtonNavBar(currentIndex: 1),
+      bottomNavigationBar: const ButtonNavBar(currentIndex: 4),
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(

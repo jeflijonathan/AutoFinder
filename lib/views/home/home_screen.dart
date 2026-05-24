@@ -2,6 +2,8 @@ import 'package:autofinder/widgets/buttom_nav_bar.dart';
 import 'package:autofinder/widgets/header.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:autofinder/controllers/location_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +13,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<LocationController>().fetchUserLocation();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +49,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [Header(title: "Find the Workshop")],
+                    children: [
+                      Consumer<LocationController>(
+                        builder: (context, locationController, child) {
+                          return Header(
+                            title: "Find the Workshop",
+                            subtitle: locationController.isLoading 
+                                ? "Mendeteksi lokasi..." 
+                                : "Lokasi: ${locationController.currentCity}",
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
