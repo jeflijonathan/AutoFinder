@@ -7,13 +7,10 @@ import 'package:autofinder/provider/add_workshop_provider.dart';
 class StepVerify extends StatelessWidget {
   const StepVerify({super.key});
 
-  // 1. Amankan pemanggilan asinkronus dengan menyimpan Navigator/ScaffoldMessenger State di awal
-  // atau pastikan validasi context dilakukan dengan ketat.
   Future<void> _pickImage(
     BuildContext context,
     AddWorkshopProvider provider,
   ) async {
-    // Validasi awal SEBELUM masuk ke proses async picker
     if (provider.images.length >= 4) {
       _showWarningSnackBar(
         context,
@@ -28,7 +25,6 @@ class StepVerify extends StatelessWidget {
       imageQuality: 85,
     );
 
-    // 2. WAJIB periksa apakah widget masih aktif di screen setelah menunggu user memilih foto
     if (!context.mounted) return;
 
     if (file != null) {
@@ -43,47 +39,56 @@ class StepVerify extends StatelessWidget {
     }
   }
 
-  // Fungsi helper untuk memisahkan logika SnackBar agar kode lebih bersih
   void _showWarningSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).hideCurrentSnackBar(); // Hapus snackbar lama jika ada
+    final theme = Theme.of(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.orange),
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: theme.colorScheme.onErrorContainer),
+        ),
+        backgroundColor: theme.colorScheme.errorContainer,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan context.watch agar widget merefresh ketika provider berubah
     final provider = context.watch<AddWorkshopProvider>();
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final isMaxImages = provider.images.length >= 4;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Documentation',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1F2937),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Upload high-resolution images of your facility.',
-          style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+          style: TextStyle(
+            fontSize: 14,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 8),
-        // Photo counter
+
         Row(
           children: [
             Icon(
               Icons.photo_library_outlined,
               size: 16,
-              color: provider.images.length >= 4
-                  ? const Color(0xFF6B7280)
-                  : const Color(0xFF0052CC),
+              color: isMaxImages
+                  ? theme.colorScheme.onSurfaceVariant
+                  : primaryColor,
             ),
             const SizedBox(width: 6),
             Text(
@@ -91,26 +96,25 @@ class StepVerify extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: provider.images.length >= 4
-                    ? const Color(0xFF6B7280)
-                    : const Color(0xFF0052CC),
+                color: isMaxImages
+                    ? theme.colorScheme.onSurfaceVariant
+                    : primaryColor,
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // List uploaded images
               ...List.generate(provider.images.length, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 16),
                   child: Stack(
                     children: [
-                      // Image preview
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.file(
@@ -120,7 +124,7 @@ class StepVerify extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      // Photo Index Label
+
                       Positioned(
                         top: 8,
                         left: 8,
@@ -130,7 +134,7 @@ class StepVerify extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.black54,
+                            color: Colors.black.withAlpha(150),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -143,20 +147,20 @@ class StepVerify extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Delete Button
+
                       Positioned(
                         top: 4,
                         right: 4,
                         child: GestureDetector(
                           onTap: () => provider.removeImage(index),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surface,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.cancel,
-                              color: Colors.red,
+                              color: theme.colorScheme.error,
                               size: 24,
                             ),
                           ),
@@ -167,8 +171,7 @@ class StepVerify extends StatelessWidget {
                 );
               }),
 
-              // Upload button (only if < 4 images)
-              if (provider.images.length < 4)
+              if (!isMaxImages)
                 InkWell(
                   onTap: () => _pickImage(context, provider),
                   borderRadius: BorderRadius.circular(12),
@@ -177,27 +180,24 @@ class StepVerify extends StatelessWidget {
                     width: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFF0052CC),
-                        width: 2,
-                      ),
-                      color: const Color(0xFFF0F4FF),
+                      border: Border.all(color: primaryColor, width: 2),
+                      color: primaryColor.withAlpha(20),
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.add_photo_alternate_outlined,
-                          color: Color(0xFF0052CC),
+                          color: primaryColor,
                           size: 32,
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'ADD PHOTO',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0052CC),
+                            color: primaryColor,
                           ),
                         ),
                       ],
@@ -212,7 +212,10 @@ class StepVerify extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16),
             child: Text(
               'Belum ada foto yang diunggah.',
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+              style: TextStyle(
+                fontSize: 13,
+                color: theme.colorScheme.onSurfaceVariant.withAlpha(180),
+              ),
             ),
           ),
       ],

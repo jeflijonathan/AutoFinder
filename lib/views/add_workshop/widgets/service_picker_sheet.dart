@@ -56,24 +56,31 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = theme.colorScheme.primary;
+
     return DraggableScrollableSheet(
       initialChildSize: 0.78,
       minChildSize: 0.5,
       maxChildSize: 0.95,
       builder: (_, scrollCtrl) {
         return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          decoration: BoxDecoration(
+            color: theme.cardColor, // Background bottom sheet adaptif
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: Column(
             children: [
               const SizedBox(height: 14),
+              // Garis handle drag top sheet
               Container(
                 width: 44,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE5E7EB),
+                  color: isDark
+                      ? const Color(0xFF444444)
+                      : const Color(0xFFE5E7EB),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -82,13 +89,13 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'Pilih Layanan',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F2937),
+                          color: theme.colorScheme.onSurface, // Teks adaptif
                         ),
                       ),
                     ),
@@ -99,13 +106,15 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0052CC).withOpacity(0.1),
+                          color: primaryColor.withAlpha(
+                            25,
+                          ), // Background badge dinamis
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           '${_tempSelected.length} dipilih',
-                          style: const TextStyle(
-                            color: Color(0xFF0052CC),
+                          style: TextStyle(
+                            color: primaryColor,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -117,6 +126,7 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
 
               const SizedBox(height: 16),
 
+              // Search Bar Field
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: TextField(
@@ -124,16 +134,18 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                   onChanged: (v) => setState(() => _query = v),
                   decoration: InputDecoration(
                     hintText: 'Cari layanan...',
-                    hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-                    prefixIcon: const Icon(
+                    hintStyle: TextStyle(
+                      color: theme.colorScheme.onSurfaceVariant.withAlpha(150),
+                    ),
+                    prefixIcon: Icon(
                       Icons.search,
-                      color: Color(0xFF6B7280),
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                     suffixIcon: _query.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.clear,
-                              color: Color(0xFF6B7280),
+                              color: theme.colorScheme.onSurfaceVariant,
                               size: 20,
                             ),
                             onPressed: () {
@@ -143,7 +155,9 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                           )
                         : null,
                     filled: true,
-                    fillColor: const Color(0xFFF3F4F6),
+                    fillColor: isDark
+                        ? const Color(0xFF2C2C2C)
+                        : const Color(0xFFF3F4F6),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide.none,
@@ -155,9 +169,10 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
 
               const SizedBox(height: 12),
 
+              // Daftar Layanan
               Expanded(
                 child: _filtered.isEmpty
-                    ? _buildEmptyState()
+                    ? _buildEmptyState(theme)
                     : ListView.builder(
                         controller: scrollCtrl,
                         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -167,11 +182,12 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                           final name = svc['name'] as String;
                           final icon = svc['icon'] as IconData;
                           final sel = _tempSelected.contains(name);
-                          return _buildListItem(name, icon, sel);
+                          return _buildListItem(theme, name, icon, sel);
                         },
                       ),
               ),
 
+              // Bottom Button Action Action Area
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   24,
@@ -187,8 +203,10 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0052CC),
-                      disabledBackgroundColor: const Color(0xFFB0C4DE),
+                      backgroundColor: primaryColor,
+                      disabledBackgroundColor: isDark
+                          ? const Color(0xFF3A4B5C)
+                          : const Color(0xFFB0C4DE),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -215,7 +233,15 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
     );
   }
 
-  Widget _buildListItem(String name, IconData icon, bool isSelected) {
+  Widget _buildListItem(
+    ThemeData theme,
+    String name,
+    IconData icon,
+    bool isSelected,
+  ) {
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = theme.colorScheme.primary;
+
     return GestureDetector(
       onTap: () => _toggle(name),
       child: AnimatedContainer(
@@ -224,41 +250,43 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF0052CC).withOpacity(0.07)
-              : const Color(0xFFF9FAFB),
+              ? primaryColor.withAlpha(20) // Highlight transparan warna utama
+              : (isDark ? const Color(0xFF232323) : const Color(0xFFF9FAFB)),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF0052CC)
-                : const Color(0xFFE5E7EB),
+                ? primaryColor
+                : (isDark ? const Color(0xFF333333) : const Color(0xFFE5E7EB)),
             width: 1.5,
           ),
         ),
         child: Row(
           children: [
-            // Icon box
+            // Wadah Box Icon Sekitar Layanan
             AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               width: 42,
               height: 42,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color(0xFF0052CC).withOpacity(0.15)
-                    : const Color(0xFFEEEFF1),
+                    ? primaryColor.withAlpha(40)
+                    : (isDark
+                          ? const Color(0xFF333333)
+                          : const Color(0xFFEEEFF1)),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 icon,
                 size: 22,
                 color: isSelected
-                    ? const Color(0xFF0052CC)
-                    : const Color(0xFF6B7280),
+                    ? primaryColor
+                    : theme.colorScheme.onSurfaceVariant,
               ),
             ),
 
             const SizedBox(width: 16),
 
-            // Service name
+            // Nama Layanan Teks
             Expanded(
               child: Text(
                 name,
@@ -266,25 +294,25 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                   fontSize: 15,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   color: isSelected
-                      ? const Color(0xFF0052CC)
-                      : const Color(0xFF1F2937),
+                      ? primaryColor
+                      : theme.colorScheme.onSurface,
                 ),
               ),
             ),
 
-            // Checkbox
+            // Indikator Kotak Checkbox Kustom
             AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               width: 24,
               height: 24,
               decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF0052CC)
-                    : Colors.transparent,
+                color: isSelected ? primaryColor : Colors.transparent,
                 border: Border.all(
                   color: isSelected
-                      ? const Color(0xFF0052CC)
-                      : const Color(0xFFD1D5DB),
+                      ? primaryColor
+                      : (isDark
+                            ? const Color(0xFF555555)
+                            : const Color(0xFFD1D5DB)),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(6),
@@ -299,16 +327,25 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(ThemeData theme) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off_rounded, size: 56, color: Colors.grey.shade300),
+          Icon(
+            Icons.search_off_rounded,
+            size: 56,
+            color: theme.brightness == Brightness.dark
+                ? const Color(0xFF444444)
+                : Colors.grey.shade300,
+          ),
           const SizedBox(height: 16),
           Text(
             'Layanan "$_query" tidak ditemukan',
-            style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
+            style: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 14,
+            ),
           ),
         ],
       ),

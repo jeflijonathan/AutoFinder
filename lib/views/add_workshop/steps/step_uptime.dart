@@ -9,6 +9,7 @@ class StepUptime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,15 +18,17 @@ class StepUptime extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF3F4F6),
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+            color: theme.colorScheme.surfaceContainer,
+            border: Border(
+              bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+            ),
           ),
-          child: const Text(
+          child: Text(
             'WEEKLY SCHEDULE CONFIGURATION',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF4B5563),
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -46,6 +49,7 @@ class StepUptime extends StatelessWidget {
     String day, {
     bool isLast = false,
   }) {
+    final theme = Theme.of(context);
     final isOpen = provider.isOpen[day] ?? false;
     final invalidDays = provider.getInvalidUptimeDays();
     final bool hasError = isOpen && invalidDays.contains(day);
@@ -60,11 +64,15 @@ class StepUptime extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       decoration: BoxDecoration(
         border: isLast
             ? null
-            : Border(bottom: BorderSide(color: Colors.grey.shade200)),
+            : Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.outlineVariant.withAlpha(120),
+                ),
+              ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +81,9 @@ class StepUptime extends StatelessWidget {
             day,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: isOpen ? const Color(0xFF1F2937) : const Color(0xFF9CA3AF),
+              color: isOpen
+                  ? theme.colorScheme.onSurface
+                  : theme.colorScheme.onSurfaceVariant.withAlpha(150),
             ),
           ),
           const SizedBox(height: 12),
@@ -82,7 +92,7 @@ class StepUptime extends StatelessWidget {
               Switch(
                 value: isOpen,
                 onChanged: (val) => provider.toggleDayOpen(day, val),
-                activeTrackColor: const Color(0xFF0052CC),
+                activeColor: theme.colorScheme.primary,
               ),
               const SizedBox(width: 8),
               Text(
@@ -91,8 +101,8 @@ class StepUptime extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: isOpen
-                      ? const Color(0xFF4B5563)
-                      : const Color(0xFF9CA3AF),
+                      ? theme.colorScheme.onSurface
+                      : theme.colorScheme.onSurfaceVariant.withAlpha(150),
                 ),
               ),
             ],
@@ -106,11 +116,11 @@ class StepUptime extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (day == 'Monday')
-                        const Text(
+                        Text(
                           'OPENING TIME',
                           style: TextStyle(
                             fontSize: 10,
-                            color: Color(0xFF6B7280),
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       const SizedBox(height: 4),
@@ -129,20 +139,23 @@ class StepUptime extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('—', style: TextStyle(color: Color(0xFF9CA3AF))),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    '—',
+                    style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+                  ),
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (day == 'Monday')
-                        const Text(
+                        Text(
                           'CLOSING TIME',
                           style: TextStyle(
                             fontSize: 10,
-                            color: Color(0xFF6B7280),
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       const SizedBox(height: 4),
@@ -164,7 +177,6 @@ class StepUptime extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Inline error message
             if (hasError)
               Container(
                 width: double.infinity,
@@ -173,23 +185,23 @@ class StepUptime extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEE2E2),
+                  color: theme.colorScheme.errorContainer,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFEF4444)),
+                  border: Border.all(color: theme.colorScheme.error),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.error_outline,
-                      color: Color(0xFFEF4444),
+                      color: theme.colorScheme.onErrorContainer,
                       size: 16,
                     ),
                     const SizedBox(width: 6),
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'Jam buka harus lebih awal dari jam tutup!',
                         style: TextStyle(
-                          color: Color(0xFFDC2626),
+                          color: theme.colorScheme.onErrorContainer,
                           fontSize: 12,
                         ),
                       ),
@@ -204,9 +216,12 @@ class StepUptime extends StatelessWidget {
                 Expanded(
                   child: _buildTimeInput(context, '--:-- --', disabled: true),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('—', style: TextStyle(color: Color(0xFFE5E7EB))),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    '—',
+                    style: TextStyle(color: theme.colorScheme.outlineVariant),
+                  ),
                 ),
                 Expanded(
                   child: _buildTimeInput(context, '--:-- --', disabled: true),
@@ -226,7 +241,6 @@ class StepUptime extends StatelessWidget {
     bool isOpening,
     String currentTime,
   ) async {
-    // Parse current time string (e.g. "08:00 AM")
     TimeOfDay initialTime = const TimeOfDay(hour: 8, minute: 0);
     try {
       if (currentTime != '--:-- --') {
@@ -253,7 +267,6 @@ class StepUptime extends StatelessWidget {
 
     if (picked != null) {
       if (context.mounted) {
-        // Validation logic
         final timeModel = provider.activeOperationTimes.firstWhere(
           (element) => element.day == day,
           orElse: () => OperationTimeModel(
@@ -289,9 +302,9 @@ class StepUptime extends StatelessWidget {
 
         if (!isValid) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Jam buka harus lebih awal dari jam tutup!'),
-              backgroundColor: Colors.red,
+            SnackBar(
+              content: const Text('Jam buka harus lebih awal dari jam tutup!'),
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
           return;
@@ -314,13 +327,24 @@ class StepUptime extends StatelessWidget {
     bool isError = false,
     VoidCallback? onTap,
   }) {
+    final theme = Theme.of(context);
+
     Color borderColor;
+    Color backgroundColor;
+    Color textColor;
+
     if (disabled) {
-      borderColor = const Color(0xFFF3F4F6);
+      borderColor = theme.colorScheme.surfaceContainer;
+      backgroundColor = theme.colorScheme.surfaceContainerLow;
+      textColor = theme.colorScheme.onSurfaceVariant.withAlpha(100);
     } else if (isError) {
-      borderColor = const Color(0xFFEF4444);
+      borderColor = theme.colorScheme.error;
+      backgroundColor = theme.colorScheme.errorContainer.withAlpha(80);
+      textColor = theme.colorScheme.error;
     } else {
-      borderColor = const Color(0xFFD1D5DB);
+      borderColor = theme.colorScheme.outline;
+      backgroundColor = theme.colorScheme.surface;
+      textColor = theme.colorScheme.onSurface;
     }
 
     return InkWell(
@@ -329,9 +353,7 @@ class StepUptime extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: disabled
-              ? const Color(0xFFF9FAFB)
-              : (isError ? const Color(0xFFFEF2F2) : Colors.white),
+          color: backgroundColor,
           border: Border.all(color: borderColor),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -341,11 +363,8 @@ class StepUptime extends StatelessWidget {
             Text(
               time,
               style: TextStyle(
-                color: disabled
-                    ? const Color(0xFFD1D5DB)
-                    : (isError
-                          ? const Color(0xFFDC2626)
-                          : const Color(0xFF1F2937)),
+                color: textColor,
+                fontWeight: disabled ? FontWeight.normal : FontWeight.w500,
               ),
             ),
             if (!disabled)
@@ -353,8 +372,8 @@ class StepUptime extends StatelessWidget {
                 Icons.access_time,
                 size: 16,
                 color: isError
-                    ? const Color(0xFFEF4444)
-                    : const Color(0xFF9CA3AF),
+                    ? theme.colorScheme.error
+                    : theme.colorScheme.onSurfaceVariant,
               ),
           ],
         ),

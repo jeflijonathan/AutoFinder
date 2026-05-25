@@ -1,11 +1,12 @@
+import 'package:autofinder/config/app_routes.dart';
+import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:autofinder/views/add_workshop/utils/workshop_step_helper.dart';
+import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
+import 'package:autofinder/widgets/buttom_nav_bar.dart';
+import 'package:autofinder/widgets/loading.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:autofinder/provider/add_workshop_provider.dart';
-import 'package:autofinder/widgets/buttom_nav_bar.dart';
-import 'package:autofinder/views/add_workshop/utils/workshop_step_helper.dart';
-import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
-import 'package:autofinder/widgets/loading.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen({super.key});
@@ -49,7 +50,7 @@ class AddWorkshopView extends StatelessWidget {
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
       } else {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
       }
     }
   }
@@ -58,9 +59,13 @@ class AddWorkshopView extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
 
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: Navbar(),
+      backgroundColor: theme
+          .scaffoldBackgroundColor, // Mengikuti warna latar belakang dasar tema aktif
+      appBar: const Navbar(),
       body: Stack(
         children: [
           SafeArea(
@@ -69,33 +74,39 @@ class AddWorkshopView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Create a new Post',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
+                      color:
+                          theme.colorScheme.onSurface, // Adaptif (Hitam/Putih)
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'Share your service experience or workshop recommendations through new posts.',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF6B7280),
+                      color: theme
+                          .colorScheme
+                          .onSurfaceVariant, // Adaptif (Abu-abu)
                       height: 1.5,
                     ),
                   ),
                   const SizedBox(height: 24),
 
-                  // Stepper
+                  // Container komponen Stepper
                   Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF3F4F6),
+                      // Menggunakan warna card adaptif atau warna input gelap saat dark mode
+                      color: isDark
+                          ? const Color(0xFF1E1E1E)
+                          : const Color(0xFFF3F4F6),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -114,7 +125,7 @@ class AddWorkshopView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Step Content
+                  // Tempat berpindahnya form widget internal
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: WorkshopStepHelper.getStepWidget(
@@ -123,6 +134,7 @@ class AddWorkshopView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
+                  // Area Tombol Navigasi Bawah Form
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -139,15 +151,21 @@ class AddWorkshopView extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                side: const BorderSide(
-                                  color: Color(0xFFE5E7EB),
+                                side: BorderSide(
+                                  color: isDark
+                                      ? const Color(0xFF333333)
+                                      : const Color(0xFFE5E7EB),
                                 ),
-                                backgroundColor: const Color(0xFFE5E7EB),
+                                backgroundColor: isDark
+                                    ? const Color(0xFF2C2C2C)
+                                    : const Color(0xFFE5E7EB),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Back',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: theme
+                                      .colorScheme
+                                      .onSurface, // Warna teks mengikuti tema aktif
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -164,8 +182,14 @@ class AddWorkshopView extends StatelessWidget {
                             backgroundColor:
                                 (provider.currentStep == 3 &&
                                     provider.getInvalidUptimeDays().isNotEmpty)
-                                ? const Color(0xFFB0C4DE)
-                                : const Color(0xFF0052CC),
+                                ? (isDark
+                                      ? const Color(0xFF3A4B5C)
+                                      : const Color(
+                                          0xFFB0C4DE,
+                                        )) // Warna disable/invalid adaptif
+                                : theme
+                                      .colorScheme
+                                      .primary, // Warna biru utama aplikasi yang dinamis
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -177,7 +201,8 @@ class AddWorkshopView extends StatelessWidget {
                                 ? 'Post Workshop'
                                 : 'Next',
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Colors
+                                  .white, // Teks tombol utama tetap putih di kedua mode
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -190,7 +215,6 @@ class AddWorkshopView extends StatelessWidget {
               ),
             ),
           ),
-
           if (provider.isLoading) const Loading(asOverlay: true),
         ],
       ),

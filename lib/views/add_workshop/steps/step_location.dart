@@ -31,22 +31,32 @@ class StepLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = theme.colorScheme.primary;
+
+    final mapTileUrl = isDark
+        ? 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+        : 'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Deployment Location',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1F2937),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Pin your workshop on our technical\nnetwork map.',
-          style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+          style: TextStyle(
+            fontSize: 14,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 32),
 
@@ -56,7 +66,7 @@ class StepLocation extends StatelessWidget {
             height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(16),
             ),
             clipBehavior: Clip.hardEdge,
@@ -73,8 +83,7 @@ class StepLocation extends StatelessWidget {
                     ),
                     children: [
                       TileLayer(
-                        urlTemplate:
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        urlTemplate: mapTileUrl,
                         userAgentPackageName: 'com.example.autofinder',
                       ),
                       MarkerLayer(
@@ -86,9 +95,9 @@ class StepLocation extends StatelessWidget {
                             ),
                             width: 48,
                             height: 56,
-                            child: const Icon(
+                            child: Icon(
                               Icons.location_pin,
-                              color: Color(0xFF0052CC),
+                              color: primaryColor,
                               size: 48,
                             ),
                           ),
@@ -106,31 +115,31 @@ class StepLocation extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.12),
+                          color: Colors.black.withAlpha(isDark ? 40 : 25),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.edit_location_alt_outlined,
                           size: 14,
-                          color: Color(0xFF0052CC),
+                          color: primaryColor,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           'Change',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0052CC),
+                            color: primaryColor,
                           ),
                         ),
                       ],
@@ -150,7 +159,7 @@ class StepLocation extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFFE5E7EB).withValues(alpha: 0.5),
+              color: theme.colorScheme.surfaceContainerHighest.withAlpha(120),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -163,17 +172,15 @@ class StepLocation extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       color: provider.address.isEmpty
-                          ? const Color(0xFF9CA3AF)
-                          : const Color(0xFF1F2937),
+                          ? theme.colorScheme.onSurfaceVariant.withAlpha(150)
+                          : theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
-                if (provider.address.isNotEmpty)
-                  const Icon(
-                    Icons.check_circle,
-                    color: Color(0xFF0052CC),
-                    size: 20,
-                  ),
+                if (provider.address.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  Icon(Icons.check_circle, color: primaryColor, size: 20),
+                ],
               ],
             ),
           ),

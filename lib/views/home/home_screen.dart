@@ -23,19 +23,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       appBar: const Navbar(),
       bottomNavigationBar: const ButtonNavBar(currentIndex: 0),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFEFF3F9), Color(0xFFF6F8FC), Colors.white],
+                colors: isDark
+                    ? [
+                        const Color(0xFF0F172A),
+                        const Color(0xFF1E293B),
+                        theme.scaffoldBackgroundColor,
+                      ]
+                    : [
+                        const Color(0xFFEFF3F9),
+                        const Color(0xFFF6F8FC),
+                        Colors.white,
+                      ],
               ),
             ),
             child: SafeArea(
@@ -54,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context, locationController, child) {
                           return Header(
                             title: "Find the Workshop",
-                            subtitle: locationController.isLoading 
-                                ? "Mendeteksi lokasi..." 
+                            subtitle: locationController.isLoading
+                                ? "Mendeteksi lokasi..."
                                 : "Lokasi: ${locationController.currentCity}",
                           );
                         },

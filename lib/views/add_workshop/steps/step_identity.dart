@@ -12,6 +12,9 @@ class StepIdentity extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
 
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Form(
       key: provider.identityFormKey,
       child: Column(
@@ -20,7 +23,7 @@ class StepIdentity extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -28,13 +31,16 @@ class StepIdentity extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     'Define your brand and core operational details.',
-                    style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -69,34 +75,42 @@ class StepIdentity extends StatelessWidget {
             maxLines: 6,
           ),
           const SizedBox(height: 24),
-          const Text(
+          Text(
             'SPECIALIZATION',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF4B5563),
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFFE5E7EB).withValues(alpha: 0.5),
+              color: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF3F4F8),
               borderRadius: BorderRadius.circular(12),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: provider.selectedSpecialization,
                 isExpanded: true,
-                icon: const Icon(
+                dropdownColor: theme.cardColor,
+                icon: Icon(
                   Icons.keyboard_arrow_down,
-                  color: Color(0xFF6B7280),
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 items: <String>['car', 'motorcycle', 'truck']
                     .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value.toUpperCase(),
+                          style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       );
                     })
                     .toList(),

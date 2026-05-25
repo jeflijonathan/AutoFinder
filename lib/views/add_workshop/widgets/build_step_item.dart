@@ -21,28 +21,42 @@ class BuildStepItem extends StatefulWidget {
 class _BuildStepItemState extends State<BuildStepItem> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primaryColor = theme.colorScheme.primary;
+    final unselectedColor = theme.colorScheme.onSurfaceVariant;
+
+    // Menentukan warna background lingkaran stepper secara dinamis
+    Color circleColor;
+    if (widget.isActive) {
+      circleColor = primaryColor;
+    } else if (widget.isCompleted) {
+      circleColor = primaryColor.withAlpha(
+        128,
+      ); // Transparansi ~50% dari warna utama
+    } else {
+      circleColor = isDark
+          ? const Color(0xFF2C2C2C)
+          : const Color(0xFFE5E7EB); // Background mati adaptif
+    }
+
+    // Menentukan warna teks di dalam lingkaran
+    final Color textColor = widget.isActive || widget.isCompleted
+        ? Colors.white
+        : theme.colorScheme.onSurface;
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           width: 36,
           height: 36,
-          decoration: BoxDecoration(
-            color: widget.isActive
-                ? const Color(0xFF0052CC)
-                : (widget.isCompleted
-                      ? const Color(0xFF0052CC).withOpacity(0.5)
-                      : const Color(0xFFE5E7EB)),
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
           child: Center(
             child: Text(
               '${widget.stepNumber}',
-              style: TextStyle(
-                color: widget.isActive || widget.isCompleted
-                    ? Colors.white
-                    : Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -52,13 +66,10 @@ class _BuildStepItemState extends State<BuildStepItem> {
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.bold,
-            color: widget.isActive
-                ? const Color(0xFF0052CC)
-                : const Color(0xFF4B5563),
+            color: widget.isActive ? primaryColor : unselectedColor,
           ),
         ),
       ],
     );
-    ;
   }
 }
