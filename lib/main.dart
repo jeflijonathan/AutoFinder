@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
-import 'config/app_routes.dart';
+import 'package:autofinder/firebase_options.dart';
+import 'package:autofinder/config/app_routes.dart';
+import 'package:autofinder/config/app_theme.dart';
 import 'package:autofinder/controllers/location_controller.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
+
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,20 +36,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Auto Finder',
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.welcome,
-      routes: AppRoutes.getRoutes(),
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0B51C1),
-          primary: const Color(0xFF0B51C1),
-        ),
-        useMaterial3: true,
-        fontFamily: 'Inter',
-      ),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (_, ThemeMode currentMode, __) {
+        return MaterialApp(
+          title: 'Auto Finder',
+          debugShowCheckedModeBanner: false,
+          themeMode: currentMode,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          initialRoute: AppRoutes.welcome,
+          routes: AppRoutes.getRoutes(),
+        );
+      },
     );
   }
 }

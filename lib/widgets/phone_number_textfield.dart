@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:autofinder/config/app_colors.dart';
 
 class PhoneNumberTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -38,15 +37,18 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: theme.colorScheme.onSurface, // Label teks adaptif
           ),
         ),
         const SizedBox(height: 8),
@@ -92,17 +94,22 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
               );
             }),
           ],
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
-            color: Color(0xFF1F2937),
+            color: theme.colorScheme.onSurface, // Input teks utama adaptif
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
-            hintText:
-                '821-8261-6803', // Hint text disesuaikan dengan pola baru Anda
-            hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+            hintText: '821-8261-6803',
+            hintStyle: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant.withAlpha(
+                150,
+              ), // Hint melunak adaptif
+            ),
             filled: true,
-            fillColor: const Color(0xFFF9FAFB),
+            fillColor: isDark
+                ? const Color(0xFF2C2C2C)
+                : const Color(0xFFF9FAFB),
             contentPadding: const EdgeInsets.symmetric(
               vertical: 16,
               horizontal: 16,
@@ -110,18 +117,25 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
             prefixIcon: Container(
               margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
-                  right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  right: BorderSide(
+                    color: theme
+                        .colorScheme
+                        .outlineVariant, // Pembatas vertikal adaptif
+                    width: 1.5,
+                  ),
                 ),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedCode,
                   isDense: true,
-                  icon: const Icon(
+                  dropdownColor: theme
+                      .cardColor, // Mencegah popup background crash/putih statis saat dark mode
+                  icon: Icon(
                     Icons.arrow_drop_down,
-                    color: Color(0xFF4B5563),
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                   items: _countryCodes.map<DropdownMenuItem<String>>((
                     Map<String, String> country,
@@ -138,9 +152,11 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
                           const SizedBox(width: 8),
                           Text(
                             country['code']!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF1F2937),
+                              color: theme
+                                  .colorScheme
+                                  .onSurface, // Kode dropdown adaptif
                             ),
                           ),
                         ],
@@ -163,22 +179,30 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color(0xFFE5E7EB),
+              borderSide: BorderSide(
+                color: theme
+                    .colorScheme
+                    .outlineVariant, // Garis border normal adaptif
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF0052CC), width: 2),
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary, // Garis fokus utama dinamis
+                width: 2,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.red, width: 1.5),
+              borderSide: BorderSide(
+                color: theme.colorScheme.error, // Eror adaptif
+                width: 1.5,
+              ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.red, width: 2),
+              borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
             ),
           ),
         ),

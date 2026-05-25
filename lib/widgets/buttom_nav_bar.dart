@@ -8,11 +8,21 @@ class ButtonNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1)),
+        color: theme.cardColor, // Mengikuti background komponen adaptif
+        border: Border(
+          top: BorderSide(
+            color: isDark
+                ? const Color(0xFF2C2C2C)
+                : const Color(0xFFE0E0E0), // Garis pembatas tipis yang halus
+            width: 1,
+          ),
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -43,7 +53,7 @@ class ButtonNavBar extends StatelessWidget {
               context,
               index: 3,
               icon: Icons.favorite_outline,
-              route: AppRoutes.home, // Sesuaikan rutenya jika sudah ada
+              route: AppRoutes.home,
               label: 'FAVORITE',
             ),
             _buildNavItem(
@@ -66,9 +76,15 @@ class ButtonNavBar extends StatelessWidget {
     required String route,
     required String label,
   }) {
+    final theme = Theme.of(context);
     final isSelected = currentIndex == index;
-    final primaryColor = const Color(0xFF0052CC);
-    final activeColor = isSelected ? primaryColor : const Color(0xFF9CA3AF);
+
+    // Warna aktif mengambil dari primary theme (Warna Biru Utama)
+    final primaryColor = theme.colorScheme.primary;
+
+    // Warna non-aktif mengambil dari onSurfaceVariant (Abu-abu adaptif)
+    final unselectedColor = theme.colorScheme.onSurfaceVariant;
+    final activeColor = isSelected ? primaryColor : unselectedColor;
 
     return GestureDetector(
       onTap: () {
@@ -87,15 +103,16 @@ class ButtonNavBar extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? primaryColor.withValues(alpha: 0.1) // Biru sangat muda
+                    ? primaryColor.withAlpha(
+                        26,
+                      ) // Transparansi ~10% yang aman lintas SDK versi lama/baru
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
                   Icon(icon, color: activeColor, size: 24),
-                  SizedBox(height: 4),
-
+                  const SizedBox(height: 4),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
