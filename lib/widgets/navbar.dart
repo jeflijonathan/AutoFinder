@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
@@ -15,8 +16,9 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
 
     final imageUrl =
-        user?.profilePictureUrl ??
-        'https://ui-avatars.com/api/?name=${Uri.encodeComponent(username)}&background=0D8ABC&color=fff';
+        (user?.profilePictureUrl != null && user!.profilePictureUrl!.isNotEmpty)
+            ? user.profilePictureUrl!
+            : 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(username)}&background=0D8ABC&color=fff';
 
     return AppBar(
       title: Text(
@@ -34,22 +36,35 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 16.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.profile);
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                imageUrl,
-                width: 36,
-                height: 36,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.person,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  );
-                },
-              ),
+              child: imageUrl.startsWith('http')
+                  ? Image.network(
+                      imageUrl,
+                      width: 36,
+                      height: 36,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.person,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        );
+                      },
+                    )
+                  : Image.memory(
+                      base64Decode(imageUrl),
+                      width: 36,
+                      height: 36,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.person,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        );
+                      },
+                    ),
             ),
           ),
         ),

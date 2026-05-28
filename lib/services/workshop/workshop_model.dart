@@ -2,6 +2,7 @@ import 'package:autofinder/services/workshop/operation_time_model.dart';
 
 class WorkshopModel {
   final String? uid;
+  final String? idUser;
   final String title;
   final double longitude;
   final double latitude;
@@ -15,6 +16,7 @@ class WorkshopModel {
 
   WorkshopModel({
     required this.uid,
+    required this.idUser,
     required this.title,
     required this.longitude,
     required this.latitude,
@@ -30,6 +32,7 @@ class WorkshopModel {
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
+      'idUser': idUser,
       'title': title,
       'longitude': longitude,
       'latitude': latitude,
@@ -47,6 +50,7 @@ class WorkshopModel {
   factory WorkshopModel.fromMap(Map<String, dynamic> map) {
     return WorkshopModel(
       uid: map['uid'] ?? '',
+      idUser: map['idUser'] ?? '',
       title: map['title'] ?? '',
       longitude: map['longitude'] ?? 0.0,
       latitude: map['latitude'] ?? 0.0,
@@ -58,11 +62,14 @@ class WorkshopModel {
       address: map['address'] ?? '',
       operationTimes: map['operationTimes'] != null
           ? List<OperationTimeModel>.from(
-              map['operationTimes'].map((x) => OperationTimeModel(
-                    day: x['day'],
-                    openTime: x['openTime'],
-                    closeTime: x['closeTime'],
-                  )))
+              map['operationTimes'].map(
+                (x) => OperationTimeModel(
+                  day: x['day'],
+                  openTime: x['openTime'],
+                  closeTime: x['closeTime'],
+                ),
+              ),
+            )
           : null,
     );
   }

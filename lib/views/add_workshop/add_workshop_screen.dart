@@ -1,5 +1,6 @@
 import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/views/add_workshop/utils/workshop_step_helper.dart';
 import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
 import 'package:autofinder/widgets/buttom_nav_bar.dart';
@@ -7,6 +8,7 @@ import 'package:autofinder/widgets/loading.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:autofinder/widgets/header.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen({super.key});
@@ -27,8 +29,11 @@ class AddWorkshopView extends StatelessWidget {
     BuildContext context,
     AddWorkshopProvider provider,
   ) async {
+    final authController = context.read<AuthController>();
     final isLastStep = provider.currentStep == 4;
-    final errorMessage = await provider.processNextOrSubmit();
+    final errorMessage = await provider.processNextOrSubmit(
+      authController.currentUser?.uid,
+    );
 
     if (!context.mounted) return;
 
@@ -63,8 +68,7 @@ class AddWorkshopView extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: theme
-          .scaffoldBackgroundColor, // Mengikuti warna latar belakang dasar tema aktif
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: const Navbar(),
       body: Stack(
         children: [
@@ -74,36 +78,22 @@ class AddWorkshopView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Create a new Post',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          theme.colorScheme.onSurface, // Adaptif (Hitam/Putih)
-                    ),
+                  Header(
+                    fontSizeTitle: 32,
+                    fontSizeSubtitle: 16,
+                    title: 'Create a new Post',
+                    subtitle:
+                        'Share your service experience or workshop recommendations through new posts.',
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Share your service experience or workshop recommendations through new posts.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: theme
-                          .colorScheme
-                          .onSurfaceVariant, // Adaptif (Abu-abu)
-                      height: 1.5,
-                    ),
-                  ),
+
                   const SizedBox(height: 24),
 
-                  // Container komponen Stepper
                   Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
-                      // Menggunakan warna card adaptif atau warna input gelap saat dark mode
                       color: isDark
                           ? const Color(0xFF1E1E1E)
                           : const Color(0xFFF3F4F6),
@@ -125,7 +115,6 @@ class AddWorkshopView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Tempat berpindahnya form widget internal
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: WorkshopStepHelper.getStepWidget(
@@ -134,7 +123,6 @@ class AddWorkshopView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Area Tombol Navigasi Bawah Form
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -201,8 +189,7 @@ class AddWorkshopView extends StatelessWidget {
                                 ? 'Post Workshop'
                                 : 'Next',
                             style: const TextStyle(
-                              color: Colors
-                                  .white, // Teks tombol utama tetap putih di kedua mode
+                              color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),

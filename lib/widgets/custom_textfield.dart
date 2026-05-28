@@ -21,8 +21,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.isPassword = false,
     this.validator,
-    this.maxLines = 1, // Default 1 baris seperti TextField biasa
-    this.minLines = 1, // Default minimal 1 baris
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   @override

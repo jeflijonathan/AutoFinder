@@ -6,6 +6,7 @@ import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:autofinder/views/auth/utils/register_form.dart';
 import 'package:provider/provider.dart';
+import 'package:autofinder/widgets/phone_number_textfield.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -62,208 +63,209 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Stack(
         children: [
           Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFEFF3F9), Color(0xFFF6F8FC), Colors.white],
-          ),
-          image: DecorationImage(
-            image: AssetImage('images/background-2.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 24.0,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 24),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(12),
-                                blurRadius: 8,
-                                offset: const Offset(0, 3),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFEFF3F9), Color(0xFFF6F8FC), Colors.white],
+              ),
+              image: DecorationImage(
+                image: AssetImage('images/background-2.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: SafeArea(
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 24.0,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 24),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withAlpha(12),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 8,
+                                  ),
+                                  foregroundColor: AppColors.textPrimary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 16,
+                                ),
+                                label: const Text(
+                                  'Back',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                onPressed: _navigateBack,
+                              ),
+                            ),
+                          ),
+
+                          const Text(
+                            'Auto Finder',
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          const Text(
+                            'Welcome to Auto Finder',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              'Sign up now to find the best workshops easily and quickly.',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.textSecondary,
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 36),
+
+                          CustomTextField(
+                            label: 'Email',
+                            hintText: 'nama@email.com',
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: RegisterValidators.email,
+                          ),
+                          const SizedBox(height: 20),
+
+                          CustomTextField(
+                            label: 'Username',
+                            hintText: 'username_123',
+                            controller: _usernameController,
+                            validator: RegisterValidators.username,
+                          ),
+                          const SizedBox(height: 20),
+
+                          PhoneNumberTextField(
+                            label: 'Phone Number',
+                            controller: _phoneController,
+                            validator: RegisterValidators.phoneNumber,
+                          ),
+                          const SizedBox(height: 20),
+
+                          CustomTextField(
+                            label: 'Password',
+                            hintText: '••••••••',
+                            controller: _passwordController,
+                            obscureText: true,
+                            isPassword: true,
+                            validator: RegisterValidators.password,
+                          ),
+                          const SizedBox(height: 20),
+
+                          CustomTextField(
+                            label: 'Konfirmasi Password',
+                            hintText: '••••••••',
+                            controller: _confirmPasswordController,
+                            obscureText: true,
+                            isPassword: true,
+                            validator: (value) =>
+                                RegisterValidators.confirmPassword(
+                                  value,
+                                  _passwordController.text,
+                                ),
+                          ),
+                          const SizedBox(height: 36),
+
+                          Selector<AuthController, bool>(
+                            selector: (_, controller) => controller.isLoading,
+                            builder: (context, isLoading, child) {
+                              return ButtonPrimary(
+                                text: 'Sign Up',
+                                isLoading: isLoading,
+                                onPressed: _handleRegister,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 36),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Already have an account? ',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    '/login',
+                                  );
+                                },
+                                child: const Text(
+                                  'Sign in',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          child: TextButton.icon(
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 8,
-                              ),
-                              foregroundColor: AppColors.textPrimary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                              size: 16,
-                            ),
-                            label: const Text(
-                              'Back',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            onPressed: _navigateBack,
-                          ),
-                        ),
-                      ),
-
-                      const Text(
-                        'Auto Finder',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      const Text(
-                        'Welcome to Auto Finder',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'Sign up now to find the best workshops easily and quickly.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textSecondary,
-                            height: 1.4,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 36),
-
-                      CustomTextField(
-                        label: 'Email',
-                        hintText: 'nama@email.com',
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: RegisterValidators.email,
-                      ),
-                      const SizedBox(height: 20),
-
-                      CustomTextField(
-                        label: 'Username',
-                        hintText: 'username_123',
-                        controller: _usernameController,
-                        validator: RegisterValidators.username,
-                      ),
-                      const SizedBox(height: 20),
-
-                      CustomTextField(
-                        label: 'Phone Number',
-                        hintText: 'xxxxxxxxxxx',
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        validator: RegisterValidators.phoneNumber,
-                      ),
-                      const SizedBox(height: 20),
-
-                      CustomTextField(
-                        label: 'Password',
-                        hintText: '••••••••',
-                        controller: _passwordController,
-                        obscureText: true,
-                        isPassword: true,
-                        validator: RegisterValidators.password,
-                      ),
-                      const SizedBox(height: 20),
-
-                      CustomTextField(
-                        label: 'Konfirmasi Password',
-                        hintText: '••••••••',
-                        controller: _confirmPasswordController,
-                        obscureText: true,
-                        isPassword: true,
-                        validator: (value) =>
-                            RegisterValidators.confirmPassword(
-                              value,
-                              _passwordController.text,
-                            ),
-                      ),
-                      const SizedBox(height: 36),
-
-                      Selector<AuthController, bool>(
-                        selector: (_, controller) => controller.isLoading,
-                        builder: (context, isLoading, child) {
-                          return ButtonPrimary(
-                            text: 'Sign Up',
-                            isLoading: isLoading,
-                            onPressed: _handleRegister,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 36),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Already have an account? ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(context, '/login');
-                            },
-                            child: const Text(
-                              'Sign in',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
+                          const SizedBox(height: 24),
                         ],
                       ),
-                      const SizedBox(height: 24),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
 
           // Loading Overlay dengan Mascot
           if (isLoading) const Loading(asOverlay: true),

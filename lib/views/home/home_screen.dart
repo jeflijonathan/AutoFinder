@@ -4,6 +4,7 @@ import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/controllers/location_controller.dart';
+import 'package:autofinder/config/app_locale.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,11 +14,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String contohTeks = "-";
+
   @override
   void initState() {
     super.initState();
+    ambilTerjemahan();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LocationController>().fetchUserLocation();
+    });
+  }
+
+  void ambilTerjemahan() async {
+    String hasil = await AppLocale.translateLive("test");
+
+    if (!mounted) return;
+
+    setState(() {
+      contohTeks = hasil;
     });
   }
 
@@ -64,9 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Text(contohTeks),
+
                       Consumer<LocationController>(
                         builder: (context, locationController, child) {
                           return Header(
+                            fontSizeTitle: 32,
+                            fontSizeSubtitle: 16,
                             title: "Find the Workshop",
                             subtitle: locationController.isLoading
                                 ? "Mendeteksi lokasi..."

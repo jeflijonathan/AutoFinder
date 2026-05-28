@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:autofinder/services/location_service.dart';
+import 'package:autofinder/services/location/location_service.dart';
 
 class LocationController extends ChangeNotifier {
   String _currentCity = "Jakarta";
