@@ -55,6 +55,15 @@ const Map<String, dynamic> langJA = {
   'servicesSubtitle': 'アトリエが提供する専門サービスを選択してください。',
   'addService': 'サービスを追加',
 
+  // Service Picker Sheet
+  'chooseService': 'サービスを選択',
+  'searchService': 'サービスを検索...',
+  'selected': '選択済み',
+  'confirmSelection': '選択を確認',
+  'save': '保存 ',
+  'servicesLabel': ' サービス',
+  'serviceNotFound': ' が見つかりません',
+
   'scheduleTitle': '週間スケジュールの設定',
   'scheduleOpen': '営業',
   'scheduleClosed': '休業',
@@ -68,4 +77,59 @@ const Map<String, dynamic> langJA = {
   'photoCount': '枚の写真',
   'addPhoto': '写真を追加',
   'maxPhotoWarning': '最大4枚までです。新しい写真を追加するには、既存の写真を削除してください。',
+  'minPhotoWarning': 'ワークショップの証明書類として、少なくとも 1 枚の写真をアップロードしてください。',
+
+  // Auth
+  'back': '戻る',
+  'signIn': 'ログイン',
+  'signUp': '新規登録',
+  'noAccount': 'アカウントをお持ちでないですか？',
+  'alreadyHaveAccount': 'すでにアカウントをお持ちですか？',
+  'loginWelcomeBack': 'Auto Finderにおかえりなさい',
+  'loginSubtitle': 'ログインして、最高のワークショップを簡単かつ迅速に見つけましょう。',
+  'welcomeTitle': 'Auto Finderへようこそ',
+  'welcomeSubtitle': 'プレシジョンエンジニアリングとケアのための最高のワークショップ検索アプリ。',
+  'registerSubtitle': '今すぐ登録して、最高のワークショップを簡単かつ迅速に見つけましょう。',
+  'continueWithGoogle': 'Googleで続ける',
+  'orText': 'または',
+  'signInWithEmail': 'メールでログイン',
+  'username': 'ユーザー名',
+  'googleSignInFailed': 'Googleへの接続に失敗しました',
+
+  // Home
+  'findWorkshop': 'ワークショップを探す',
+  'detectingLocation': '位置情報を検出中...',
+  'locationLabel': '場所: ',
+
+  // Location Picker
+  'pickLocation': '場所を選択',
+  'confirm': '確認',
+  'searchLocation': '通り、地域、または都市を検索...',
+  'selectedLocation': '選択した場所',
+  'confirmLocation': '場所を確認',
+  'tapMapToSelect': '地図をタップして場所を選択します',
+
+  // Add Workshop
+  'createNewPost': '新しい投稿を作成',
+  'createNewPostSubtitle': 'サービス体験やワークショップの推薦を新しい投稿でシェアしましょう。',
+  'workshopAddedSuccess': 'ワークショップが正常に追加されました！',
+  'postWorkshop': 'ワークショップを投稿',
+  'next': '次へ',
+  'stepIdentity': 'ID情報',
+  'stepServices': 'サービス',
+  'stepLocation': '場所',
+  'stepUptime': 'スケジュール',
+  'stepVerify': '確認',
+
+  // Validation
+  'completeAllFields': '必須項目をすべて正しく入力してください',
+  'minServiceWarning': '少なくとも1つのサービスを選択してください',
+  'fixScheduleWarning': '無効な営業時間を修正してください',
+  'invalidUptimeWarning': '無効な稼働時間データを修正してください',
+  'failedToSubmit': 'データの送信に失敗しました',
+
+  // Profile image source
+  'changeProfilePhoto': 'プロフィール写真を変更',
+  'takePhotoCamera': 'カメラで撮影',
+  'chooseFromGallery': 'ギャラリーから選択',
 };

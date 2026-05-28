@@ -57,6 +57,15 @@ const Map<String, dynamic> langID = {
   'servicesSubtitle': 'Pilih layanan khusus yang disediakan oleh bengkel Anda.',
   'addService': 'Tambah Layanan',
 
+  // Service Picker Sheet
+  'chooseService': 'Pilih Layanan',
+  'searchService': 'Cari layanan...',
+  'selected': 'dipilih',
+  'confirmSelection': 'Konfirmasi Pilihan',
+  'save': 'Simpan ',
+  'servicesLabel': ' Layanan',
+  'serviceNotFound': ' tidak ditemukan',
+
   'scheduleTitle': 'KONFIGURASI JADWAL MINGGUAN',
   'scheduleOpen': 'BUKA',
   'scheduleClosed': 'TUTUP',
@@ -71,4 +80,59 @@ const Map<String, dynamic> langID = {
   'addPhoto': 'TAMBAH FOTO',
   'maxPhotoWarning':
       'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+  'minPhotoWarning': 'Silakan unggah minimal 1 foto untuk dokumentasi bengkel.',
+
+  // Auth
+  'back': 'Kembali',
+  'signIn': 'Masuk',
+  'signUp': 'Daftar',
+  'noAccount': 'Belum punya akun?',
+  'alreadyHaveAccount': 'Sudah punya akun?',
+  'loginWelcomeBack': 'Selamat Datang Kembali di Auto Finder',
+  'loginSubtitle': 'Masuk untuk terus menemukan bengkel terbaik dengan mudah dan cepat.',
+  'welcomeTitle': 'Selamat Datang di Auto Finder',
+  'welcomeSubtitle': 'Aplikasi pencari bengkel terbaik untuk teknik dan perawatan presisi.',
+  'registerSubtitle': 'Daftar sekarang untuk menemukan bengkel terbaik dengan mudah dan cepat.',
+  'continueWithGoogle': 'Lanjutkan dengan Google',
+  'orText': 'ATAU',
+  'signInWithEmail': 'Masuk dengan Email',
+  'username': 'Nama Pengguna',
+  'googleSignInFailed': 'Gagal terhubung ke Google',
+
+  // Home
+  'findWorkshop': 'Cari Bengkel',
+  'detectingLocation': 'Mendeteksi lokasi...',
+  'locationLabel': 'Lokasi: ',
+
+  // Location Picker
+  'pickLocation': 'Pilih Lokasi',
+  'confirm': 'Konfirmasi',
+  'searchLocation': 'Cari jalan, area, atau kota...',
+  'selectedLocation': 'Lokasi Terpilih',
+  'confirmLocation': 'Konfirmasi Lokasi',
+  'tapMapToSelect': 'Ketuk peta untuk memilih lokasi',
+
+  // Add Workshop
+  'createNewPost': 'Buat Postingan Baru',
+  'createNewPostSubtitle': 'Bagikan pengalaman servis atau rekomendasi bengkel melalui postingan baru.',
+  'workshopAddedSuccess': 'Bengkel berhasil ditambahkan!',
+  'postWorkshop': 'Post Bengkel',
+  'next': 'Selanjutnya',
+  'stepIdentity': 'IDENTITAS',
+  'stepServices': 'LAYANAN',
+  'stepLocation': 'LOKASI',
+  'stepUptime': 'JADWAL',
+  'stepVerify': 'VERIFIKASI',
+
+  // Validation
+  'completeAllFields': 'Harap lengkapi semua kolom yang wajib diisi dengan benar',
+  'minServiceWarning': 'Pilih minimal 1 layanan service',
+  'fixScheduleWarning': 'Perbaiki jam operasional yang tidak valid',
+  'invalidUptimeWarning': 'Harap perbaiki data uptime yang tidak valid',
+  'failedToSubmit': 'Gagal mengirim data',
+
+  // Profile image source
+  'changeProfilePhoto': 'Ubah Foto Profil',
+  'takePhotoCamera': 'Ambil Foto via Kamera',
+  'chooseFromGallery': 'Pilih dari Galeri',
 };

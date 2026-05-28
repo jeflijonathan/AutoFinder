@@ -46,16 +46,25 @@ const Map<String, dynamic> langEN = {
   'missionLabel': 'MISSION STATEMENT',
   'missionHint': 'Describe your technical\nexpertise and workshop\nvalues...',
   'specializationLabel': 'SPECIALIZATION',
-  
+
   'locationTitle': 'Deployment Location',
   'locationSubtitle': 'Pin your workshop on our technical network map.',
   'locationChange': 'Change',
   'locationAddressHint': 'Address',
-  
+
   'servicesTitle': 'Service Capabilities',
   'servicesSubtitle': 'Select the specialized services your atelier provides.',
   'addService': 'Add Service',
-  
+
+  // Service Picker Sheet
+  'chooseService': 'Choose Service',
+  'searchService': 'Search service...',
+  'selected': 'selected',
+  'confirmSelection': 'Confirm Selection',
+  'save': 'Save ',
+  'servicesLabel': ' Services',
+  'serviceNotFound': ' not found',
+
   'scheduleTitle': 'WEEKLY SCHEDULE CONFIGURATION',
   'scheduleOpen': 'OPEN',
   'scheduleClosed': 'CLOSED',
@@ -63,10 +72,71 @@ const Map<String, dynamic> langEN = {
   'closingTime': 'CLOSING TIME',
   'scheduleError': 'Jam buka harus lebih awal dari jam tutup!',
   'noPhotoUploaded': 'Belum ada foto yang diunggah.',
-  
+
   'documentationTitle': 'Documentation',
   'documentationSubtitle': 'Upload high-resolution images of your facility.',
   'photoCount': 'foto',
   'addPhoto': 'ADD PHOTO',
-  'maxPhotoWarning': 'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+  'maxPhotoWarning':
+      'Maximum 4 photos. Delete an existing photo to add a new one.',
+  'minPhotoWarning':
+      'Please upload at My minimum 1 photo for workshop documentation.',
+
+  // Auth
+  'back': 'Back',
+  'signIn': 'Sign In',
+  'signUp': 'Sign Up',
+  'noAccount': "Don't have an account?",
+  'alreadyHaveAccount': 'Already have an account?',
+  'loginWelcomeBack': 'Welcome Back to Auto Finder',
+  'loginSubtitle':
+      'Sign in to continue finding the best workshops easily and quickly.',
+  'welcomeTitle': 'Welcome to Auto Finder',
+  'welcomeSubtitle':
+      'The best workshop finder app for precision engineering and care.',
+  'registerSubtitle':
+      'Sign up now to find the best workshops easily and quickly.',
+  'continueWithGoogle': 'Continue with Google',
+  'orText': 'OR',
+  'signInWithEmail': 'Sign In with Email',
+  'username': 'Username',
+  'googleSignInFailed': 'Failed to connect to Google',
+
+  // Home
+  'findWorkshop': 'Find the Workshop',
+  'detectingLocation': 'Detecting location...',
+  'locationLabel': 'Location: ',
+
+  // Location Picker
+  'pickLocation': 'Pick Location',
+  'confirm': 'Confirm',
+  'searchLocation': 'Search street, area, or city...',
+  'selectedLocation': 'Selected Location',
+  'confirmLocation': 'Confirm Location',
+  'tapMapToSelect': 'Tap on the map to select a location',
+
+  // Add Workshop
+  'createNewPost': 'Create a new Post',
+  'createNewPostSubtitle':
+      'Share your service experience or workshop recommendations through new posts.',
+  'workshopAddedSuccess': 'Workshop added successfully!',
+  'postWorkshop': 'Post Workshop',
+  'next': 'Next',
+  'stepIdentity': 'IDENTITY',
+  'stepServices': 'SERVICES',
+  'stepLocation': 'LOCATION',
+  'stepUptime': 'UPTIME',
+  'stepVerify': 'VERIFY',
+
+  // Validation
+  'completeAllFields': 'Please complete all required fields correctly',
+  'minServiceWarning': 'Please select at least 1 service',
+  'fixScheduleWarning': 'Please fix the invalid schedule times',
+  'invalidUptimeWarning': 'Please fix the invalid schedule data',
+  'failedToSubmit': 'Failed to submit data',
+
+  // Profile image source
+  'changeProfilePhoto': 'Change Profile Photo',
+  'takePhotoCamera': 'Take Photo via Camera',
+  'chooseFromGallery': 'Choose from Gallery',
 };

@@ -57,6 +57,15 @@ const Map<String, dynamic> langTH = {
   'servicesSubtitle': 'เลือกบริการเฉพาะทางที่ atelier ของคุณให้บริการ',
   'addService': 'เพิ่มบริการ',
 
+  // Service Picker Sheet
+  'chooseService': 'เลือกบริการ',
+  'searchService': 'ค้นหาบริการ...',
+  'selected': 'เลือกแล้ว',
+  'confirmSelection': 'ยืนยันการเลือก',
+  'save': 'บันทึก ',
+  'servicesLabel': ' บริการ',
+  'serviceNotFound': ' ไม่พบ',
+
   'scheduleTitle': 'การตั้งค่าตารางเวลาประจำสัปดาห์',
   'scheduleOpen': 'เปิด',
   'scheduleClosed': 'ปิด',
@@ -71,4 +80,60 @@ const Map<String, dynamic> langTH = {
   'addPhoto': 'เพิ่มรูปภาพ',
   'maxPhotoWarning':
       'อัปโหลดได้สูงสุด 4 รูป กรุณาลบรูปภาพที่มีอยู่เพื่อเพิ่มรูปภาพใหม่',
+  'minPhotoWarning':
+      'กรุณาอัปโหลดรูปภาพอย่างน้อย 1 รูปเพื่อเป็นเอกสารประกอบอู่ซ่อมรถ',
+
+  // Auth
+  'back': 'กลับ',
+  'signIn': 'เข้าสู่ระบบ',
+  'signUp': 'สมัครสมาชิก',
+  'noAccount': 'ยังไม่มีบัญชี?',
+  'alreadyHaveAccount': 'มีบัญชีอยู่แล้ว?',
+  'loginWelcomeBack': 'ยินดีต้อนรับกลับสู่ Auto Finder',
+  'loginSubtitle': 'เข้าสู่ระบบเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
+  'welcomeTitle': 'ยินดีต้อนรับสู่ Auto Finder',
+  'welcomeSubtitle': 'แอปค้นหาอู่ซ่อมรถที่ดีที่สุดสำหรับวิศวกรรมที่แม่นยำและการดูแลรักษา',
+  'registerSubtitle': 'สมัครสมาชิกเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
+  'continueWithGoogle': 'ดำเนินการต่อด้วย Google',
+  'orText': 'หรือ',
+  'signInWithEmail': 'เข้าสู่ระบบด้วยอีเมล',
+  'username': 'ชื่อผู้ใช้',
+  'googleSignInFailed': 'ไม่สามารถเชื่อมต่อกับ Google ได้',
+
+  // Home
+  'findWorkshop': 'ค้นหาอู่ซ่อมรถ',
+  'detectingLocation': 'กำลังตรวจจับตำแหน่ง...',
+  'locationLabel': 'ตำแหน่ง: ',
+
+  // Location Picker
+  'pickLocation': 'เลือกสถานที่',
+  'confirm': 'ยืนยัน',
+  'searchLocation': 'ค้นหาถนน พื้นที่ หรือเมือง...',
+  'selectedLocation': 'สถานที่ที่เลือก',
+  'confirmLocation': 'ยืนยันสถานที่',
+  'tapMapToSelect': 'แตะบนแผนที่เพื่อเลือกสถานที่',
+
+  // Add Workshop
+  'createNewPost': 'สร้างโพสต์ใหม่',
+  'createNewPostSubtitle': 'แชร์ประสบการณ์บริการหรือคำแนะนำอู่ซ่อมรถผ่านโพสต์ใหม่',
+  'workshopAddedSuccess': 'เพิ่มอู่ซ่อมรถสำเร็จแล้ว!',
+  'postWorkshop': 'โพสต์อู่ซ่อมรถ',
+  'next': 'ถัดไป',
+  'stepIdentity': 'ข้อมูลตัวตน',
+  'stepServices': 'บริการ',
+  'stepLocation': 'ตำแหน่ง',
+  'stepUptime': 'ตารางเวลา',
+  'stepVerify': 'ยืนยัน',
+
+  // Validation
+  'completeAllFields': 'กรุณากรอกข้อมูลในช่องที่จำเป็นให้ครบถ้วนและถูกต้อง',
+  'minServiceWarning': 'กรุณาเลือกบริการอย่างน้อย 1 รายการ',
+  'fixScheduleWarning': 'กรุณาแก้ไขเวลาทำการที่ไม่ถูกต้อง',
+  'invalidUptimeWarning': 'กรุณาแก้ไขข้อมูลเวลาทำการที่ไม่ถูกต้อง',
+  'failedToSubmit': 'ส่งข้อมูลล้มเหลว',
+
+  // Profile image source
+  'changeProfilePhoto': 'เปลี่ยนรูปโปรไฟล์',
+  'takePhotoCamera': 'ถ่ายรูปด้วยกล้อง',
+  'chooseFromGallery': 'เลือกจากแกลเลอรี่',
 };

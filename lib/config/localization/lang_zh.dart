@@ -44,16 +44,25 @@ const Map<String, dynamic> langZH = {
   'missionLabel': '使命宣言',
   'missionHint': '描述您的技术专长\n和车间价值观...',
   'specializationLabel': '专业领域',
-  
+
   'locationTitle': '部署位置',
   'locationSubtitle': '在我们的技术网络地图上标记您的车间。',
   'locationChange': '更改',
   'locationAddressHint': '详细地址',
-  
+
   'servicesTitle': '服务能力',
   'servicesSubtitle': '选择您的工作室提供的专业服务。',
   'addService': '添加服务',
-  
+
+  // Service Picker Sheet
+  'chooseService': '选择服务',
+  'searchService': '搜索服务...',
+  'selected': '已选',
+  'confirmSelection': '确认选择',
+  'save': '保存 ',
+  'servicesLabel': ' 项服务',
+  'serviceNotFound': ' 未找到',
+
   'scheduleTitle': '每周时间表配置',
   'scheduleOpen': '营业',
   'scheduleClosed': '歇业',
@@ -61,10 +70,65 @@ const Map<String, dynamic> langZH = {
   'closingTime': '关门时间',
   'scheduleError': '开门时间必须早于关门时间！',
   'noPhotoUploaded': '未上传任何照片。',
-  
+
   'documentationTitle': '文件与图片',
   'documentationSubtitle': '上传您车间设施的高清图片。',
   'photoCount': '张照片',
   'addPhoto': '添加照片',
   'maxPhotoWarning': '最多只能上传 4 张照片。请删除现有照片以添加新照片。',
+  'minPhotoWarning': '请至少上传 1 张照片作为车间证明材料。',
+
+  // Auth
+  'back': '返回',
+  'signIn': '登录',
+  'signUp': '注册',
+  'noAccount': '还没有账户？',
+  'alreadyHaveAccount': '已有账户？',
+  'loginWelcomeBack': '欢迎回到 Auto Finder',
+  'loginSubtitle': '登录以继续轻松快捷地找到最好的车间。',
+  'welcomeTitle': '欢迎使用 Auto Finder',
+  'welcomeSubtitle': '精密工程与养护的最佳车间查找应用。',
+  'registerSubtitle': '立即注册，轻松快捷地找到最好的车间。',
+  'continueWithGoogle': '使用 Google 继续',
+  'orText': '或',
+  'signInWithEmail': '使用邮箱登录',
+  'username': '用户名',
+  'googleSignInFailed': '无法连接到 Google',
+
+  // Home
+  'findWorkshop': '查找车间',
+  'detectingLocation': '正在检测位置...',
+  'locationLabel': '位置：',
+
+  // Location Picker
+  'pickLocation': '选择位置',
+  'confirm': '确认',
+  'searchLocation': '搜索街道、区域或城市...',
+  'selectedLocation': '选定位置',
+  'confirmLocation': '确认位置',
+  'tapMapToSelect': '点击地图选择位置',
+
+  // Add Workshop
+  'createNewPost': '创建新帖子',
+  'createNewPostSubtitle': '通过新帖子分享您的服务体验或车间推荐。',
+  'workshopAddedSuccess': '车间添加成功！',
+  'postWorkshop': '发布车间',
+  'next': '下一步',
+  'stepIdentity': '身份信息',
+  'stepServices': '服务项目',
+  'stepLocation': '位置',
+  'stepUptime': '时间表',
+  'stepVerify': '验证',
+
+  // Validation
+  'completeAllFields': '请正确填写所有必填字段',
+  'minServiceWarning': '请至少选择 1 项服务',
+  'fixScheduleWarning': '请修正无效的营业时间',
+  'invalidUptimeWarning': '请修正无效的运营时间数据',
+  'failedToSubmit': '数据提交失败',
+
+  // Profile image source
+  'changeProfilePhoto': '更换头像',
+  'takePhotoCamera': '使用相机拍照',
+  'chooseFromGallery': '从相册选择',
 };

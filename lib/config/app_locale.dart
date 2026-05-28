@@ -47,6 +47,60 @@ mixin AppLocale {
   static const String post = 'post';
   static const String favorite = 'favorite';
 
+  // Auth
+  static const String back = 'back';
+  static const String signIn = 'signIn';
+  static const String signUp = 'signUp';
+  static const String noAccount = 'noAccount';
+  static const String alreadyHaveAccount = 'alreadyHaveAccount';
+  static const String loginWelcomeBack = 'loginWelcomeBack';
+  static const String loginSubtitle = 'loginSubtitle';
+  static const String welcomeTitle = 'welcomeTitle';
+  static const String welcomeSubtitle = 'welcomeSubtitle';
+  static const String registerSubtitle = 'registerSubtitle';
+  static const String continueWithGoogle = 'continueWithGoogle';
+  static const String orText = 'orText';
+  static const String signInWithEmail = 'signInWithEmail';
+  static const String username = 'username';
+  static const String googleSignInFailed = 'googleSignInFailed';
+
+  // Home
+  static const String findWorkshop = 'findWorkshop';
+  static const String detectingLocation = 'detectingLocation';
+  static const String locationLabel = 'locationLabel';
+
+  // Location Picker
+  static const String pickLocation = 'pickLocation';
+  static const String confirm = 'confirm';
+  static const String searchLocation = 'searchLocation';
+  static const String selectedLocation = 'selectedLocation';
+  static const String confirmLocation = 'confirmLocation';
+  static const String tapMapToSelect = 'tapMapToSelect';
+
+  // Add Workshop Screen
+  static const String createNewPost = 'createNewPost';
+  static const String createNewPostSubtitle = 'createNewPostSubtitle';
+  static const String workshopAddedSuccess = 'workshopAddedSuccess';
+  static const String postWorkshop = 'postWorkshop';
+  static const String next = 'next';
+  static const String stepIdentity = 'stepIdentity';
+  static const String stepServices = 'stepServices';
+  static const String stepLocation = 'stepLocation';
+  static const String stepUptime = 'stepUptime';
+  static const String stepVerify = 'stepVerify';
+
+  // Validation errors
+  static const String completeAllFields = 'completeAllFields';
+  static const String minServiceWarning = 'minServiceWarning';
+  static const String fixScheduleWarning = 'fixScheduleWarning';
+  static const String invalidUptimeWarning = 'invalidUptimeWarning';
+  static const String failedToSubmit = 'failedToSubmit';
+
+  // Profile - image source
+  static const String changeProfilePhoto = 'changeProfilePhoto';
+  static const String takePhotoCamera = 'takePhotoCamera';
+  static const String chooseFromGallery = 'chooseFromGallery';
+
   static const String addWorkshopTitle = 'addWorkshopTitle';
 
   static const String identityTitle = 'identityTitle';
@@ -67,6 +121,15 @@ mixin AppLocale {
   static const String servicesSubtitle = 'servicesSubtitle';
   static const String addService = 'addService';
 
+  // Service Picker Sheet
+  static const String chooseService = 'chooseService';
+  static const String searchService = 'searchService';
+  static const String selected = 'selected';
+  static const String confirmSelection = 'confirmSelection';
+  static const String save = 'save';
+  static const String servicesLabel = 'servicesLabel';
+  static const String serviceNotFound = 'serviceNotFound';
+
   static const String scheduleTitle = 'scheduleTitle';
   static const String scheduleOpen = 'scheduleOpen';
   static const String scheduleClosed = 'scheduleClosed';
@@ -79,6 +142,7 @@ mixin AppLocale {
   static const String photoCount = 'photoCount';
   static const String addPhoto = 'addPhoto';
   static const String maxPhotoWarning = 'maxPhotoWarning';
+  static const String minPhotoWarning = 'minPhotoWarning';
   static const String noPhotoUploaded = 'noPhotoUploaded';
 
   static const Map<String, dynamic> EN = langEN;
