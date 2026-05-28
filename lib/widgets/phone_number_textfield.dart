@@ -57,17 +57,13 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
           keyboardType: TextInputType.phone,
           validator: widget.validator,
           inputFormatters: [
-            // 1. Pastikan hanya menerima angka murni saat diketik/copas
             FilteringTextInputFormatter.digitsOnly,
 
-            // 2. Pembatas total angka: Maksimal 11 digit (ex: 82182616803)
             LengthLimitingTextInputFormatter(11),
 
-            // 3. Formatter Kustom untuk Pola XXX-XXXX-XXXX
             TextInputFormatter.withFunction((oldValue, newValue) {
               final text = newValue.text;
 
-              // Cegah angka 0 di awal ketikan
               if (text.startsWith('0')) {
                 return oldValue;
               }
@@ -77,8 +73,6 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
                 buffer.write(text[i]);
                 final digitIndex = i + 1;
 
-                // Tambah '-' setelah digit ke-3 ATAU digit ke-7,
-                // dengan syarat bukan di akhir baris ketikan
                 if ((digitIndex == 3 || digitIndex == 7) &&
                     digitIndex != text.length) {
                   buffer.write('-');
@@ -96,15 +90,13 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
           ],
           style: TextStyle(
             fontSize: 16,
-            color: theme.colorScheme.onSurface, // Input teks utama adaptif
+            color: theme.colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             hintText: '821-8261-6803',
             hintStyle: TextStyle(
-              color: theme.colorScheme.onSurfaceVariant.withAlpha(
-                150,
-              ), // Hint melunak adaptif
+              color: theme.colorScheme.onSurfaceVariant.withAlpha(150),
             ),
             filled: true,
             fillColor: isDark
@@ -120,9 +112,7 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
               decoration: BoxDecoration(
                 border: Border(
                   right: BorderSide(
-                    color: theme
-                        .colorScheme
-                        .outlineVariant, // Pembatas vertikal adaptif
+                    color: theme.colorScheme.outlineVariant,
                     width: 1.5,
                   ),
                 ),
@@ -131,8 +121,7 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
                 child: DropdownButton<String>(
                   value: _selectedCode,
                   isDense: true,
-                  dropdownColor: theme
-                      .cardColor, // Mencegah popup background crash/putih statis saat dark mode
+                  dropdownColor: theme.cardColor,
                   icon: Icon(
                     Icons.arrow_drop_down,
                     color: theme.colorScheme.onSurfaceVariant,
@@ -154,9 +143,7 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
                             country['code']!,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: theme
-                                  .colorScheme
-                                  .onSurface, // Kode dropdown adaptif
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                         ],
