@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,7 +22,9 @@ class StepVerify extends StatelessWidget {
     final picker = ImagePicker();
     final XFile? file = await picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 85,
+      imageQuality: 50,
+      maxWidth: 600,
+      maxHeight: 600,
     );
 
     if (!context.mounted) return;
@@ -35,7 +37,9 @@ class StepVerify extends StatelessWidget {
         );
         return;
       }
-      provider.addImage(file.path);
+      final bytes = await file.readAsBytes();
+      final base64Image = base64Encode(bytes);
+      provider.addImage(base64Image);
     }
   }
 
@@ -117,8 +121,8 @@ class StepVerify extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          File(provider.images[index]),
+                        child: Image.memory(
+                          base64Decode(provider.images[index]),
                           height: 150,
                           width: 100,
                           fit: BoxFit.cover,

@@ -1,9 +1,12 @@
+import 'package:autofinder/config/app_locale.dart'; // 🟢 Import AppLocale untuk key konstan
+import 'package:autofinder/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
 import 'package:autofinder/views/add_workshop/utils/workshop_form_validator.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
 import 'package:autofinder/widgets/phone_number_textfield.dart';
+import 'package:flutter_localization/flutter_localization.dart'; // 🟢 Import extension lokalisasi
 
 class StepIdentity extends StatelessWidget {
   const StepIdentity({super.key});
@@ -20,35 +23,15 @@ class StepIdentity extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Workshop Identity',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Define your brand and core operational details.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          Header(
+            // 🟢 Menggunakan key konstan dari AppLocale agar terjemahan adaptif otomatis
+            title: AppLocale.identityTitle.getString(context),
+            subtitle: AppLocale.identitySubtitle.getString(context),
           ),
+
           const SizedBox(height: 32),
           PhoneNumberTextField(
-            label: 'PHONE NUMBER',
+            label: AppLocale.phoneLabel.getString(context), // 🟢 Diubah
             controller: provider.phoneController,
             validator: WorkshopValidators.phone,
             onCountryChanged: (code) {
@@ -57,17 +40,18 @@ class StepIdentity extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           CustomTextField(
-            label: 'WORKSHOP NAME',
-            hintText: 'e.g. Precision Gearhead Labs',
+            label: AppLocale.workshopNameLabel.getString(context), // 🟢 Diubah
+            hintText: AppLocale.workshopNameHint.getString(
+              context,
+            ), // 🟢 Diubah
             controller: provider.nameController,
             keyboardType: TextInputType.text,
             validator: WorkshopValidators.name,
           ),
           const SizedBox(height: 24),
           CustomTextField(
-            label: 'MISSION STATEMENT',
-            hintText:
-                'Describe your technical\nexpertise and workshop\nvalues...',
+            label: AppLocale.missionLabel.getString(context), // 🟢 Diubah
+            hintText: AppLocale.missionHint.getString(context), // 🟢 Diubah
             controller: provider.missionController,
             keyboardType: TextInputType.text,
             validator: WorkshopValidators.mission,
@@ -76,7 +60,7 @@ class StepIdentity extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'SPECIALIZATION',
+            AppLocale.specializationLabel.getString(context), // 🟢 Diubah
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,

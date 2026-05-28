@@ -1,3 +1,5 @@
+import 'package:autofinder/models/location_picker_result.dart';
+import 'package:autofinder/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
@@ -42,22 +44,11 @@ class StepLocation extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Deployment Location',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
+        Header(
+          title: "Deployment Location",
+          subtitle: 'Pin your workshop on our technical network map.',
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Pin your workshop on our technical\nnetwork map.',
-          style: TextStyle(
-            fontSize: 14,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
+
         const SizedBox(height: 32),
 
         GestureDetector(

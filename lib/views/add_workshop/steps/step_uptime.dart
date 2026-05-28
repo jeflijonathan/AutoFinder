@@ -92,7 +92,7 @@ class StepUptime extends StatelessWidget {
               Switch(
                 value: isOpen,
                 onChanged: (val) => provider.toggleDayOpen(day, val),
-                activeColor: theme.colorScheme.primary,
+                activeThumbColor: theme.colorScheme.primary,
               ),
               const SizedBox(width: 8),
               Text(

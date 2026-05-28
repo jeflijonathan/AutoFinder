@@ -4,6 +4,7 @@ import 'package:autofinder/views/add_workshop/widgets/build_selected_item.dart';
 import 'package:autofinder/views/add_workshop/widgets/service_picker_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:autofinder/widgets/header.dart';
 
 class StepServices extends StatelessWidget {
   const StepServices({super.key});
@@ -42,22 +43,11 @@ class StepServices extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Service Capabilities',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
+        Header(
+          title: "Service Capabilities",
+          subtitle: 'Select the specialized services your atelier provides.',
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Select the specialized services your atelier provides.',
-          style: TextStyle(
-            fontSize: 14,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
+
         const SizedBox(height: 32),
         GridView.builder(
           shrinkWrap: true,
