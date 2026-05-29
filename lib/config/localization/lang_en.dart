@@ -1,0 +1,162 @@
+const Map<String, dynamic> langEN = {
+  'securityOfAccount': 'Security of Your Account',
+  'securityDesc':
+      'Protect your workshop and vehicle data with advanced encryption and multi-layered authentication.',
+  'password': 'Password',
+  'currentPassword': 'Current Password',
+  'newPassword': 'New Password',
+  'confirmation': 'Confirmation',
+  'confirmPasswordHint': 'Confirmation Password',
+  'updatePassword': 'Update Password',
+  'accountSecuritySettings': 'Account Security Settings',
+  'personalInformation': 'Personal Information',
+  'personalInfoDesc':
+      'Update your account details to ensure a precise and personalized Auto Finder service experience.',
+  'fullName': 'Full Name',
+  'fullNameHint': 'Your full name',
+  'email': 'Email',
+  'phoneNumber': 'Phone Number',
+  'saveChanges': 'Save Changes',
+  'cancel': 'Cancel',
+  'profileSettings': 'Profile Settings',
+  'title': 'Auto Finder',
+  'theme': 'Dark/Light Mode',
+  'themeSubtitle': 'Switch between precision themes',
+  'language': 'Language',
+  'languageSubtitle': 'Choose your preferred language',
+  'profile': 'Profile',
+  'accountAndSecurity': 'ACCOUNT & SECURITY',
+  'accountSecurity': 'Account Security',
+  'accountSecuritySubtitle': 'Update your password',
+  'editProfile': 'Edit Profile',
+  'editProfileSubtitle': 'Update your personal details and credentials',
+  'preferences': 'PREFERENCES',
+  'logout': 'Logout',
+  'logoutSubtitle': 'Sign out of your atelier account',
+  'home': 'Home',
+  'search': 'Search',
+  'post': 'Post',
+  'favorite': 'Favorite',
+  'addWorkshopTitle': 'Add Workshop',
+  'identityTitle': 'Workshop Identity',
+  'identitySubtitle': 'Define your brand and core operational details.',
+  'phoneLabel': 'PHONE NUMBER',
+  'workshopNameLabel': 'WORKSHOP NAME',
+  'workshopNameHint': 'e.g. Precision Gearhead Labs',
+  'missionLabel': 'MISSION STATEMENT',
+  'missionHint': 'Describe your technical\nexpertise and workshop\nvalues...',
+  'specializationLabel': 'SPECIALIZATION',
+
+  'locationTitle': 'Deployment Location',
+  'locationSubtitle': 'Pin your workshop on our technical network map.',
+  'locationChange': 'Change',
+  'locationAddressHint': 'Address',
+
+  'servicesTitle': 'Service Capabilities',
+  'servicesSubtitle': 'Select the specialized services your atelier provides.',
+  'addService': 'Add Service',
+
+  // Service Picker Sheet
+  'chooseService': 'Choose Service',
+  'searchService': 'Search service...',
+  'selected': 'selected',
+  'confirmSelection': 'Confirm Selection',
+  'save': 'Save ',
+  'servicesLabel': ' Services',
+  'serviceNotFound': ' not found',
+
+  'scheduleTitle': 'WEEKLY SCHEDULE CONFIGURATION',
+  'scheduleOpen': 'OPEN',
+  'scheduleClosed': 'CLOSED',
+  'openingTime': 'OPENING TIME',
+  'closingTime': 'CLOSING TIME',
+  'scheduleError': 'Jam buka harus lebih awal dari jam tutup!',
+  'noPhotoUploaded': 'Belum ada foto yang diunggah.',
+
+  'documentationTitle': 'Documentation',
+  'documentationSubtitle': 'Upload high-resolution images of your facility.',
+  'photoCount': 'foto',
+  'addPhoto': 'ADD PHOTO',
+  'maxPhotoWarning':
+      'Maximum 4 photos. Delete an existing photo to add a new one.',
+  'minPhotoWarning':
+      'Please upload at My minimum 1 photo for workshop documentation.',
+
+  // Auth
+  'back': 'Back',
+  'signIn': 'Sign In',
+  'signUp': 'Sign Up',
+  'noAccount': "Don't have an account?",
+  'alreadyHaveAccount': 'Already have an account?',
+  'loginWelcomeBack': 'Welcome Back to Auto Finder',
+  'loginSubtitle':
+      'Sign in to continue finding the best workshops easily and quickly.',
+  'welcomeTitle': 'Welcome to Auto Finder',
+  'welcomeSubtitle':
+      'The best workshop finder app for precision engineering and care.',
+  'registerSubtitle':
+      'Sign up now to find the best workshops easily and quickly.',
+  'continueWithGoogle': 'Continue with Google',
+  'orText': 'OR',
+  'signInWithEmail': 'Sign In with Email',
+  'username': 'Username',
+  'googleSignInFailed': 'Failed to connect to Google',
+
+  // Home
+  'findWorkshop': 'Find the Workshop',
+  'detectingLocation': 'Detecting location...',
+  'locationLabel': 'Location: ',
+
+  // Location Picker
+  'pickLocation': 'Pick Location',
+  'confirm': 'Confirm',
+  'searchLocation': 'Search street, area, or city...',
+  'selectedLocation': 'Selected Location',
+  'confirmLocation': 'Confirm Location',
+  'tapMapToSelect': 'Tap on the map to select a location',
+
+  // Add Workshop
+  'createNewPost': 'Create a new Post',
+  'createNewPostSubtitle':
+      'Share your service experience or workshop recommendations through new posts.',
+  'workshopAddedSuccess': 'Workshop added successfully!',
+  'postWorkshop': 'Post Workshop',
+  'next': 'Next',
+  'stepIdentity': 'IDENTITY',
+  'stepServices': 'SERVICES',
+  'stepLocation': 'LOCATION',
+  'stepUptime': 'UPTIME',
+  'stepVerify': 'VERIFY',
+
+  // Validation
+  'completeAllFields': 'Please complete all required fields correctly',
+  'minServiceWarning': 'Please select at least 1 service',
+  'fixScheduleWarning': 'Please fix the invalid schedule times',
+  'invalidUptimeWarning': 'Please fix the invalid schedule data',
+  'failedToSubmit': 'Failed to submit data',
+
+  // Profile image source
+  'changeProfilePhoto': 'Change Profile Photo',
+  'takePhotoCamera': 'Take Photo via Camera',
+  'chooseFromGallery': 'Choose from Gallery',
+
+  'currentPasswordEmpty': 'Current password cannot be empty',
+  'newPasswordEmpty': 'New password cannot be empty',
+  'passwordMinLength': 'Password must be at least 6 characters',
+  'confirmPasswordEmpty': 'Please confirm your password',
+  'passwordMismatch': 'Passwords do not match',
+
+  'usernameEmpty': 'Username cannot be empty',
+  'usernameMinLength': 'Username must be at least 3 characters',
+  'phoneNumberEmpty': 'Phone number cannot be empty',
+  'phoneNumberInvalid': 'Invalid phone number',
+
+  'emailEmpty': 'Email cannot be empty',
+  'emailInvalid': 'Invalid email format',
+  'emailMaxLength': 'Maximum 50 characters allowed',
+  'passwordEmpty': 'Password cannot be empty',
+  'phoneEmpty': 'Phone number cannot be empty',
+  'phoneInvalid': 'Invalid phone number format',
+  'passwordConfirmEmpty': 'Please confirm your password',
+  'loading': "Please wait...",
+};

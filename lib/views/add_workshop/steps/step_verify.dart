@@ -1,23 +1,22 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepVerify extends StatelessWidget {
   const StepVerify({super.key});
 
-  // 1. Amankan pemanggilan asinkronus dengan menyimpan Navigator/ScaffoldMessenger State di awal
-  // atau pastikan validasi context dilakukan dengan ketat.
   Future<void> _pickImage(
     BuildContext context,
     AddWorkshopProvider provider,
   ) async {
-    // Validasi awal SEBELUM masuk ke proses async picker
     if (provider.images.length >= 4) {
       _showWarningSnackBar(
         context,
-        'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+        AppLocale.minPhotoWarning.getString(context),
       );
       return;
     }
@@ -25,102 +24,113 @@ class StepVerify extends StatelessWidget {
     final picker = ImagePicker();
     final XFile? file = await picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 85,
+      imageQuality: 50,
+      maxWidth: 600,
+      maxHeight: 600,
     );
 
-    // 2. WAJIB periksa apakah widget masih aktif di screen setelah menunggu user memilih foto
     if (!context.mounted) return;
 
     if (file != null) {
       if (provider.images.length >= 4) {
         _showWarningSnackBar(
           context,
-          'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+          AppLocale.maxPhotoWarning.getString(context),
         );
         return;
       }
-      provider.addImage(file.path);
+      final bytes = await file.readAsBytes();
+      final base64Image = base64Encode(bytes);
+      provider.addImage(base64Image);
     }
   }
 
-  // Fungsi helper untuk memisahkan logika SnackBar agar kode lebih bersih
   void _showWarningSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).hideCurrentSnackBar(); // Hapus snackbar lama jika ada
+    final theme = Theme.of(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.orange),
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: theme.colorScheme.onErrorContainer),
+        ),
+        backgroundColor: theme.colorScheme.errorContainer,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan context.watch agar widget merefresh ketika provider berubah
     final provider = context.watch<AddWorkshopProvider>();
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final isMaxImages = provider.images.length >= 4;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Documentation',
+        Text(
+          AppLocale.documentationTitle.getString(context),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1F2937),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Upload high-resolution images of your facility.',
-          style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+        Text(
+          AppLocale.documentationSubtitle.getString(context),
+          style: TextStyle(
+            fontSize: 14,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 8),
-        // Photo counter
+
         Row(
           children: [
             Icon(
               Icons.photo_library_outlined,
               size: 16,
-              color: provider.images.length >= 4
-                  ? const Color(0xFF6B7280)
-                  : const Color(0xFF0052CC),
+              color: isMaxImages
+                  ? theme.colorScheme.onSurfaceVariant
+                  : primaryColor,
             ),
             const SizedBox(width: 6),
             Text(
-              '${provider.images.length}/4 foto',
+              '${provider.images.length}/4 ${AppLocale.photoCount.getString(context)}',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: provider.images.length >= 4
-                    ? const Color(0xFF6B7280)
-                    : const Color(0xFF0052CC),
+                color: isMaxImages
+                    ? theme.colorScheme.onSurfaceVariant
+                    : primaryColor,
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // List uploaded images
               ...List.generate(provider.images.length, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 16),
                   child: Stack(
                     children: [
-                      // Image preview
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          File(provider.images[index]),
+                        child: Image.memory(
+                          base64Decode(provider.images[index]),
                           height: 150,
                           width: 100,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      // Photo Index Label
+
                       Positioned(
                         top: 8,
                         left: 8,
@@ -130,7 +140,7 @@ class StepVerify extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.black54,
+                            color: Colors.black.withAlpha(150),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -143,20 +153,20 @@ class StepVerify extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Delete Button
+
                       Positioned(
                         top: 4,
                         right: 4,
                         child: GestureDetector(
                           onTap: () => provider.removeImage(index),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surface,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.cancel,
-                              color: Colors.red,
+                              color: theme.colorScheme.error,
                               size: 24,
                             ),
                           ),
@@ -167,8 +177,7 @@ class StepVerify extends StatelessWidget {
                 );
               }),
 
-              // Upload button (only if < 4 images)
-              if (provider.images.length < 4)
+              if (!isMaxImages)
                 InkWell(
                   onTap: () => _pickImage(context, provider),
                   borderRadius: BorderRadius.circular(12),
@@ -177,27 +186,24 @@ class StepVerify extends StatelessWidget {
                     width: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFF0052CC),
-                        width: 2,
-                      ),
-                      color: const Color(0xFFF0F4FF),
+                      border: Border.all(color: primaryColor, width: 2),
+                      color: primaryColor.withAlpha(20),
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.add_photo_alternate_outlined,
-                          color: Color(0xFF0052CC),
+                          color: primaryColor,
                           size: 32,
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'ADD PHOTO',
+                          AppLocale.addPhoto.getString(context), // 🟢 Diubah
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0052CC),
+                            color: primaryColor,
                           ),
                         ),
                       ],
@@ -211,8 +217,11 @@ class StepVerify extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              'Belum ada foto yang diunggah.',
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+              AppLocale.noPhotoUploaded.getString(context),
+              style: TextStyle(
+                fontSize: 13,
+                color: theme.colorScheme.onSurfaceVariant.withAlpha(180),
+              ),
             ),
           ),
       ],

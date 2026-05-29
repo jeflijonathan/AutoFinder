@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:autofinder/provider/service_category_provider.dart';
 import 'package:autofinder/views/add_workshop/widgets/build_selected_item.dart';
 import 'package:autofinder/views/add_workshop/widgets/service_picker_sheet.dart';
-import 'package:autofinder/provider/service_category_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:autofinder/widgets/header.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepServices extends StatelessWidget {
   const StepServices({super.key});
@@ -17,13 +20,12 @@ class StepServices extends StatelessWidget {
         allServices: ServiceCategoryProvider().allServices,
         selectedServices: List.from(provider.selectedServices),
         onSubmit: (newSelected) {
-          // Remove unchecked
           for (final svc in List.from(provider.selectedServices)) {
             if (!newSelected.contains(svc)) {
               provider.toggleService(svc);
             }
           }
-          // Add newly checked
+
           for (final svc in newSelected) {
             if (!provider.selectedServices.contains(svc)) {
               provider.toggleService(svc);
@@ -38,23 +40,16 @@ class StepServices extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
     final selected = provider.selectedServices;
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Service Capabilities',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1F2937),
-          ),
+        Header(
+          title: AppLocale.servicesTitle.getString(context),
+          subtitle: AppLocale.servicesSubtitle.getString(context),
         ),
-        const SizedBox(height: 8),
-        const Text(
-          'Select the specialized services your atelier provides.',
-          style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
-        ),
+
         const SizedBox(height: 32),
         GridView.builder(
           shrinkWrap: true,
@@ -68,7 +63,7 @@ class StepServices extends StatelessWidget {
           itemCount: selected.length + 1,
           itemBuilder: (ctx, index) {
             if (index == selected.length) {
-              return _buildAddButton(ctx, provider);
+              return _buildAddButton(ctx, theme, provider);
             }
             final name = selected[index];
             final data = ServiceCategoryProvider().allServices.firstWhere(
@@ -76,7 +71,6 @@ class StepServices extends StatelessWidget {
               orElse: () => {'name': name, 'icon': Icons.build_circle_outlined},
             );
             return BuildSelectedItem(
-              context: ctx,
               icon: data['icon'] as IconData,
               title: name,
               onRemove: () => provider.toggleService(name),
@@ -87,16 +81,26 @@ class StepServices extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(BuildContext ctx, AddWorkshopProvider provider) {
+  Widget _buildAddButton(
+    BuildContext ctx,
+    ThemeData theme,
+    AddWorkshopProvider provider,
+  ) {
+    final primaryColor = theme.colorScheme.primary;
+    final isDark = theme.brightness == Brightness.dark;
+
     return InkWell(
       onTap: () => _showServicePicker(ctx, provider),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFF0F4FF),
+          // Warna latar tombol tambah adaptif terhadap mode kegelapan sistem
+          color: isDark ? primaryColor.withAlpha(20) : const Color(0xFFF0F4FF),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color(0xFF0052CC).withValues(alpha: 0.35),
+            color: primaryColor.withAlpha(
+              90,
+            ), // Border opacity disesuaikan (~35%)
             width: 2,
           ),
         ),
@@ -107,17 +111,17 @@ class StepServices extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: const Color(0xFF0052CC).withValues(alpha: 0.12),
+                color: primaryColor.withAlpha(30),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.add, size: 26, color: Color(0xFF0052CC)),
+              child: Icon(Icons.add, size: 26, color: primaryColor),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Add Service',
+            Text(
+              AppLocale.addService.getString(ctx),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0052CC),
+                color: primaryColor,
                 fontSize: 13,
               ),
             ),

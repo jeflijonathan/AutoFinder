@@ -48,7 +48,6 @@ class ButtonPrimary extends StatelessWidget {
 
   Color get _fgColor {
     if (textColor != null) return textColor!;
-    // Tombol putih → teks gelap agar tetap terbaca
     if (variant == ButtonVariant.light) return AppColors.textPrimary;
     return Colors.white;
   }
