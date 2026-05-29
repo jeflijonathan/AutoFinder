@@ -2,6 +2,7 @@ import 'package:autofinder/widgets/buttom_nav_bar.dart';
 import 'package:autofinder/widgets/header.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/controllers/location_controller.dart';
 import 'package:autofinder/config/app_locale.dart';
@@ -85,10 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           return Header(
                             fontSizeTitle: 32,
                             fontSizeSubtitle: 16,
-                            title: "Find the Workshop",
+                            title: AppLocale.findWorkshop.getString(context),
                             subtitle: locationController.isLoading
-                                ? "Mendeteksi lokasi..."
-                                : "Lokasi: ${locationController.currentCity}",
+                                ? AppLocale.detectingLocation.getString(context)
+                                : '${AppLocale.locationLabel.getString(context)}${locationController.currentCity}',
                           );
                         },
                       ),

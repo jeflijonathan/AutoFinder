@@ -1,10 +1,12 @@
 import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/views/auth/utils/login_form.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
 import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -48,15 +50,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Membaca status loading global dari AuthController
     final isLoading = context.watch<AuthController>().isLoading;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Stack(
           children: [
-            // Konten Utama Form Login
             Center(
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
@@ -71,39 +73,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          height: 60,
-                        ), // Memberi ruang agar tidak tertabrak tombol back
+                        const SizedBox(height: 60),
 
-                        const Text(
-                          'Auto Finder',
+                        Text(
+                          AppLocale.title.getString(context),
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
+                            color: colorScheme.onSurface,
                             letterSpacing: -0.5,
                           ),
                         ),
                         const SizedBox(height: 12),
 
-                        const Text(
-                          'Welcome Back to Auto Finder',
+                        Text(
+                          AppLocale.loginWelcomeBack.getString(context),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: colorScheme.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
 
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            'Sign in to continue finding the best workshops easily and quickly.',
+                            AppLocale.loginSubtitle.getString(context),
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                               height: 1.4,
                             ),
                             textAlign: TextAlign.center,
@@ -111,30 +111,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 36),
 
-                        // Email Text Field
                         CustomTextField(
-                          label: 'Email',
+                          label: AppLocale.email.getString(context),
                           hintText: 'nama@email.com',
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          validator: LoginValidators.email,
+                          validator: (value) => LoginForm.email(context)(value),
                         ),
                         const SizedBox(height: 20),
 
-                        // Password Text Field
                         CustomTextField(
-                          label: 'Password',
+                          label: AppLocale.password.getString(context),
                           hintText: '••••••••',
                           controller: _passwordController,
                           obscureText: true,
                           isPassword: true,
-                          validator: LoginValidators.password,
+                          validator: (value) => LoginForm.email(context)(value),
                         ),
                         const SizedBox(height: 36),
 
-                        // Tombol Submit Login
                         ButtonPrimary(
-                          text: 'Sign In',
+                          text: AppLocale.signIn.getString(context),
                           isLoading: isLoading,
                           onPressed: () {
                             if (!isLoading) {
@@ -144,15 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 36),
 
-                        // Footer Pindah ke Register
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "Don’t have an account? ",
+                            Text(
+                              '${AppLocale.noAccount.getString(context)} ',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: AppColors.textSecondary,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                             GestureDetector(
@@ -164,9 +160,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         '/register',
                                       );
                                     },
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(
+                              child: Text(
+                                AppLocale.signUp.getString(context),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.primary,
@@ -183,17 +179,18 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            // Tombol Back Floating di Kiri Atas
             Positioned(
               top: 16,
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: Colors.black.withAlpha(
+                        theme.brightness == Brightness.dark ? 40 : 12,
+                      ),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
@@ -205,24 +202,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16,
                       vertical: 10,
                     ),
-                    foregroundColor: AppColors.textPrimary,
+                    foregroundColor: colorScheme.onSurface,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   icon: const Icon(Icons.arrow_back_ios_new, size: 16),
-                  label: const Text(
-                    'Back',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  label: Text(
+                    AppLocale.back.getString(context),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   onPressed: isLoading ? null : _navigateBack,
                 ),
               ),
             ),
 
-            // Loading Overlay dengan Mascot
-            if (isLoading)
-              const Loading(asOverlay: true),
+            if (isLoading) const Loading(asOverlay: true),
           ],
         ),
       ),

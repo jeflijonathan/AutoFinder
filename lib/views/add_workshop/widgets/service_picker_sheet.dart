@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class ServicePickerSheet extends StatefulWidget {
   final List<Map<String, dynamic>> allServices;
@@ -67,13 +69,12 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
       builder: (_, scrollCtrl) {
         return Container(
           decoration: BoxDecoration(
-            color: theme.cardColor, // Background bottom sheet adaptif
+            color: theme.cardColor,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: Column(
             children: [
               const SizedBox(height: 14),
-              // Garis handle drag top sheet
               Container(
                 width: 44,
                 height: 4,
@@ -91,7 +92,7 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Pilih Layanan',
+                        AppLocale.chooseService.getString(context),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -112,7 +113,7 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          '${_tempSelected.length} dipilih',
+                          '${_tempSelected.length} ${AppLocale.selected.getString(context)}',
                           style: TextStyle(
                             color: primaryColor,
                             fontSize: 13,
@@ -126,14 +127,13 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
 
               const SizedBox(height: 16),
 
-              // Search Bar Field
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: TextField(
                   controller: _searchCtrl,
                   onChanged: (v) => setState(() => _query = v),
                   decoration: InputDecoration(
-                    hintText: 'Cari layanan...',
+                    hintText: AppLocale.searchService.getString(context),
                     hintStyle: TextStyle(
                       color: theme.colorScheme.onSurfaceVariant.withAlpha(150),
                     ),
@@ -187,7 +187,6 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                       ),
               ),
 
-              // Bottom Button Action Action Area
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   24,
@@ -215,8 +214,8 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
                     ),
                     child: Text(
                       _tempSelected.isEmpty
-                          ? 'Konfirmasi Pilihan'
-                          : 'Simpan ${_tempSelected.length} Layanan',
+                          ? AppLocale.confirmSelection.getString(context)
+                          : '${AppLocale.save.getString(context)}${_tempSelected.length}${AppLocale.servicesLabel.getString(context)}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -262,7 +261,6 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
         ),
         child: Row(
           children: [
-            // Wadah Box Icon Sekitar Layanan
             AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               width: 42,
@@ -286,21 +284,26 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
 
             const SizedBox(width: 16),
 
-            // Nama Layanan Teks
             Expanded(
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color: isSelected
-                      ? primaryColor
-                      : theme.colorScheme.onSurface,
-                ),
+              child: FutureBuilder<String>(
+                future: AppLocale.translateLive(name),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? name,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                      color: isSelected
+                          ? primaryColor
+                          : theme.colorScheme.onSurface,
+                    ),
+                  );
+                },
               ),
             ),
 
-            // Indikator Kotak Checkbox Kustom
             AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               width: 24,
@@ -341,7 +344,7 @@ class ServicePickerSheetState extends State<ServicePickerSheet> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Layanan "$_query" tidak ditemukan',
+            '${AppLocale.serviceNotFound.getString(context).replaceAll(' ', '') == 'tidakditemukan' ? 'Layanan ' : ''}"$_query"${AppLocale.serviceNotFound.getString(context)}',
             style: TextStyle(
               color: theme.colorScheme.onSurfaceVariant,
               fontSize: 14,

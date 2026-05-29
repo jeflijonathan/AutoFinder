@@ -1,12 +1,14 @@
 import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
+import 'package:autofinder/views/auth/utils/register_form.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
 import 'package:autofinder/widgets/loading.dart';
-import 'package:flutter/material.dart';
-import 'package:autofinder/views/auth/utils/register_form.dart';
-import 'package:provider/provider.dart';
 import 'package:autofinder/widgets/phone_number_textfield.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -58,6 +60,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthController>().isLoading;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       body: Stack(
@@ -65,15 +69,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFEFF3F9), Color(0xFFF6F8FC), Colors.white],
+                colors: theme.brightness == Brightness.dark
+                    ? [
+                        const Color(0xFF1E2128),
+                        const Color(0xFF121212),
+                        colorScheme.surface,
+                      ]
+                    : [
+                        const Color(0xFFEFF3F9),
+                        const Color(0xFFF6F8FC),
+                        colorScheme.surface,
+                      ],
               ),
               image: DecorationImage(
-                image: AssetImage('images/background-2.png'),
+                image: const AssetImage('images/background-2.png'),
                 fit: BoxFit.cover,
+                colorFilter: theme.brightness == Brightness.dark
+                    ? ColorFilter.mode(
+                        Colors.black.withAlpha(150),
+                        BlendMode.darken,
+                      )
+                    : null,
               ),
             ),
             child: SafeArea(
@@ -96,11 +116,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 24),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: colorScheme.surface,
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withAlpha(12),
+                                    color: Colors.black.withAlpha(
+                                      theme.brightness == Brightness.dark
+                                          ? 40
+                                          : 12,
+                                    ),
                                     blurRadius: 8,
                                     offset: const Offset(0, 3),
                                   ),
@@ -112,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     horizontal: 14,
                                     vertical: 8,
                                   ),
-                                  foregroundColor: AppColors.textPrimary,
+                                  foregroundColor: colorScheme.onSurface,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
@@ -121,47 +145,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Icons.arrow_back_ios_new,
                                   size: 16,
                                 ),
-                                label: const Text(
-                                  'Back',
-                                  style: TextStyle(
+                                label: Text(
+                                  AppLocale.back.getString(context),
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                onPressed: _navigateBack,
+                                onPressed: isLoading ? null : _navigateBack,
                               ),
                             ),
                           ),
 
-                          const Text(
-                            'Auto Finder',
+                          Text(
+                            AppLocale.title.getString(context),
                             style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.textPrimary,
+                              color: colorScheme.onSurface,
                               letterSpacing: -0.5,
                             ),
                           ),
                           const SizedBox(height: 12),
 
-                          const Text(
-                            'Welcome to Auto Finder',
+                          Text(
+                            AppLocale.welcomeTitle.getString(context),
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: colorScheme.onSurface,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
 
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
                             child: Text(
-                              'Sign up now to find the best workshops easily and quickly.',
+                              AppLocale.registerSubtitle.getString(context),
                               style: TextStyle(
                                 fontSize: 14,
-                                color: AppColors.textSecondary,
+                                color: colorScheme.onSurfaceVariant,
                                 height: 1.4,
                               ),
                               textAlign: TextAlign.center,
@@ -169,50 +195,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           const SizedBox(height: 36),
 
+                          // 🟢 Input: Email
                           CustomTextField(
-                            label: 'Email',
+                            label: AppLocale.email.getString(context),
                             hintText: 'nama@email.com',
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            validator: RegisterValidators.email,
+                            validator: (value) =>
+                                RegisterValidators.email(context)(value),
                           ),
                           const SizedBox(height: 20),
 
+                          // 🟢 Input: Username
                           CustomTextField(
-                            label: 'Username',
+                            label: AppLocale.username.getString(context),
                             hintText: 'username_123',
                             controller: _usernameController,
-                            validator: RegisterValidators.username,
+                            validator: (value) =>
+                                RegisterValidators.username(context)(value),
                           ),
                           const SizedBox(height: 20),
 
+                          // 🟢 Input: Nomor Telepon
                           PhoneNumberTextField(
-                            label: 'Phone Number',
+                            label: AppLocale.phoneNumber.getString(context),
                             controller: _phoneController,
-                            validator: RegisterValidators.phoneNumber,
+                            validator: (value) =>
+                                RegisterValidators.phoneNumber(context)(value),
                           ),
                           const SizedBox(height: 20),
 
+                          // 🟢 Input: Password
                           CustomTextField(
-                            label: 'Password',
+                            label: AppLocale.password.getString(context),
                             hintText: '••••••••',
                             controller: _passwordController,
                             obscureText: true,
                             isPassword: true,
-                            validator: RegisterValidators.password,
+                            validator: (value) =>
+                                RegisterValidators.password(context)(value),
                           ),
                           const SizedBox(height: 20),
 
+                          // 🟢 Input: Konfirmasi Password
                           CustomTextField(
-                            label: 'Konfirmasi Password',
-                            hintText: '••••••••',
+                            label: AppLocale.confirmation.getString(context),
+                            hintText: AppLocale.confirmPasswordHint.getString(
+                              context,
+                            ),
                             controller: _confirmPasswordController,
                             obscureText: true,
                             isPassword: true,
                             validator: (value) =>
                                 RegisterValidators.confirmPassword(
-                                  value,
-                                  _passwordController.text,
+                                  context: context,
+                                  value: value,
+                                  originalPassword: _passwordController.text,
                                 ),
                           ),
                           const SizedBox(height: 36),
@@ -221,9 +259,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             selector: (_, controller) => controller.isLoading,
                             builder: (context, isLoading, child) {
                               return ButtonPrimary(
-                                text: 'Sign Up',
+                                text: AppLocale.signUp.getString(context),
                                 isLoading: isLoading,
-                                onPressed: _handleRegister,
+                                onPressed: () {
+                                  if (!isLoading) {
+                                    _handleRegister();
+                                  }
+                                },
                               );
                             },
                           ),
@@ -232,23 +274,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'Already have an account? ',
+                              Text(
+                                '${AppLocale.alreadyHaveAccount.getString(context)} ',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: AppColors.textSecondary,
+                                  color: colorScheme.onSurfaceVariant,
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    '/login',
-                                  );
-                                },
-                                child: const Text(
-                                  'Sign in',
-                                  style: TextStyle(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          '/login',
+                                        );
+                                      },
+                                child: Text(
+                                  AppLocale.signIn.getString(context),
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.primary,
@@ -266,8 +310,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-
-          // Loading Overlay dengan Mascot
           if (isLoading) const Loading(asOverlay: true),
         ],
       ),

@@ -21,6 +21,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             : 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(username)}&background=0D8ABC&color=fff';
 
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Text(
         'Auto Finder',
         style: TextStyle(

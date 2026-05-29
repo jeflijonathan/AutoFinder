@@ -1,11 +1,12 @@
 import 'package:autofinder/config/app_colors.dart';
-import 'package:autofinder/config/app_locale.dart'; // Impor AppLocale Anda
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
 import 'package:autofinder/widgets/loading.dart';
+import 'package:autofinder/views/profile/utils/security_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart'; // Impor untuk extension .getString(context)
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 
 class AccountSecurityScreen extends StatefulWidget {
@@ -73,6 +74,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                       children: [
                         const SizedBox(height: 60),
 
+                        // Header Banner Box
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(24),
@@ -107,6 +109,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                         ),
                         const SizedBox(height: 32),
 
+                        // Subtitle Section
                         Row(
                           children: [
                             Container(
@@ -134,19 +137,14 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                         ),
                         const SizedBox(height: 24),
 
+                        // Input: Current Password
                         CustomTextField(
                           label: AppLocale.currentPassword.getString(context),
                           hintText: '••••••••',
                           controller: _currentPasswordController,
                           obscureText: true,
                           isPassword: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              // Catatan: Jika text error kosong belum ada di mixin, Anda bisa menambahkan key baru di AppLocale nanti
-                              return 'Current password cannot be empty';
-                            }
-                            return null;
-                          },
+                          validator: SecurityForm.currentPassword(context),
                         ),
                         const SizedBox(height: 20),
 
@@ -157,15 +155,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                           controller: _newPasswordController,
                           obscureText: true,
                           isPassword: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'New password cannot be empty';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
+                          validator: SecurityForm.newPassword(context),
                         ),
                         const SizedBox(height: 20),
 
@@ -178,15 +168,11 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                           controller: _confirmPasswordController,
                           obscureText: true,
                           isPassword: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
-                            }
-                            if (value != _newPasswordController.text) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
+                          validator: (value) => SecurityForm.confirmPassword(
+                            context: context,
+                            value: value,
+                            originalPassword: _newPasswordController.text,
+                          ),
                         ),
                         const SizedBox(height: 36),
 
@@ -206,6 +192,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
               ),
             ),
 
+            // Top Floating Back Button
             Positioned(
               top: 16,
               left: 16,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class BottomLocationCard extends StatelessWidget {
   final String address;
@@ -44,7 +46,7 @@ class BottomLocationCard extends StatelessWidget {
           Center(
             child: Container(
               width: 40,
-              height: 40,
+              height: 4,
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
                 color: colorScheme.outlineVariant,
@@ -53,7 +55,7 @@ class BottomLocationCard extends StatelessWidget {
             ),
           ),
           Text(
-            'Selected Location',
+            AppLocale.selectedLocation.getString(context),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
@@ -78,7 +80,7 @@ class BottomLocationCard extends StatelessWidget {
                       )
                     : Text(
                         address.isEmpty
-                            ? 'Tap on the map to select a location'
+                            ? AppLocale.tapMapToSelect.getString(context)
                             : address,
                         style: TextStyle(
                           fontSize: 14,
@@ -111,9 +113,9 @@ class BottomLocationCard extends StatelessWidget {
                 ),
                 elevation: 0,
               ),
-              child: const Text(
-                'Confirm Location',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: Text(
+                AppLocale.confirmLocation.getString(context),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),

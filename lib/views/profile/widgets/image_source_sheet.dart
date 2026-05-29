@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 enum ImageSourceType { camera, gallery }
 
@@ -20,9 +22,12 @@ class ImageSourceSheet {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Ubah Foto Profil',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  AppLocale.changeProfilePhoto.getString(context),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ListTile(
@@ -30,7 +35,7 @@ class ImageSourceSheet {
                     Icons.photo_camera,
                     color: AppColors.primary,
                   ),
-                  title: const Text('Ambil Foto via Kamera'),
+                  title: Text(AppLocale.takePhotoCamera.getString(context)),
                   onTap: () {
                     Navigator.pop(context);
                     onSourceSelected(ImageSourceType.camera);
@@ -41,7 +46,7 @@ class ImageSourceSheet {
                     Icons.photo_library,
                     color: AppColors.primary,
                   ),
-                  title: const Text('Pilih dari Galeri'),
+                  title: Text(AppLocale.chooseFromGallery.getString(context)),
                   onTap: () {
                     Navigator.pop(context);
                     onSourceSelected(ImageSourceType.gallery);

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/models/service_callback.dart';
 import 'package:autofinder/services/users/models/user_model.dart';
 import 'package:autofinder/services/users/users_service.dart';
@@ -310,7 +311,7 @@ class AuthController extends ChangeNotifier {
                   backgroundColor: Colors.green,
                 ),
               );
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
             }
           }
         },
@@ -336,7 +337,6 @@ class AuthController extends ChangeNotifier {
   }) {
     if (_currentUser == null || _currentUser!.uid == null) return;
 
-    // Verify current password first
     if (_currentUser!.password != null &&
         _currentUser!.password != currentPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -375,7 +375,7 @@ class AuthController extends ChangeNotifier {
                   backgroundColor: Colors.green,
                 ),
               );
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
             }
           }
         },

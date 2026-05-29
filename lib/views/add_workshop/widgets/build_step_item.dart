@@ -1,6 +1,7 @@
+import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter/material.dart';
 
-class BuildStepItem extends StatefulWidget {
+class BuildStepItem extends StatelessWidget {
   final int stepNumber;
   final String title;
   final bool isCompleted;
@@ -15,11 +16,6 @@ class BuildStepItem extends StatefulWidget {
   });
 
   @override
-  State<BuildStepItem> createState() => _BuildStepItemState();
-}
-
-class _BuildStepItemState extends State<BuildStepItem> {
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -27,49 +23,65 @@ class _BuildStepItemState extends State<BuildStepItem> {
     final primaryColor = theme.colorScheme.primary;
     final unselectedColor = theme.colorScheme.onSurfaceVariant;
 
-    // Menentukan warna background lingkaran stepper secara dinamis
     Color circleColor;
-    if (widget.isActive) {
+    if (isActive) {
       circleColor = primaryColor;
-    } else if (widget.isCompleted) {
-      circleColor = primaryColor.withAlpha(
-        128,
-      ); // Transparansi ~50% dari warna utama
+    } else if (isCompleted) {
+      circleColor = primaryColor.withAlpha(128);
     } else {
-      circleColor = isDark
-          ? const Color(0xFF2C2C2C)
-          : const Color(0xFFE5E7EB); // Background mati adaptif
+      circleColor = isDark ? const Color(0xFF2C2C2C) : const Color(0xFFE5E7EB);
     }
 
-    // Menentukan warna teks di dalam lingkaran
-    final Color textColor = widget.isActive || widget.isCompleted
+    final Color textColor = isActive || isCompleted
         ? Colors.white
         : theme.colorScheme.onSurface;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
-          child: Center(
-            child: Text(
-              '${widget.stepNumber}',
-              style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+    return Flexible(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: circleColor,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Center(
+              child: Text(
+                '$stepNumber',
+                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.title,
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-            color: widget.isActive ? primaryColor : unselectedColor,
+          const SizedBox(height: 8),
+
+          FutureBuilder<String>(
+            future: AppLocale.translateLive(title),
+            builder: (context, snapshot) {
+              final displayedTitle = snapshot.data ?? title;
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    displayedTitle,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: isActive ? primaryColor : unselectedColor,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

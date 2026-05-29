@@ -1,27 +1,31 @@
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:form_validator/form_validator.dart';
 
-class ProfileValidator {
-  static String? username(String? value) {
-    if (value == null || value.isEmpty) return 'Username tidak boleh kosong';
-    return ValidationBuilder()
-        .minLength(3, 'Username minimal 3 karakter')
-        .build()(value);
+class ProfileForm {
+  static String? Function(String?) username(BuildContext context) {
+    return ValidationBuilder(
+      requiredMessage: AppLocale.usernameEmpty.getString(context),
+    ).minLength(3, AppLocale.usernameMinLength.getString(context)).build();
   }
 
-  static String? phoneNumber(String? value) {
-    if (value == null || value.isEmpty)
-      return 'Nomor telepon tidak boleh kosong';
-    return ValidationBuilder().phone('Nomor telepon tidak valid').build()(
-      value,
-    );
+  static String? Function(String?) phoneNumber(BuildContext context) {
+    return ValidationBuilder(
+      requiredMessage: AppLocale.phoneNumberEmpty.getString(context),
+    ).phone(AppLocale.phoneNumberInvalid.getString(context)).build();
   }
 
-  static String? confirmPassword(String? value, String originalPassword) {
+  static String? confirmPassword({
+    required BuildContext context,
+    required String? value,
+    required String originalPassword,
+  }) {
     if (value == null || value.isEmpty) {
-      return 'Konfirmasi password tidak boleh kosong';
+      return AppLocale.confirmPasswordEmpty.getString(context);
     }
     if (value != originalPassword) {
-      return 'Konfirmasi password tidak cocok';
+      return AppLocale.passwordMismatch.getString(context);
     }
     return null;
   }

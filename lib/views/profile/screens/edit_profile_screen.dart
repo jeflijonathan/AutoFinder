@@ -1,12 +1,13 @@
 import 'package:autofinder/config/app_colors.dart';
-import 'package:autofinder/config/app_locale.dart'; // Impor AppLocale Anda
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/custom_textfield.dart';
 import 'package:autofinder/widgets/loading.dart';
 import 'package:autofinder/widgets/phone_number_textfield.dart';
+import 'package:autofinder/views/profile/utils/profile_edit_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart'; // Impor untuk extension .getString(context)
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -67,7 +68,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Main Content
             Center(
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
@@ -120,21 +120,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         const SizedBox(height: 32),
 
-                        // Input: Full Name
                         CustomTextField(
                           label: AppLocale.fullName.getString(context),
                           hintText: AppLocale.fullNameHint.getString(context),
                           controller: _usernameController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Full name cannot be empty';
-                            }
-                            return null;
-                          },
+                          validator: ProfileForm.username(context),
                         ),
                         const SizedBox(height: 20),
 
-                        // Input: Email (read-only)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -157,7 +150,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 color: theme.brightness == Brightness.dark
                                     ? const Color(0xFF2C2C2C)
                                     : const Color(0xFFF3F4F6),
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                               child: Row(
                                 children: [
@@ -183,19 +176,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Input: Phone Number
                         PhoneNumberTextField(
                           label: AppLocale.phoneNumber.getString(context),
                           controller: _phoneController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Phone number cannot be empty';
-                            }
-                            return null;
-                          },
+                          validator: ProfileForm.phoneNumber(context),
                         ),
                         const SizedBox(height: 36),
-
                         ButtonPrimary(
                           text: AppLocale.saveChanges.getString(context),
                           isLoading: isLoading,
@@ -205,7 +191,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Cancel Button
                         Center(
                           child: GestureDetector(
                             onTap: isLoading ? null : _navigateBack,

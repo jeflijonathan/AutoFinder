@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class MapSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -46,7 +48,7 @@ class MapSearchBar extends StatelessWidget {
             onChanged: onChanged,
             style: TextStyle(color: colorScheme.onSurface),
             decoration: InputDecoration(
-              hintText: 'Search street, area, or city...',
+              hintText: AppLocale.searchLocation.getString(context),
               hintStyle: TextStyle(
                 color: colorScheme.onSurfaceVariant.withAlpha(150),
                 fontSize: 14,

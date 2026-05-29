@@ -8,7 +8,6 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final bool isPassword;
   final String? Function(String?)? validator;
-
   final int? maxLines;
   final int minLines;
 
@@ -66,61 +65,63 @@ class _CustomTextFieldState extends State<CustomTextField> {
           validator: widget.validator,
           maxLines: effectiveMaxLines,
           minLines: widget.minLines,
-          style: TextStyle(fontSize: 15, color: theme.colorScheme.onSurface),
+          style: TextStyle(
+            fontSize: 16,
+            color: theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: TextStyle(
               color: theme.colorScheme.onSurfaceVariant.withAlpha(
-                160,
-              ), // Hint teks adaptif melunak
-              fontSize: 15,
+                150,
+              ), // Disamakan alpha 150
+              fontSize: 16,
             ),
-            fillColor:
-                theme.inputDecorationTheme.fillColor ??
-                (isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF3F4F6)),
+            fillColor: isDark
+                ? const Color(0xFF2C2C2C)
+                : const Color(0xFFF9FAFB),
             filled: true,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
-            ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(12), // Mengikuti radius 12
+              borderSide: BorderSide(
+                color: theme.colorScheme.outlineVariant,
+                width: 1.5,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
                 color: theme.colorScheme.primary,
-                width: 1.5,
+                width: 2.0, // Ketebalan 2 saat difokuskan
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: theme.colorScheme.error,
-                width: 1.0,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
                 color: theme.colorScheme.error,
                 width: 1.5,
               ),
             ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: theme.colorScheme.error,
+                width: 2.0,
+              ),
+            ),
+
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
                       _obscured
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      color: theme
-                          .colorScheme
-                          .onSurfaceVariant, // Warna icon mata adaptif
+                      color: theme.colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                     onPressed: () {
