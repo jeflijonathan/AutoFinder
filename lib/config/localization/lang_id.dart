@@ -1,0 +1,163 @@
+const Map<String, dynamic> langID = {
+  'securityOfAccount': 'Keamanan Akun Anda',
+  'securityDesc':
+      'Lindungi data bengkel dan kendaraan Anda dengan enkripsi canggih dan otentikasi berlapis.',
+  'password': 'Kata Sandi',
+  'currentPassword': 'Kata Sandi Saat Ini',
+  'newPassword': 'Kata Sandi Baru',
+  'confirmation': 'Konfirmasi',
+  'confirmPasswordHint': 'Konfirmasi Kata Sandi',
+  'updatePassword': 'Perbarui Kata Sandi',
+  'accountSecuritySettings': 'Pengaturan Keamanan Akun',
+  'personalInformation': 'Informasi Pribadi',
+  'personalInfoDesc':
+      'Perbarui detail akun Anda untuk memastikan pengalaman layanan Auto Finder yang presisi dan personal.',
+  'fullName': 'Nama Lengkap',
+  'fullNameHint': 'Nama lengkap Anda',
+  'email': 'Email',
+  'phoneNumber': 'Nomor Telepon',
+  'saveChanges': 'Simpan Perubahan',
+  'cancel': 'Batal',
+  'profileSettings': 'Pengaturan Profil',
+  'title': 'Auto Finder',
+  'theme': 'Mode Gelap/Terang',
+  'themeSubtitle': 'Beralih di antara tema presisi',
+  'language': 'Bahasa',
+  'languageSubtitle': 'Pilih bahasa pilihan Anda',
+  'profile': 'Profil',
+  'accountAndSecurity': 'AKUN & KEAMANAN',
+  'accountSecurity': 'Keamanan Akun',
+  'accountSecuritySubtitle': 'Perbarui kata sandi Anda',
+  'editProfile': 'Edit Profil',
+  'editProfileSubtitle': 'Perbarui detail pribadi dan kredensial Anda',
+  'preferences': 'PREFERENSI',
+  'logout': 'Keluar',
+  'logoutSubtitle': 'Keluar dari akun atelier Anda',
+  'home': 'Home',
+  'search': 'Search',
+  'post': 'Post',
+  'favorite': 'Favorite',
+  'addWorkshopTitle': 'Tambah Bengkel',
+  'identityTitle': 'Identitas Bengkel',
+  'identitySubtitle': 'Tentukan merek Anda dan detail operasional inti.',
+  'phoneLabel': 'NOMOR TELEPON',
+  'workshopNameLabel': 'NAMA BENGKEL',
+  'workshopNameHint': 'misal: Precision Gearhead Labs',
+  'missionLabel': 'PERNYATAAN MISI',
+  'missionHint': 'Jelaskan keahlian teknis\ndan nilai-nilai bengkel Anda...',
+  'specializationLabel': 'SPESIALISASI',
+
+  'locationTitle': 'Lokasi Penempatan',
+  'locationSubtitle':
+      'Tandai lokasi bengkel Anda pada peta jaringan teknis kami.',
+  'locationChange': 'Ubah',
+  'locationAddressHint': 'Alamat',
+
+  'servicesTitle': 'Kapabilitas Layanan',
+  'servicesSubtitle': 'Pilih layanan khusus yang disediakan oleh bengkel Anda.',
+  'addService': 'Tambah Layanan',
+
+  // Service Picker Sheet
+  'chooseService': 'Pilih Layanan',
+  'searchService': 'Cari layanan...',
+  'selected': 'dipilih',
+  'confirmSelection': 'Konfirmasi Pilihan',
+  'save': 'Simpan ',
+  'servicesLabel': ' Layanan',
+  'serviceNotFound': ' tidak ditemukan',
+
+  'scheduleTitle': 'KONFIGURASI JADWAL MINGGUAN',
+  'scheduleOpen': 'BUKA',
+  'scheduleClosed': 'TUTUP',
+  'openingTime': 'JAM BUKA',
+  'closingTime': 'JAM TUTUP',
+  'scheduleError': 'Jam buka harus lebih awal dari jam tutup!',
+  'noPhotoUploaded': 'Belum ada foto yang diunggah.',
+
+  'documentationTitle': 'Dokumentasi',
+  'documentationSubtitle': 'Unggah foto beresolusi tinggi dari fasilitas Anda.',
+  'photoCount': 'foto',
+  'addPhoto': 'TAMBAH FOTO',
+  'maxPhotoWarning':
+      'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+  'minPhotoWarning': 'Silakan unggah minimal 1 foto untuk dokumentasi bengkel.',
+
+  // Auth
+  'back': 'Kembali',
+  'signIn': 'Masuk',
+  'signUp': 'Daftar',
+  'noAccount': 'Belum punya akun?',
+  'alreadyHaveAccount': 'Sudah punya akun?',
+  'loginWelcomeBack': 'Selamat Datang Kembali di Auto Finder',
+  'loginSubtitle':
+      'Masuk untuk terus menemukan bengkel terbaik dengan mudah dan cepat.',
+  'welcomeTitle': 'Selamat Datang di Auto Finder',
+  'welcomeSubtitle':
+      'Aplikasi pencari bengkel terbaik untuk teknik dan perawatan presisi.',
+  'registerSubtitle':
+      'Daftar sekarang untuk menemukan bengkel terbaik dengan mudah dan cepat.',
+  'continueWithGoogle': 'Lanjutkan dengan Google',
+  'orText': 'ATAU',
+  'signInWithEmail': 'Masuk dengan Email',
+  'username': 'Nama Pengguna',
+  'googleSignInFailed': 'Gagal terhubung ke Google',
+
+  // Home
+  'findWorkshop': 'Cari Bengkel',
+  'detectingLocation': 'Mendeteksi lokasi...',
+  'locationLabel': 'Lokasi: ',
+
+  // Location Picker
+  'pickLocation': 'Pilih Lokasi',
+  'confirm': 'Konfirmasi',
+  'searchLocation': 'Cari jalan, area, atau kota...',
+  'selectedLocation': 'Lokasi Terpilih',
+  'confirmLocation': 'Konfirmasi Lokasi',
+  'tapMapToSelect': 'Ketuk peta untuk memilih lokasi',
+
+  // Add Workshop
+  'createNewPost': 'Buat Postingan Baru',
+  'createNewPostSubtitle':
+      'Bagikan pengalaman servis atau rekomendasi bengkel melalui postingan baru.',
+  'workshopAddedSuccess': 'Bengkel berhasil ditambahkan!',
+  'postWorkshop': 'Post Bengkel',
+  'next': 'Selanjutnya',
+  'stepIdentity': 'IDENTITAS',
+  'stepServices': 'LAYANAN',
+  'stepLocation': 'LOKASI',
+  'stepUptime': 'JADWAL',
+  'stepVerify': 'VERIFIKASI',
+
+  // Validation
+  'completeAllFields':
+      'Harap lengkapi semua kolom yang wajib diisi dengan benar',
+  'minServiceWarning': 'Pilih minimal 1 layanan service',
+  'fixScheduleWarning': 'Perbaiki jam operasional yang tidak valid',
+  'invalidUptimeWarning': 'Harap perbaiki data uptime yang tidak valid',
+  'failedToSubmit': 'Gagal mengirim data',
+
+  // Profile image source
+  'changeProfilePhoto': 'Ubah Foto Profil',
+  'takePhotoCamera': 'Ambil Foto via Kamera',
+  'chooseFromGallery': 'Pilih dari Galeri',
+
+  'currentPasswordEmpty': 'Password saat ini tidak boleh kosong',
+  'newPasswordEmpty': 'Password baru tidak boleh kosong',
+  'passwordMinLength': 'Password harus terdiri dari minimal 6 karakter',
+  'confirmPasswordEmpty': 'Silakan konfirmasi password Anda',
+  'passwordMismatch': 'Konfirmasi password tidak cocok',
+
+  'usernameEmpty': 'Username tidak boleh kosong',
+  'usernameMinLength': 'Username minimal 3 karakter',
+  'phoneNumberEmpty': 'Nomor telepon tidak boleh kosong',
+  'phoneNumberInvalid': 'Nomor telepon tidak valid',
+
+  'emailEmpty': 'Email tidak boleh kosong',
+  'emailInvalid': 'Format email tidak valid',
+  'emailMaxLength': 'Maksimal 50 karakter',
+  'passwordEmpty': 'Password tidak boleh kosong',
+  'phoneEmpty': 'Nomor telepon tidak boleh kosong',
+  'phoneInvalid': 'Format nomor telepon tidak valid',
+  'passwordConfirmEmpty': 'Silakan konfirmasi kata sandi Anda',
+  'loadingMessage': 'Mohon tunggu...',
+};

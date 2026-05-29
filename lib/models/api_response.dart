@@ -11,7 +11,6 @@ class ApiResponse<T> {
     this.data,
   });
 
-  // Helper untuk mempersingkat pembuatan response sukses
   factory ApiResponse.success(
     T? data, {
     String message = "Operasi berhasil",
@@ -25,7 +24,6 @@ class ApiResponse<T> {
     );
   }
 
-  // Helper untuk mempersingkat pembuatan response error
   factory ApiResponse.error(String message, int code) {
     return ApiResponse(
       status: "error",

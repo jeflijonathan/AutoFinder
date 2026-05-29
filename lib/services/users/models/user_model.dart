@@ -28,11 +28,12 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uid: map['uid'] ?? '',
+      uid: map['uid'] ?? map['id'] ?? '',
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       password: map['password'],
+      profilePictureUrl: map['profilePictureUrl'],
     );
   }
 }
