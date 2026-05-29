@@ -144,6 +144,24 @@ mixin AppLocale {
   static const String maxPhotoWarning = 'maxPhotoWarning';
   static const String minPhotoWarning = 'minPhotoWarning';
   static const String noPhotoUploaded = 'noPhotoUploaded';
+  static const String currentPasswordEmpty = 'currentPasswordEmpty';
+  static const String newPasswordEmpty = 'newPasswordEmpty';
+  static const String passwordMinLength = 'passwordMinLength';
+  static const String confirmPasswordEmpty = 'confirmPasswordEmpty';
+  static const String passwordMismatch = 'passwordMismatch';
+  static const String usernameEmpty = 'usernameEmpty';
+  static const String usernameMinLength = 'usernameMinLength';
+  static const String phoneNumberEmpty = 'phoneNumberEmpty';
+  static const String phoneNumberInvalid = 'phoneNumberInvalid';
+  static const String emailEmpty = 'emailEmpty';
+  static const String emailInvalid = 'emailInvalid';
+  static const String emailMaxLength = 'emailMaxLength';
+  static const String passwordEmpty = 'passwordEmpty';
+
+  static const String phoneEmpty = 'phoneEmpty';
+  static const String phoneInvalid = 'phoneInvalid';
+  static const String passwordConfirmEmpty = 'passwordConfirmEmpty';
+  static const String loadingMessage = 'loadingMessage';
 
   static const Map<String, dynamic> EN = langEN;
   static const Map<String, dynamic> ID = langID;

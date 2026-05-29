@@ -132,4 +132,23 @@ const Map<String, dynamic> langJA = {
   'changeProfilePhoto': 'プロフィール写真を変更',
   'takePhotoCamera': 'カメラで撮影',
   'chooseFromGallery': 'ギャラリーから選択',
+  'currentPasswordEmpty': '現在のパスワードを入力してください',
+  'newPasswordEmpty': '新しいパスワードを入力してください',
+  'passwordMinLength': 'パスワードは6文字以上で入力してください',
+  'confirmPasswordEmpty': '確認用パスワードを入力してください',
+  'passwordMismatch': 'パスワードが一致しません',
+
+  'usernameEmpty': 'ユーザー名は必須です',
+  'usernameMinLength': 'ユーザー名は3文字以上で入力してください',
+  'phoneNumberEmpty': '電話番号は必須です',
+  'phoneNumberInvalid': '無効な電話番号です',
+
+  'emailEmpty': 'メールアドレスを入力してください',
+  'emailInvalid': '無効なメールアドレス形式です',
+  'emailMaxLength': '最大50文字までです',
+  'passwordEmpty': 'パスワードを入力してください',
+  'phoneEmpty': '電話番号を入力してください',
+  'phoneInvalid': '電話番号の形式が正しくありません',
+  'passwordConfirmEmpty': 'パスワードの確認を入力してください',
+  'loadingMessage': '少々お待ちください...',
 };

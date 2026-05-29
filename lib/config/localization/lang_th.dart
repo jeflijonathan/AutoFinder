@@ -90,10 +90,13 @@ const Map<String, dynamic> langTH = {
   'noAccount': 'ยังไม่มีบัญชี?',
   'alreadyHaveAccount': 'มีบัญชีอยู่แล้ว?',
   'loginWelcomeBack': 'ยินดีต้อนรับกลับสู่ Auto Finder',
-  'loginSubtitle': 'เข้าสู่ระบบเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
+  'loginSubtitle':
+      'เข้าสู่ระบบเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
   'welcomeTitle': 'ยินดีต้อนรับสู่ Auto Finder',
-  'welcomeSubtitle': 'แอปค้นหาอู่ซ่อมรถที่ดีที่สุดสำหรับวิศวกรรมที่แม่นยำและการดูแลรักษา',
-  'registerSubtitle': 'สมัครสมาชิกเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
+  'welcomeSubtitle':
+      'แอปค้นหาอู่ซ่อมรถที่ดีที่สุดสำหรับวิศวกรรมที่แม่นยำและการดูแลรักษา',
+  'registerSubtitle':
+      'สมัครสมาชิกเพื่อค้นหาอู่ซ่อมรถที่ดีที่สุดได้อย่างง่ายดายและรวดเร็ว',
   'continueWithGoogle': 'ดำเนินการต่อด้วย Google',
   'orText': 'หรือ',
   'signInWithEmail': 'เข้าสู่ระบบด้วยอีเมล',
@@ -115,7 +118,8 @@ const Map<String, dynamic> langTH = {
 
   // Add Workshop
   'createNewPost': 'สร้างโพสต์ใหม่',
-  'createNewPostSubtitle': 'แชร์ประสบการณ์บริการหรือคำแนะนำอู่ซ่อมรถผ่านโพสต์ใหม่',
+  'createNewPostSubtitle':
+      'แชร์ประสบการณ์บริการหรือคำแนะนำอู่ซ่อมรถผ่านโพสต์ใหม่',
   'workshopAddedSuccess': 'เพิ่มอู่ซ่อมรถสำเร็จแล้ว!',
   'postWorkshop': 'โพสต์อู่ซ่อมรถ',
   'next': 'ถัดไป',
@@ -136,4 +140,23 @@ const Map<String, dynamic> langTH = {
   'changeProfilePhoto': 'เปลี่ยนรูปโปรไฟล์',
   'takePhotoCamera': 'ถ่ายรูปด้วยกล้อง',
   'chooseFromGallery': 'เลือกจากแกลเลอรี่',
+
+  'currentPasswordEmpty': 'กรุณากรอกรหัสผ่านปัจจุบัน',
+  'newPasswordEmpty': 'กรุณากรอกรหัสผ่านใหม่',
+  'passwordMinLength': 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร',
+  'confirmPasswordEmpty': 'กรุณากรอกเพื่อยืนยันรหัสผ่าน',
+  'passwordMismatch': 'รหัสผ่านไม่ตรงกัน',
+  'usernameEmpty': 'กรุณากรอกชื่อผู้ใช้',
+  'usernameMinLength': 'ชื่อผู้ใช้ต้องมีความยาวอย่างน้อย 3 ตัวอักษร',
+  'phoneNumberEmpty': 'กรุณากรอกเบอร์โทรศัพท์',
+  'phoneNumberInvalid': 'เบอร์โทรศัพท์ไม่ถูกต้อง',
+
+  'emailEmpty': 'กรุณากรอกอีเมล',
+  'emailInvalid': 'รูปแบบอีเมลไม่ถูกต้อง',
+  'emailMaxLength': 'สูงสุดไม่เกิน 50 ตัวอักษร',
+  'passwordEmpty': 'กรุณากรอกรหัสผ่าน',
+  'phoneEmpty': 'กรุณากรอกเบอร์โทรศัพท์',
+  'phoneInvalid': 'รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง',
+  'passwordConfirmEmpty': 'กรุณากรอกเพื่อยืนยันรหัสผ่านของคุณ',
+  'loadingMessage': 'โปรดรอสักครู่...',
 };

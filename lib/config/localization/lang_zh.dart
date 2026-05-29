@@ -54,7 +54,6 @@ const Map<String, dynamic> langZH = {
   'servicesSubtitle': '选择您的工作室提供的专业服务。',
   'addService': '添加服务',
 
-  // Service Picker Sheet
   'chooseService': '选择服务',
   'searchService': '搜索服务...',
   'selected': '已选',
@@ -78,7 +77,6 @@ const Map<String, dynamic> langZH = {
   'maxPhotoWarning': '最多只能上传 4 张照片。请删除现有照片以添加新照片。',
   'minPhotoWarning': '请至少上传 1 张照片作为车间证明材料。',
 
-  // Auth
   'back': '返回',
   'signIn': '登录',
   'signUp': '注册',
@@ -95,12 +93,10 @@ const Map<String, dynamic> langZH = {
   'username': '用户名',
   'googleSignInFailed': '无法连接到 Google',
 
-  // Home
   'findWorkshop': '查找车间',
   'detectingLocation': '正在检测位置...',
   'locationLabel': '位置：',
 
-  // Location Picker
   'pickLocation': '选择位置',
   'confirm': '确认',
   'searchLocation': '搜索街道、区域或城市...',
@@ -108,7 +104,6 @@ const Map<String, dynamic> langZH = {
   'confirmLocation': '确认位置',
   'tapMapToSelect': '点击地图选择位置',
 
-  // Add Workshop
   'createNewPost': '创建新帖子',
   'createNewPostSubtitle': '通过新帖子分享您的服务体验或车间推荐。',
   'workshopAddedSuccess': '车间添加成功！',
@@ -120,15 +115,32 @@ const Map<String, dynamic> langZH = {
   'stepUptime': '时间表',
   'stepVerify': '验证',
 
-  // Validation
   'completeAllFields': '请正确填写所有必填字段',
   'minServiceWarning': '请至少选择 1 项服务',
   'fixScheduleWarning': '请修正无效的营业时间',
   'invalidUptimeWarning': '请修正无效的运营时间数据',
   'failedToSubmit': '数据提交失败',
 
-  // Profile image source
   'changeProfilePhoto': '更换头像',
   'takePhotoCamera': '使用相机拍照',
   'chooseFromGallery': '从相册选择',
+
+  'currentPasswordEmpty': '当前密码不能为空',
+  'newPasswordEmpty': '新密码不能为空',
+  'passwordMinLength': '密码长度至少为 6 个字符',
+  'confirmPasswordEmpty': '请确认您的密码',
+  'passwordMismatch': '两次输入的密码不一致',
+
+  'usernameEmpty': '用户名不能为空',
+  'usernameMinLength': '用户名长度至少为 3 个字符',
+  'phoneNumberEmpty': '电话号码不能为空',
+  'phoneNumberInvalid': '电话号码格式不正确',
+  'emailEmpty': '电子邮箱不能为空',
+  'emailInvalid': '电子邮箱格式不正确',
+  'emailMaxLength': '最多允许 50 个字符',
+  'passwordEmpty': '密码不能为空',
+  'phoneEmpty': '电话号码不能为空',
+  'phoneInvalid': '电话号码格式不正确',
+  'passwordConfirmEmpty': '请填写确认密码',
+  'loadingMessage': '请稍候...',
 };

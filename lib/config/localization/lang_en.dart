@@ -139,4 +139,24 @@ const Map<String, dynamic> langEN = {
   'changeProfilePhoto': 'Change Profile Photo',
   'takePhotoCamera': 'Take Photo via Camera',
   'chooseFromGallery': 'Choose from Gallery',
+
+  'currentPasswordEmpty': 'Current password cannot be empty',
+  'newPasswordEmpty': 'New password cannot be empty',
+  'passwordMinLength': 'Password must be at least 6 characters',
+  'confirmPasswordEmpty': 'Please confirm your password',
+  'passwordMismatch': 'Passwords do not match',
+
+  'usernameEmpty': 'Username cannot be empty',
+  'usernameMinLength': 'Username must be at least 3 characters',
+  'phoneNumberEmpty': 'Phone number cannot be empty',
+  'phoneNumberInvalid': 'Invalid phone number',
+
+  'emailEmpty': 'Email cannot be empty',
+  'emailInvalid': 'Invalid email format',
+  'emailMaxLength': 'Maximum 50 characters allowed',
+  'passwordEmpty': 'Password cannot be empty',
+  'phoneEmpty': 'Phone number cannot be empty',
+  'phoneInvalid': 'Invalid phone number format',
+  'passwordConfirmEmpty': 'Please confirm your password',
+  'loading': "Please wait...",
 };

@@ -10,7 +10,7 @@ class AppColors {
   static const Color info = Color(0xFF0277BD);
 
   static const Color bgLight = Color(0xFFF5F5F5);
-  static const Color cardBgLight = Colors.white;
+  static const Color cardBgLight = Color(0xFFF2F3FE);
   static const Color groupBgLight = Color(0xFFF8FAFC);
   static const Color textPriLight = Color(0xFF212121);
   static const Color textSecLight = Color(0xFF757575);

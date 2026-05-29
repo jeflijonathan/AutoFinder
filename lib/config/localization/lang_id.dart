@@ -89,10 +89,13 @@ const Map<String, dynamic> langID = {
   'noAccount': 'Belum punya akun?',
   'alreadyHaveAccount': 'Sudah punya akun?',
   'loginWelcomeBack': 'Selamat Datang Kembali di Auto Finder',
-  'loginSubtitle': 'Masuk untuk terus menemukan bengkel terbaik dengan mudah dan cepat.',
+  'loginSubtitle':
+      'Masuk untuk terus menemukan bengkel terbaik dengan mudah dan cepat.',
   'welcomeTitle': 'Selamat Datang di Auto Finder',
-  'welcomeSubtitle': 'Aplikasi pencari bengkel terbaik untuk teknik dan perawatan presisi.',
-  'registerSubtitle': 'Daftar sekarang untuk menemukan bengkel terbaik dengan mudah dan cepat.',
+  'welcomeSubtitle':
+      'Aplikasi pencari bengkel terbaik untuk teknik dan perawatan presisi.',
+  'registerSubtitle':
+      'Daftar sekarang untuk menemukan bengkel terbaik dengan mudah dan cepat.',
   'continueWithGoogle': 'Lanjutkan dengan Google',
   'orText': 'ATAU',
   'signInWithEmail': 'Masuk dengan Email',
@@ -114,7 +117,8 @@ const Map<String, dynamic> langID = {
 
   // Add Workshop
   'createNewPost': 'Buat Postingan Baru',
-  'createNewPostSubtitle': 'Bagikan pengalaman servis atau rekomendasi bengkel melalui postingan baru.',
+  'createNewPostSubtitle':
+      'Bagikan pengalaman servis atau rekomendasi bengkel melalui postingan baru.',
   'workshopAddedSuccess': 'Bengkel berhasil ditambahkan!',
   'postWorkshop': 'Post Bengkel',
   'next': 'Selanjutnya',
@@ -125,7 +129,8 @@ const Map<String, dynamic> langID = {
   'stepVerify': 'VERIFIKASI',
 
   // Validation
-  'completeAllFields': 'Harap lengkapi semua kolom yang wajib diisi dengan benar',
+  'completeAllFields':
+      'Harap lengkapi semua kolom yang wajib diisi dengan benar',
   'minServiceWarning': 'Pilih minimal 1 layanan service',
   'fixScheduleWarning': 'Perbaiki jam operasional yang tidak valid',
   'invalidUptimeWarning': 'Harap perbaiki data uptime yang tidak valid',
@@ -135,4 +140,24 @@ const Map<String, dynamic> langID = {
   'changeProfilePhoto': 'Ubah Foto Profil',
   'takePhotoCamera': 'Ambil Foto via Kamera',
   'chooseFromGallery': 'Pilih dari Galeri',
+
+  'currentPasswordEmpty': 'Password saat ini tidak boleh kosong',
+  'newPasswordEmpty': 'Password baru tidak boleh kosong',
+  'passwordMinLength': 'Password harus terdiri dari minimal 6 karakter',
+  'confirmPasswordEmpty': 'Silakan konfirmasi password Anda',
+  'passwordMismatch': 'Konfirmasi password tidak cocok',
+
+  'usernameEmpty': 'Username tidak boleh kosong',
+  'usernameMinLength': 'Username minimal 3 karakter',
+  'phoneNumberEmpty': 'Nomor telepon tidak boleh kosong',
+  'phoneNumberInvalid': 'Nomor telepon tidak valid',
+
+  'emailEmpty': 'Email tidak boleh kosong',
+  'emailInvalid': 'Format email tidak valid',
+  'emailMaxLength': 'Maksimal 50 karakter',
+  'passwordEmpty': 'Password tidak boleh kosong',
+  'phoneEmpty': 'Nomor telepon tidak boleh kosong',
+  'phoneInvalid': 'Format nomor telepon tidak valid',
+  'passwordConfirmEmpty': 'Silakan konfirmasi kata sandi Anda',
+  'loadingMessage': 'Mohon tunggu...',
 };
