@@ -1,17 +1,24 @@
+import 'dart:io';
+import 'dart:convert';
+import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/models/service_callback.dart';
 import 'package:autofinder/services/users/models/user_model.dart';
 import 'package:autofinder/services/users/users_service.dart';
+import 'package:autofinder/views/profile/widgets/image_source_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthController extends ChangeNotifier {
   final UsersService _usersService = UsersService();
 
   UserModel? _currentUser;
   bool _isLoading = false;
+  bool _isGoogleLogin = false;
 
   UserModel? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
+  bool get isGoogleLogin => _isGoogleLogin;
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -49,13 +56,11 @@ class AuthController extends ChangeNotifier {
               password,
               ServiceCallback(
                 onSuccessData: (createdMap) {
-                  // 2. Simpan ke State Management Lokal
                   _currentUser = UserModel.fromMap(
                     createdMap as Map<String, dynamic>,
                   );
                   notifyListeners();
 
-                  // 3. Langsung pindah halaman dari sini karena data sudah aman di state
                   Navigator.pushReplacementNamed(context, '/home');
                 },
                 onErrorData: (error) {
@@ -64,7 +69,7 @@ class AuthController extends ChangeNotifier {
                   ).showSnackBar(SnackBar(content: Text(error)));
                 },
                 onFullFailed: () {
-                  _setLoading(false); // Matikan loading proses create
+                  _setLoading(false);
                 },
               ),
             );
@@ -93,23 +98,17 @@ class AuthController extends ChangeNotifier {
       email,
       ServiceCallback<UserModel?>(
         onSuccessData: (UserModel? user) {
-          if (user == null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Email not found")));
+          if (user == null ||
+              user.password != null && user.password != password) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Incorrect password or email")),
+            );
             _setLoading(false);
             return;
           }
-          // Verify password if stored
-          if (user.password != null && user.password != password) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Incorrect password")));
-            _setLoading(false);
-            return;
-          }
-          // Successful login
+
           _currentUser = user;
+          _isGoogleLogin = false;
           notifyListeners();
           Navigator.pushReplacementNamed(context, '/home');
         },
@@ -137,6 +136,7 @@ class AuthController extends ChangeNotifier {
         onSuccessData: (UserModel? user) {
           if (user != null) {
             _currentUser = user;
+            _isGoogleLogin = true;
             notifyListeners();
             Navigator.pushReplacementNamed(context, '/home');
           } else {
@@ -148,6 +148,7 @@ class AuthController extends ChangeNotifier {
                   _currentUser = UserModel.fromMap(
                     createdMap as Map<String, dynamic>,
                   );
+                  _isGoogleLogin = true;
                   notifyListeners();
                   Navigator.pushReplacementNamed(context, '/home');
                 },
@@ -182,6 +183,7 @@ class AuthController extends ChangeNotifier {
       await GoogleSignIn.instance.signOut();
 
       _currentUser = null;
+      _isGoogleLogin = false;
       _setLoading(false);
 
       if (context.mounted) {
@@ -195,5 +197,200 @@ class AuthController extends ChangeNotifier {
         ).showSnackBar(SnackBar(content: Text("Gagal Logout: $e")));
       }
     }
+  }
+
+  Future<void> handleUpdateProfilePicture(
+    BuildContext context,
+    ImageSourceType source,
+  ) async {
+    if (_currentUser == null || _currentUser!.uid == null) return;
+
+    _setLoading(true);
+
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: source == ImageSourceType.camera
+            ? ImageSource.camera
+            : ImageSource.gallery,
+      );
+
+      if (image == null) {
+        _setLoading(false);
+        return;
+      }
+
+      File file = File(image.path);
+
+      // Convert to Base64
+      final bytes = await file.readAsBytes();
+      final String base64Image = base64Encode(bytes);
+
+      final Map<String, dynamic> updateData = {
+        'profilePictureUrl': base64Image,
+      };
+
+      _usersService.updateUser(
+        _currentUser!.uid!,
+        updateData,
+        ServiceCallback(
+          onSuccessData: (bool success) {
+            if (success) {
+              _currentUser = UserModel(
+                uid: _currentUser!.uid,
+                email: _currentUser!.email,
+                username: _currentUser!.username,
+                phoneNumber: _currentUser!.phoneNumber,
+                password: _currentUser!.password,
+                profilePictureUrl: base64Image,
+              );
+              notifyListeners();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Successfully profile picture updated"),
+                  ),
+                );
+              }
+            }
+          },
+          onErrorData: (error) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Failed to update profile: $error")),
+              );
+            }
+          },
+        ),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      }
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  void handleUpdateProfile({
+    required BuildContext context,
+    required String username,
+    required String phoneNumber,
+  }) {
+    if (_currentUser == null || _currentUser!.uid == null) return;
+
+    _setLoading(true);
+
+    final Map<String, dynamic> updateData = {
+      'username': username,
+      'phoneNumber': phoneNumber,
+    };
+
+    _usersService.updateUser(
+      _currentUser!.uid!,
+      updateData,
+      ServiceCallback(
+        onSuccessData: (bool success) {
+          if (success) {
+            _currentUser = UserModel(
+              uid: _currentUser!.uid,
+              email: _currentUser!.email,
+              username: username,
+              phoneNumber: phoneNumber,
+              password: _currentUser!.password,
+              profilePictureUrl: _currentUser!.profilePictureUrl,
+            );
+            notifyListeners();
+            _setLoading(false);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Profile updated successfully"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
+            }
+          }
+        },
+        onErrorData: (error) {
+          _setLoading(false);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Failed to update profile: $error")),
+            );
+          }
+        },
+        onFullFailed: () {
+          _setLoading(false);
+        },
+      ),
+    );
+  }
+
+  void handleUpdatePassword({
+    required BuildContext context,
+    required String currentPassword,
+    required String newPassword,
+  }) {
+    if (_currentUser == null || _currentUser!.uid == null) return;
+
+    if (_currentUser!.password != null &&
+        _currentUser!.password != currentPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Current password is incorrect"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    _setLoading(true);
+
+    final Map<String, dynamic> updateData = {'password': newPassword};
+
+    _usersService.updateUser(
+      _currentUser!.uid!,
+      updateData,
+      ServiceCallback(
+        onSuccessData: (bool success) {
+          if (success) {
+            _currentUser = UserModel(
+              uid: _currentUser!.uid,
+              email: _currentUser!.email,
+              username: _currentUser!.username,
+              phoneNumber: _currentUser!.phoneNumber,
+              password: newPassword,
+              profilePictureUrl: _currentUser!.profilePictureUrl,
+            );
+            notifyListeners();
+            _setLoading(false);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Password updated successfully"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
+            }
+          }
+        },
+        onErrorData: (error) {
+          _setLoading(false);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Failed to update password: $error")),
+            );
+          }
+        },
+        onFullFailed: () {
+          _setLoading(false);
+        },
+      ),
+    );
   }
 }

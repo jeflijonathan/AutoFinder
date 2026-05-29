@@ -1,42 +1,68 @@
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:form_validator/form_validator.dart';
 
 class RegisterValidators {
-  static String? email(String? value) {
-    if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
-    return ValidationBuilder()
-        .email('Format email tidak valid')
-        .maxLength(50, 'Maksimal 50 karakter')
-        .build()(value);
+  /// Validasi Email
+  static String? Function(String?) email(BuildContext context) {
+    return ValidationBuilder(
+          requiredMessage: AppLocale.emailEmpty.getString(context),
+        )
+        .email(AppLocale.emailInvalid.getString(context))
+        .maxLength(50, AppLocale.emailMaxLength.getString(context))
+        .build();
   }
 
-  static String? password(String? value) {
-    if (value == null || value.isEmpty) return 'Password tidak boleh kosong';
-    return ValidationBuilder()
-        .minLength(6, 'Password minimal 6 karakter')
-        .build()(value);
+  /// Validasi Username
+  static String? Function(String?) username(BuildContext context) {
+    return ValidationBuilder(
+          requiredMessage: AppLocale.usernameEmpty.getString(
+            context,
+          ), // Pastikan key ini ada di AppLocale Anda
+        )
+        .minLength(
+          3,
+          AppLocale.usernameMinLength.getString(context),
+        ) // Pastikan key ini ada di AppLocale Anda
+        .build();
   }
 
-  static String? username(String? value) {
-    if (value == null || value.isEmpty) return 'Username tidak boleh kosong';
-    return ValidationBuilder()
-        .minLength(3, 'Username minimal 3 karakter')
-        .build()(value);
+  /// Validasi Nomor Telepon
+  static String? Function(String?) phoneNumber(BuildContext context) {
+    return ValidationBuilder(
+          requiredMessage: AppLocale.phoneEmpty.getString(
+            context,
+          ), // Pastikan key ini ada di AppLocale Anda
+        )
+        .phone(
+          AppLocale.phoneInvalid.getString(context),
+        ) // Pastikan key ini ada di AppLocale Anda
+        .build();
   }
 
-  static String? phoneNumber(String? value) {
-    if (value == null || value.isEmpty)
-      return 'Nomor telepon tidak boleh kosong';
-    return ValidationBuilder().phone('Nomor telepon tidak valid').build()(
-      value,
-    );
+  /// Validasi Password
+  static String? Function(String?) password(BuildContext context) {
+    return ValidationBuilder(
+      requiredMessage: AppLocale.passwordEmpty.getString(context),
+    ).minLength(6, AppLocale.passwordMinLength.getString(context)).build();
   }
 
-  static String? confirmPassword(String? value, String originalPassword) {
+  /// Validasi Konfirmasi Password
+  static String? confirmPassword({
+    required BuildContext context,
+    required String? value,
+    required String originalPassword,
+  }) {
     if (value == null || value.isEmpty) {
-      return 'Konfirmasi password tidak boleh kosong';
+      return AppLocale.passwordConfirmEmpty.getString(
+        context,
+      ); // Pastikan key ini ada di AppLocale Anda
     }
     if (value != originalPassword) {
-      return 'Konfirmasi password tidak cocok';
+      return AppLocale.passwordMismatch.getString(
+        context,
+      ); // Pastikan key ini ada di AppLocale Anda
     }
     return null;
   }

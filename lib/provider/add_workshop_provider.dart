@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:autofinder/services/workshop/workshop_model.dart';
 import 'package:autofinder/services/workshop/operation_time_model.dart';
 import 'package:autofinder/services/workshop/workshop_service.dart';
-import 'package:autofinder/services/location_service.dart';
+import 'package:autofinder/services/location/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:geocoding/geocoding.dart';
 
 class AddWorkshopProvider extends ChangeNotifier {
   final WorkshopService _workshopService = WorkshopService();
+  bool _disposed = false;
 
   AddWorkshopProvider() {
     _initLocation();
@@ -16,6 +17,7 @@ class AddWorkshopProvider extends ChangeNotifier {
 
   Future<void> _initLocation() async {
     Position? position = await LocationService.getCurrentPosition();
+    if (_disposed) return;
     if (position != null) {
       _latitude = position.latitude;
       _longitude = position.longitude;
@@ -25,26 +27,34 @@ class AddWorkshopProvider extends ChangeNotifier {
           position.latitude,
           position.longitude,
         );
+        if (_disposed) return;
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks[0];
           List<String> parts = [];
-          if (place.street != null && place.street!.isNotEmpty)
+          if (place.street != null && place.street!.isNotEmpty) {
             parts.add(place.street!);
-          if (place.subLocality != null && place.subLocality!.isNotEmpty)
+          }
+
+          if (place.subLocality != null && place.subLocality!.isNotEmpty) {
             parts.add(place.subLocality!);
-          if (place.locality != null && place.locality!.isNotEmpty)
+          }
+
+          if (place.locality != null && place.locality!.isNotEmpty) {
             parts.add(place.locality!);
+          }
+
           if (place.administrativeArea != null &&
-              place.administrativeArea!.isNotEmpty)
+              place.administrativeArea!.isNotEmpty) {
             parts.add(place.administrativeArea!);
+          }
 
           _address = parts.join(', ');
         }
       } catch (e) {
-        print("Error getting address: \$e");
+        print("Error getting address: $e");
       }
 
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     }
   }
 
@@ -216,10 +226,20 @@ class AddWorkshopProvider extends ChangeNotifier {
         return 'Please complete all required fields correctly';
       }
     }
+    if (_currentStep == 1) {
+      if (_selectedServices.isEmpty) {
+        return 'Pilih minimal 1 layanan service';
+      }
+    }
     if (_currentStep == 3) {
       final invalidDays = getInvalidUptimeDays();
       if (invalidDays.isNotEmpty) {
         return 'Perbaiki jam operasional: ${invalidDays.join(', ')}';
+      }
+    }
+    if (_currentStep == 4) {
+      if (_images.isEmpty) {
+        return 'Unggah minimal 1 gambar workshop';
       }
     }
     return null;
@@ -230,8 +250,6 @@ class AddWorkshopProvider extends ChangeNotifier {
     if (_currentStep < 4) {
       _currentStep++;
       notifyListeners();
-    } else {
-      submitWorkshop();
     }
   }
 
@@ -257,10 +275,11 @@ class AddWorkshopProvider extends ChangeNotifier {
     return '$_selectedCountryCode $rawPhone';
   }
 
-  Future<void> submitWorkshop() async {
+  Future<void> submitWorkshop(String? idUser) async {
     try {
       final workshop = WorkshopModel(
         uid: null,
+        idUser: idUser,
         title: nameController.text,
         phoneNumber: getCompletePhoneNumber(),
         description: missionController.text,
@@ -283,13 +302,14 @@ class AddWorkshopProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
     phoneController.dispose();
     nameController.dispose();
     missionController.dispose();
     super.dispose();
   }
 
-  Future<String?> processNextOrSubmit() async {
+  Future<String?> processNextOrSubmit(String? idUser) async {
     if (_currentStep == 3 && getInvalidUptimeDays().isNotEmpty) {
       return 'Harap perbaiki data uptime yang tidak valid';
     }
@@ -305,16 +325,16 @@ class AddWorkshopProvider extends ChangeNotifier {
     }
 
     _isLoading = true;
-    notifyListeners();
+    if (!_disposed) notifyListeners();
 
     try {
-      await submitWorkshop();
+      await submitWorkshop(idUser);
       _isLoading = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
       return null;
     } catch (e) {
       _isLoading = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
       return 'Gagal mengirim data: $e';
     }
   }

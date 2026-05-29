@@ -1,5 +1,7 @@
 import 'package:autofinder/config/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart'; // 1. Tambahkan import ini
+import 'package:autofinder/config/app_locale.dart';
 
 class ButtonNavBar extends StatelessWidget {
   final int currentIndex;
@@ -8,11 +10,19 @@ class ButtonNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1)),
+        color: theme.cardColor,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFE0E0E0),
+            width: 1,
+          ),
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -23,35 +33,37 @@ class ButtonNavBar extends StatelessWidget {
               index: 0,
               icon: Icons.home_outlined,
               route: AppRoutes.home,
-              label: 'HOME',
+              label: AppLocale.home.getString(context).toUpperCase(),
             ),
             _buildNavItem(
               context,
               index: 1,
               icon: Icons.search_outlined,
               route: AppRoutes.home,
-              label: 'SEARCH',
+              label: AppLocale.search.getString(context).toUpperCase(),
             ),
             _buildNavItem(
               context,
               index: 2,
               icon: Icons.add_circle_outline,
               route: AppRoutes.addWorkshop,
-              label: 'POST',
+              label: AppLocale.post.getString(context).toUpperCase(),
             ),
             _buildNavItem(
               context,
               index: 3,
               icon: Icons.favorite_outline,
-              route: AppRoutes.home, // Sesuaikan rutenya jika sudah ada
-              label: 'FAVORITE',
+              route: AppRoutes.home,
+              label: AppLocale.favorite.getString(context).toUpperCase(),
             ),
             _buildNavItem(
               context,
               index: 4,
               icon: Icons.person_outline,
               route: AppRoutes.profile,
-              label: 'PROFILE',
+              label: AppLocale.profile
+                  .getString(context)
+                  .toUpperCase(), // 6. Lokalisasi & jadikan uppercase
             ),
           ],
         ),
@@ -66,9 +78,11 @@ class ButtonNavBar extends StatelessWidget {
     required String route,
     required String label,
   }) {
+    final theme = Theme.of(context);
     final isSelected = currentIndex == index;
-    final primaryColor = const Color(0xFF0052CC);
-    final activeColor = isSelected ? primaryColor : const Color(0xFF9CA3AF);
+    final primaryColor = theme.colorScheme.primary;
+    final unselectedColor = theme.colorScheme.onSurfaceVariant;
+    final activeColor = isSelected ? primaryColor : unselectedColor;
 
     return GestureDetector(
       onTap: () {
@@ -87,15 +101,14 @@ class ButtonNavBar extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? primaryColor.withValues(alpha: 0.1) // Biru sangat muda
+                    ? primaryColor.withAlpha(26)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
                   Icon(icon, color: activeColor, size: 24),
-                  SizedBox(height: 4),
-
+                  const SizedBox(height: 4),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(

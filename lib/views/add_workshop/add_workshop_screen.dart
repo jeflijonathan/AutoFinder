@@ -1,11 +1,17 @@
+import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_routes.dart';
+import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:autofinder/views/auth/controllers/auth_controller.dart';
+import 'package:autofinder/views/add_workshop/utils/workshop_step_helper.dart';
+import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
+import 'package:autofinder/widgets/buttom_nav_bar.dart';
+import 'package:autofinder/widgets/loading.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:autofinder/provider/add_workshop_provider.dart';
-import 'package:autofinder/widgets/buttom_nav_bar.dart';
-import 'package:autofinder/views/add_workshop/utils/workshop_step_helper.dart';
-import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
-import 'package:autofinder/widgets/loading.dart';
+import 'package:autofinder/widgets/header.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:autofinder/config/app_locale.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen({super.key});
@@ -26,8 +32,11 @@ class AddWorkshopView extends StatelessWidget {
     BuildContext context,
     AddWorkshopProvider provider,
   ) async {
+    final authController = context.read<AuthController>();
     final isLastStep = provider.currentStep == 4;
-    final errorMessage = await provider.processNextOrSubmit();
+    final errorMessage = await provider.processNextOrSubmit(
+      authController.currentUser?.uid,
+    );
 
     if (!context.mounted) return;
 
@@ -49,7 +58,7 @@ class AddWorkshopView extends StatelessWidget {
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
       } else {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
       }
     }
   }
@@ -58,9 +67,12 @@ class AddWorkshopView extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AddWorkshopProvider>(context);
 
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: Navbar(),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: const Navbar(),
       body: Stack(
         children: [
           SafeArea(
@@ -69,33 +81,26 @@ class AddWorkshopView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Create a new Post',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
+                  Header(
+                    fontSizeTitle: 32,
+                    fontSizeSubtitle: 16,
+                    title: AppLocale.createNewPost.getString(context),
+                    subtitle: AppLocale.createNewPostSubtitle.getString(
+                      context,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Share your service experience or workshop recommendations through new posts.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF6B7280),
-                      height: 1.5,
-                    ),
-                  ),
+
                   const SizedBox(height: 24),
 
-                  // Stepper
                   Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF3F4F6),
+                      color: isDark
+                          ? AppColors.cardBgDark
+                          : AppColors.cardBgLight,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -114,7 +119,6 @@ class AddWorkshopView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Step Content
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: WorkshopStepHelper.getStepWidget(
@@ -139,15 +143,19 @@ class AddWorkshopView extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                side: const BorderSide(
-                                  color: Color(0xFFE5E7EB),
+                                side: BorderSide(
+                                  color: isDark
+                                      ? const Color(0xFF333333)
+                                      : const Color(0xFFE5E7EB),
                                 ),
-                                backgroundColor: const Color(0xFFE5E7EB),
+                                backgroundColor: isDark
+                                    ? const Color(0xFF2C2C2C)
+                                    : const Color(0xFFE5E7EB),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Back',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: theme.colorScheme.onSurface,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -164,8 +172,14 @@ class AddWorkshopView extends StatelessWidget {
                             backgroundColor:
                                 (provider.currentStep == 3 &&
                                     provider.getInvalidUptimeDays().isNotEmpty)
-                                ? const Color(0xFFB0C4DE)
-                                : const Color(0xFF0052CC),
+                                ? (isDark
+                                      ? const Color(0xFF3A4B5C)
+                                      : const Color(
+                                          0xFFB0C4DE,
+                                        )) // Warna disable/invalid adaptif
+                                : theme
+                                      .colorScheme
+                                      .primary, // Warna biru utama aplikasi yang dinamis
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -190,7 +204,6 @@ class AddWorkshopView extends StatelessWidget {
               ),
             ),
           ),
-
           if (provider.isLoading) const Loading(asOverlay: true),
         ],
       ),

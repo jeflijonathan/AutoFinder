@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:autofinder/config/app_colors.dart';
 
 class CustomTextField extends StatefulWidget {
   final String label;
@@ -9,8 +8,6 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final bool isPassword;
   final String? Function(String?)? validator;
-
-  // 🌟 TAMBAHKAN PARAMETER BARU DI SINI
   final int? maxLines;
   final int minLines;
 
@@ -23,8 +20,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.isPassword = false,
     this.validator,
-    this.maxLines = 1, // Default 1 baris seperti TextField biasa
-    this.minLines = 1, // Default minimal 1 baris
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   @override
@@ -42,8 +39,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    // 💡 VALIDASI LOGIKA: Password tidak boleh multi-line (textarea)
-    // Jika itu password, kunci maxLines ke angka 1 agar tidak error di Flutter.
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final effectiveMaxLines = widget.isPassword ? 1 : widget.maxLines;
 
     return Column(
@@ -51,72 +48,80 @@ class _CustomTextFieldState extends State<CustomTextField> {
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
 
         TextFormField(
           controller: widget.controller,
-
-          // Jika untuk textarea, ganti keyboardType ke TextInputType.multiline
           keyboardType: effectiveMaxLines != 1
               ? TextInputType.multiline
               : widget.keyboardType,
-
           obscureText: _obscured,
           validator: widget.validator,
-
-          // 🌟 TERAPKAN DI SINI
           maxLines: effectiveMaxLines,
           minLines: widget.minLines,
-
-          style: const TextStyle(fontSize: 15, color: AppColors.textPrimary),
+          style: TextStyle(
+            fontSize: 16,
+            color: theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: const TextStyle(
-              color: AppColors.inputHint,
-              fontSize: 15,
+            hintStyle: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant.withAlpha(
+                150,
+              ), // Disamakan alpha 150
+              fontSize: 16,
             ),
-            fillColor: AppColors.inputBackground,
+            fillColor: isDark
+                ? const Color(0xFF2C2C2C)
+                : const Color(0xFFF9FAFB),
             filled: true,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
-            ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: AppColors.primary,
+              borderRadius: BorderRadius.circular(12), // Mengikuti radius 12
+              borderSide: BorderSide(
+                color: theme.colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 2.0, // Ketebalan 2 saat difokuskan
+              ),
+            ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.0),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: theme.colorScheme.error,
+                width: 1.5,
+              ),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: theme.colorScheme.error,
+                width: 2.0,
+              ),
             ),
+
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
                       _obscured
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      color: AppColors.inputHint,
+                      color: theme.colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                     onPressed: () {

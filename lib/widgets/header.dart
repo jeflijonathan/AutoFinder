@@ -1,30 +1,60 @@
 import 'package:flutter/material.dart';
 
-class Header extends StatefulWidget {
+class Header extends StatelessWidget {
   final String title;
   final String? subtitle;
-  const Header({super.key, required this.title, this.subtitle});
+  final double? fontSizeTitle;
+  final double? fontSizeSubtitle;
+  final int? maxLinesSubtitle;
 
-  @override
-  State<Header> createState() => _HeaderState();
-}
+  const Header({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.fontSizeSubtitle,
+    this.fontSizeTitle,
+    this.maxLinesSubtitle,
+  });
 
-class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final theme = Theme.of(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          widget.title,
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 4),
-        if (widget.subtitle != null && widget.subtitle!.isNotEmpty)
-          Text(
-            widget.subtitle ?? '',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: fontSizeTitle ?? 24,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
+              if (subtitle != null && subtitle!.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                Text(
+                  subtitle!,
+                  style: TextStyle(
+                    fontSize: fontSizeSubtitle ?? 14,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.justify,
+                  maxLines: maxLinesSubtitle ?? 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ],
           ),
+        ),
       ],
     );
   }

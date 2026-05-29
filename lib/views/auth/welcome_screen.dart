@@ -1,10 +1,12 @@
 import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/services/users/models/user_model.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/widgets/button_primary.dart';
 import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +53,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Gagal terhubung ke Google: $error'),
+            content: Text(
+              '${AppLocale.googleSignInFailed.getString(context)}: $error',
+            ),
             backgroundColor: AppColors.error,
           ),
         );
@@ -62,6 +66,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final isGoogleLoading = context.watch<AuthController>().isLoading;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       body: Stack(
@@ -69,15 +75,31 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFEFF3F9), Color(0xFFF6F8FC), Colors.white],
+                colors: theme.brightness == Brightness.dark
+                    ? [
+                        const Color(0xFF1E2128),
+                        const Color(0xFF121212),
+                        colorScheme.surface,
+                      ]
+                    : [
+                        const Color(0xFFEFF3F9),
+                        const Color(0xFFF6F8FC),
+                        colorScheme.surface,
+                      ],
               ),
               image: DecorationImage(
-                image: AssetImage('images/background-2.png'),
+                image: const AssetImage('images/background-2.png'),
                 fit: BoxFit.cover,
+                colorFilter: theme.brightness == Brightness.dark
+                    ? ColorFilter.mode(
+                        Colors.black.withAlpha(150),
+                        BlendMode.darken,
+                      )
+                    : null,
               ),
             ),
             child: SafeArea(
@@ -94,33 +116,33 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizedBox(height: 20),
-                        const Text(
-                          'Auto Finder',
+                        Text(
+                          AppLocale.title.getString(context),
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
+                            color: colorScheme.onSurface,
                             letterSpacing: -0.5,
                           ),
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'Welcome to Auto Finder',
+                        Text(
+                          AppLocale.welcomeTitle.getString(context),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: colorScheme.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            'The best workshop finder app for precision engineering and care.',
+                            AppLocale.welcomeSubtitle.getString(context),
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                               height: 1.4,
                             ),
                             textAlign: TextAlign.center,
@@ -158,7 +180,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               },
                               blendMode: BlendMode.dstIn,
                               child: Container(
-                                color: Colors.white,
+                                color: colorScheme.surface,
                                 child: Image.asset(
                                   'images/automotif-image.png',
                                   fit: BoxFit.cover,
@@ -180,7 +202,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         const SizedBox(height: 48),
 
                         ButtonPrimary(
-                          text: 'Continue with Google',
+                          text: AppLocale.continueWithGoogle.getString(context),
                           isLoading: isGoogleLoading,
                           variant: ButtonVariant.light,
                           icon: Image.asset(
@@ -195,19 +217,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        const Text(
-                          'OR',
+                        Text(
+                          AppLocale.orText.getString(context),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textSecondary,
+                            color: colorScheme.onSurfaceVariant,
                             letterSpacing: 1.0,
                           ),
                         ),
                         const SizedBox(height: 20),
 
                         ButtonPrimary(
-                          text: 'Sign In with Email',
+                          text: AppLocale.signInWithEmail.getString(context),
                           onPressed: () {
                             Navigator.pushNamed(context, AppRoutes.login);
                           },
@@ -217,20 +239,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Already have an account? ',
+                            Text(
+                              '${AppLocale.alreadyHaveAccount.getString(context)} ',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: AppColors.textSecondary,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, AppRoutes.login);
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.register,
+                                );
                               },
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(
+                              child: Text(
+                                AppLocale.signUp.getString(context),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.primary,
@@ -248,7 +273,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
 
-          // Loading Overlay dengan Mascot
           if (isGoogleLoading) const Loading(asOverlay: true),
         ],
       ),
