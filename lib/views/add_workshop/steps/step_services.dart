@@ -1,3 +1,4 @@
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
 import 'package:autofinder/provider/service_category_provider.dart';
 import 'package:autofinder/views/add_workshop/widgets/build_selected_item.dart';
@@ -5,6 +6,7 @@ import 'package:autofinder/views/add_workshop/widgets/service_picker_sheet.dart'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/widgets/header.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepServices extends StatelessWidget {
   const StepServices({super.key});
@@ -44,8 +46,8 @@ class StepServices extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Header(
-          title: "Service Capabilities",
-          subtitle: 'Select the specialized services your atelier provides.',
+          title: AppLocale.servicesTitle.getString(context),
+          subtitle: AppLocale.servicesSubtitle.getString(context),
         ),
 
         const SizedBox(height: 32),
@@ -109,16 +111,14 @@ class StepServices extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: primaryColor.withAlpha(
-                  30,
-                ), // Lingkaran icon tambah transparan
+                color: primaryColor.withAlpha(30),
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.add, size: 26, color: primaryColor),
             ),
             const SizedBox(height: 10),
             Text(
-              'Add Service',
+              AppLocale.addService.getString(ctx),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: primaryColor,

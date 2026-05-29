@@ -31,15 +31,22 @@ class AddWorkshopProvider extends ChangeNotifier {
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks[0];
           List<String> parts = [];
-          if (place.street != null && place.street!.isNotEmpty)
+          if (place.street != null && place.street!.isNotEmpty) {
             parts.add(place.street!);
-          if (place.subLocality != null && place.subLocality!.isNotEmpty)
+          }
+
+          if (place.subLocality != null && place.subLocality!.isNotEmpty) {
             parts.add(place.subLocality!);
-          if (place.locality != null && place.locality!.isNotEmpty)
+          }
+
+          if (place.locality != null && place.locality!.isNotEmpty) {
             parts.add(place.locality!);
+          }
+
           if (place.administrativeArea != null &&
-              place.administrativeArea!.isNotEmpty)
+              place.administrativeArea!.isNotEmpty) {
             parts.add(place.administrativeArea!);
+          }
 
           _address = parts.join(', ');
         }

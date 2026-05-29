@@ -1,3 +1,4 @@
+import 'package:autofinder/config/app_colors.dart';
 import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
@@ -9,6 +10,8 @@ import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/widgets/header.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:autofinder/config/app_locale.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen({super.key});
@@ -81,9 +84,10 @@ class AddWorkshopView extends StatelessWidget {
                   Header(
                     fontSizeTitle: 32,
                     fontSizeSubtitle: 16,
-                    title: 'Create a new Post',
-                    subtitle:
-                        'Share your service experience or workshop recommendations through new posts.',
+                    title: AppLocale.createNewPost.getString(context),
+                    subtitle: AppLocale.createNewPostSubtitle.getString(
+                      context,
+                    ),
                   ),
 
                   const SizedBox(height: 24),
@@ -95,8 +99,8 @@ class AddWorkshopView extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: isDark
-                          ? const Color(0xFF1E1E1E)
-                          : const Color(0xFFF3F4F6),
+                          ? AppColors.cardBgDark
+                          : AppColors.cardBgLight,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -151,9 +155,7 @@ class AddWorkshopView extends StatelessWidget {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                  color: theme
-                                      .colorScheme
-                                      .onSurface, // Warna teks mengikuti tema aktif
+                                  color: theme.colorScheme.onSurface,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),

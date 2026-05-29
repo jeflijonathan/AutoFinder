@@ -1,7 +1,9 @@
+import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
 import 'package:autofinder/services/workshop/operation_time_model.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepUptime extends StatelessWidget {
   const StepUptime({super.key});
@@ -24,7 +26,7 @@ class StepUptime extends StatelessWidget {
             ),
           ),
           child: Text(
-            'WEEKLY SCHEDULE CONFIGURATION',
+            AppLocale.scheduleTitle.getString(context),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
@@ -96,7 +98,9 @@ class StepUptime extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                isOpen ? 'OPEN' : 'CLOSED',
+                isOpen
+                    ? AppLocale.scheduleOpen.getString(context)
+                    : AppLocale.scheduleClosed.getString(context),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -117,7 +121,7 @@ class StepUptime extends StatelessWidget {
                     children: [
                       if (day == 'Monday')
                         Text(
-                          'OPENING TIME',
+                          AppLocale.openingTime.getString(context),
                           style: TextStyle(
                             fontSize: 10,
                             color: theme.colorScheme.onSurfaceVariant,
@@ -152,7 +156,7 @@ class StepUptime extends StatelessWidget {
                     children: [
                       if (day == 'Monday')
                         Text(
-                          'CLOSING TIME',
+                          AppLocale.closingTime.getString(context),
                           style: TextStyle(
                             fontSize: 10,
                             color: theme.colorScheme.onSurfaceVariant,
@@ -199,7 +203,7 @@ class StepUptime extends StatelessWidget {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        'Jam buka harus lebih awal dari jam tutup!',
+                        AppLocale.scheduleError.getString(context),
                         style: TextStyle(
                           color: theme.colorScheme.onErrorContainer,
                           fontSize: 12,
@@ -303,7 +307,7 @@ class StepUptime extends StatelessWidget {
         if (!isValid) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Jam buka harus lebih awal dari jam tutup!'),
+              content: Text(AppLocale.scheduleError.getString(context)),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );

@@ -6,6 +6,8 @@ import 'package:autofinder/controllers/location_picker_controller.dart';
 import 'package:autofinder/models/location_picker_result.dart';
 import 'package:autofinder/widgets/map_search_bar.dart';
 import 'package:autofinder/widgets/bottom_location_card.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   final double initialLat;
@@ -74,7 +76,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             title: Text(
-              'Pick Location',
+              AppLocale.pickLocation.getString(context),
               style: TextStyle(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -85,7 +87,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               TextButton(
                 onPressed: _confirmLocation,
                 child: Text(
-                  'Confirm',
+                  AppLocale.confirm.getString(context),
                   style: TextStyle(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.bold,

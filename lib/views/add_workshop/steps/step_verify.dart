@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:autofinder/provider/add_workshop_provider.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepVerify extends StatelessWidget {
   const StepVerify({super.key});
@@ -14,7 +16,7 @@ class StepVerify extends StatelessWidget {
     if (provider.images.length >= 4) {
       _showWarningSnackBar(
         context,
-        'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+        AppLocale.minPhotoWarning.getString(context),
       );
       return;
     }
@@ -33,7 +35,7 @@ class StepVerify extends StatelessWidget {
       if (provider.images.length >= 4) {
         _showWarningSnackBar(
           context,
-          'Maksimal 4 foto. Hapus foto yang ada untuk menambah yang baru.',
+          AppLocale.maxPhotoWarning.getString(context),
         );
         return;
       }
@@ -68,7 +70,7 @@ class StepVerify extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Documentation',
+          AppLocale.documentationTitle.getString(context),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -77,7 +79,7 @@ class StepVerify extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Upload high-resolution images of your facility.',
+          AppLocale.documentationSubtitle.getString(context),
           style: TextStyle(
             fontSize: 14,
             color: theme.colorScheme.onSurfaceVariant,
@@ -96,7 +98,7 @@ class StepVerify extends StatelessWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              '${provider.images.length}/4 foto',
+              '${provider.images.length}/4 ${AppLocale.photoCount.getString(context)}',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -197,7 +199,7 @@ class StepVerify extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'ADD PHOTO',
+                          AppLocale.addPhoto.getString(context), // 🟢 Diubah
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -215,7 +217,7 @@ class StepVerify extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              'Belum ada foto yang diunggah.',
+              AppLocale.noPhotoUploaded.getString(context),
               style: TextStyle(
                 fontSize: 13,
                 color: theme.colorScheme.onSurfaceVariant.withAlpha(180),

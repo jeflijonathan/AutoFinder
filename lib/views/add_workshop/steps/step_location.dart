@@ -1,3 +1,4 @@
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/models/location_picker_result.dart';
 import 'package:autofinder/widgets/header.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:autofinder/provider/add_workshop_provider.dart';
 import 'package:autofinder/views/add_workshop/screens/location_picker_screen.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class StepLocation extends StatelessWidget {
   const StepLocation({super.key});
@@ -45,8 +47,8 @@ class StepLocation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Header(
-          title: "Deployment Location",
-          subtitle: 'Pin your workshop on our technical network map.',
+          title: AppLocale.locationTitle.getString(context), // 🟢 Diubah
+          subtitle: AppLocale.locationSubtitle.getString(context), // 🟢 Diubah
         ),
 
         const SizedBox(height: 32),
@@ -126,7 +128,7 @@ class StepLocation extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'Change',
+                          AppLocale.locationChange.getString(context),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -157,7 +159,9 @@ class StepLocation extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    provider.address.isEmpty ? 'Address' : provider.address,
+                    provider.address.isEmpty
+                        ? AppLocale.locationAddressHint.getString(context)
+                        : provider.address,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
