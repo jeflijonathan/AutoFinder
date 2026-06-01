@@ -1,6 +1,5 @@
 import 'package:autofinder/widgets/translated_text.dart';
 import 'package:flutter/material.dart';
-// Tambahkan import lokalisasi berikut
 import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 

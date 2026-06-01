@@ -7,6 +7,9 @@ import 'package:autofinder/widgets/dialogs/content_dialog.dart';
 import 'package:autofinder/widgets/dialogs/header_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// Tambahkan import lokalisasi Anda
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class ReviewsSection extends StatelessWidget {
   final DetailPageProvider provider;
@@ -40,7 +43,9 @@ class ReviewsSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Client Reviews',
+              AppLocale.clientReviews.getString(
+                context,
+              ), // "Client Reviews" Terlokalisasi
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -52,7 +57,9 @@ class ReviewsSection extends StatelessWidget {
                   vertical: 8.0,
                 ),
                 child: Text(
-                  'Sudah diulas ✓',
+                  AppLocale.alreadyReviewed.getString(
+                    context,
+                  ), // "Sudah diulas ✓" Terlokalisasi
                   style: TextStyle(
                     color: Colors.green.shade600,
                     fontWeight: FontWeight.bold,
@@ -66,7 +73,9 @@ class ReviewsSection extends StatelessWidget {
                     ? null
                     : () => _showAddCommentDialog(context, userId, userName),
                 child: Text(
-                  'Tulis Ulasan',
+                  AppLocale.writeReview.getString(
+                    context,
+                  ), // "Tulis Ulasan" Terlokalisasi
                   style: TextStyle(
                     color: userId.isEmpty ? Colors.grey : Colors.blue.shade700,
                     fontWeight: FontWeight.bold,
@@ -79,10 +88,12 @@ class ReviewsSection extends StatelessWidget {
         if (state.isLoading)
           const Center(child: CircularProgressIndicator())
         else if (state.comments.isEmpty)
-          const Center(
+          Center(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text('Belum ada ulasan. Jadilah yang pertama!'),
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                AppLocale.noReviewsYet.getString(context),
+              ), // "Belum ada ulasan..." Terlokalisasi
             ),
           )
         else
@@ -112,7 +123,7 @@ class ReviewsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
+                backgroundColor: isDark ? Colors.grey : Colors.grey,
                 child: Icon(
                   Icons.person,
                   color: isDark ? Colors.white54 : Colors.black54,
@@ -130,9 +141,11 @@ class ReviewsSection extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Pelanggan',
+                      AppLocale.customerLabel.getString(
+                        context,
+                      ), // "Pelanggan" Terlokalisasi
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: isDark ? Colors.grey : Colors.grey,
                       ),
                     ),
                   ],
@@ -151,7 +164,7 @@ class ReviewsSection extends StatelessWidget {
                 PopupMenuButton<String>(
                   icon: Icon(
                     Icons.more_vert,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? Colors.grey : Colors.grey,
                   ),
                   onSelected: (value) {
                     if (value == 'edit') {
@@ -162,15 +175,19 @@ class ReviewsSection extends StatelessWidget {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'edit',
-                          child: Text('Edit'),
+                          child: Text(
+                            AppLocale.editLabel.getString(context),
+                          ), // "Edit" Terlokalisasi
                         ),
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'delete',
                           child: Text(
-                            'Hapus',
-                            style: TextStyle(color: Colors.red),
+                            AppLocale.deleteLabel.getString(
+                              context,
+                            ), // "Hapus" Terlokalisasi
+                            style: const TextStyle(color: Colors.red),
                           ),
                         ),
                       ],
@@ -178,17 +195,22 @@ class ReviewsSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            '"${comment.description}"',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isDark ? Colors.grey[300] : Colors.grey[800],
-              fontStyle: FontStyle.italic,
-              height: 1.5,
-            ),
+          FutureBuilder<String>(
+            future: AppLocale.translateLive(comment.description),
+            builder: (context, snapshot) {
+              final translatedText = snapshot.data ?? comment.description;
+              return Text(
+                '"$translatedText"',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: isDark ? Colors.grey : Colors.grey,
+                  fontStyle: FontStyle.italic,
+                  height: 1.5,
+                ),
+              );
+            },
           ),
           const SizedBox(height: 8),
 
-          // Balas Button
           if (currentUserId.isNotEmpty)
             Align(
               alignment: Alignment.centerLeft,
@@ -200,7 +222,7 @@ class ReviewsSection extends StatelessWidget {
                   currentUserName,
                 ),
                 child: Text(
-                  'Balas',
+                  AppLocale.replyLabel.getString(context),
                   style: TextStyle(
                     color: isDark ? Colors.blue.shade300 : Colors.blue.shade700,
                     fontWeight: FontWeight.bold,
@@ -221,9 +243,7 @@ class ReviewsSection extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8.0),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF2C2C2C)
-                          : Colors.grey[100],
+                      color: isDark ? const Color(0xFF2C2C2C) : Colors.grey,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -235,11 +255,18 @@ class ReviewsSection extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          replyMap['text'] ?? '',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(height: 1.4),
+                        FutureBuilder<String>(
+                          future: AppLocale.translateLive(replyMap['text'] ?? ''),
+                          builder: (context, snapshot) {
+                            final translatedReply = snapshot.data ?? replyMap['text'] ?? '';
+                            return Text(
+                              translatedReply,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(height: 1.4),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -249,7 +276,7 @@ class ReviewsSection extends StatelessWidget {
             ),
 
           const SizedBox(height: 16),
-          Divider(color: isDark ? Colors.grey[800] : Colors.grey[200]),
+          Divider(color: isDark ? Colors.grey : Colors.grey),
         ],
       ),
     );
@@ -260,19 +287,22 @@ class ReviewsSection extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Hapus Ulasan?'),
-          content: const Text('Ulasan yang dihapus tidak dapat dikembalikan.'),
+          title: Text(AppLocale.deleteReviewTitle.getString(context)),
+          content: Text(AppLocale.deleteReviewContent.getString(context)),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Batal'),
+              child: Text(AppLocale.cancelLabel.getString(context)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 controller.deleteComment(provider, workshopId, commentId);
               },
-              child: const Text('Hapus', style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocale.deleteLabel.getString(context),
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
@@ -301,8 +331,8 @@ class ReviewsSection extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const HeaderDialog(
-                    title: 'Tulis Ulasan',
+                  HeaderDialog(
+                    title: AppLocale.writeReview.getString(context),
                     icon: Icons.rate_review_outlined,
                   ),
                   ContentDialog(
@@ -310,7 +340,11 @@ class ReviewsSection extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Beri penilaian pengalaman Anda'),
+                        Text(
+                          AppLocale.rateExperienceInstruction.getString(
+                            context,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -338,12 +372,13 @@ class ReviewsSection extends StatelessWidget {
                             controller: textController,
                             maxLines: 4,
                             decoration: InputDecoration(
-                              hintText:
-                                  'Ceritakan pengalaman Anda di bengkel ini...',
+                              hintText: AppLocale.reviewFieldHint.getString(
+                                context,
+                              ),
                               filled: true,
                               fillColor: isDark
                                   ? const Color(0xFF2C2C2C)
-                                  : Colors.grey[100],
+                                  : Colors.grey,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -393,9 +428,9 @@ class ReviewsSection extends StatelessWidget {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text(
-                                    'Kirim Ulasan',
-                                    style: TextStyle(
+                                : Text(
+                                    AppLocale.submitReview.getString(context),
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -431,8 +466,8 @@ class ReviewsSection extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const HeaderDialog(
-                    title: 'Edit Ulasan',
+                  HeaderDialog(
+                    title: AppLocale.editReviewTitle.getString(context),
                     icon: Icons.edit_note,
                   ),
                   ContentDialog(
@@ -440,7 +475,11 @@ class ReviewsSection extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Perbarui penilaian Anda'),
+                        Text(
+                          AppLocale.updateExperienceInstruction.getString(
+                            context,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -468,12 +507,13 @@ class ReviewsSection extends StatelessWidget {
                             controller: textController,
                             maxLines: 4,
                             decoration: InputDecoration(
-                              hintText:
-                                  'Ceritakan pengalaman Anda di bengkel ini...',
+                              hintText: AppLocale.reviewFieldHint.getString(
+                                context,
+                              ),
                               filled: true,
                               fillColor: isDark
                                   ? const Color(0xFF2C2C2C)
-                                  : Colors.grey[100],
+                                  : Colors.grey,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -522,9 +562,9 @@ class ReviewsSection extends StatelessWidget {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text(
-                                    'Simpan Perubahan',
-                                    style: TextStyle(
+                                : Text(
+                                    AppLocale.saveChanges.getString(context),
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -564,7 +604,10 @@ class ReviewsSection extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const HeaderDialog(title: 'Balas Ulasan', icon: Icons.reply),
+                  HeaderDialog(
+                    title: AppLocale.replyReviewTitle.getString(context),
+                    icon: Icons.reply,
+                  ),
                   ContentDialog(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -576,11 +619,13 @@ class ReviewsSection extends StatelessWidget {
                             controller: textController,
                             maxLines: 3,
                             decoration: InputDecoration(
-                              hintText: 'Ketik balasan Anda...',
+                              hintText: AppLocale.replyFieldHint.getString(
+                                context,
+                              ),
                               filled: true,
                               fillColor: isDark
                                   ? const Color(0xFF2C2C2C)
-                                  : Colors.grey[100],
+                                  : Colors.grey,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -630,9 +675,9 @@ class ReviewsSection extends StatelessWidget {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text(
-                                    'Kirim Balasan',
-                                    style: TextStyle(
+                                : Text(
+                                    AppLocale.sendReply.getString(context),
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),

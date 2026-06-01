@@ -1,3 +1,4 @@
+import 'package:autofinder/config/app_colors.dart';
 import 'package:autofinder/views/detail/widget/full_screen_map.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -30,12 +31,8 @@ class _LocationSectionState extends State<LocationSection> {
   void initState() {
     super.initState();
 
-    // Mendapatkan kode bahasa aktif saat ini untuk disematkan ke URL Google Maps
     final String currentLangCode =
         FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
-
-    // Perbaikan typo '1{widget.latitude}' menjadi '${widget.latitude}'
-    // Penambahan '&hl=$currentLangCode' agar antarmuka peta mengikuti bahasa aplikasi
     final htmlContent =
         '''
     <!DOCTYPE html>
@@ -59,7 +56,6 @@ class _LocationSectionState extends State<LocationSection> {
   }
 
   void _openFullScreenMap() {
-    // Menggunakan terjemahan untuk Judul halaman Peta Penuh
     final String mapTitle = AppLocale.location.getString(context);
 
     Navigator.push(
@@ -75,7 +71,6 @@ class _LocationSectionState extends State<LocationSection> {
   }
 
   Future<void> _launchMaps() async {
-    // Perbaikan format URL maps universal yang kompatibel baik di Android maupun iOS
     final url = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=${widget.latitude},${widget.longitude}',
     );
@@ -110,9 +105,7 @@ class _LocationSectionState extends State<LocationSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocale.locationTitle.getString(
-              context,
-            ), // "LOCATION" Terlokalisasi
+            AppLocale.locationTitle.getString(context),
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
@@ -121,7 +114,6 @@ class _LocationSectionState extends State<LocationSection> {
           ),
           const SizedBox(height: 16),
 
-          // Google Maps Iframe via WebView
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: SizedBox(
@@ -130,7 +122,7 @@ class _LocationSectionState extends State<LocationSection> {
               child: Stack(
                 children: [
                   WebViewWidget(controller: _controller),
-                  // Transparent overlay to catch taps
+
                   Positioned.fill(
                     child: Material(
                       color: Colors.transparent,
@@ -176,9 +168,7 @@ class _LocationSectionState extends State<LocationSection> {
                     size: 20,
                   ),
                   label: Text(
-                    AppLocale.getDirections.getString(
-                      context,
-                    ), // "Get Directions" Terlokalisasi
+                    AppLocale.getDirections.getString(context),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -207,15 +197,20 @@ class _LocationSectionState extends State<LocationSection> {
                     size: 20,
                   ),
                   label: Text(
-                    AppLocale.call.getString(context), // "Call" Terlokalisasi
+                    AppLocale.call.getString(context),
                     style: TextStyle(
                       color: isDark ? Colors.white : Colors.black87,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    backgroundColor: isDark ? Colors.grey : Colors.grey,
+                    backgroundColor: isDark
+                        ? AppColors.bgDark
+                        : AppColors.bgLight,
                     padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: BorderSide(
+                      color: isDark ? Colors.white : Colors.black12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

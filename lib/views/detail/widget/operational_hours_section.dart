@@ -4,7 +4,6 @@ import 'package:autofinder/widgets/dialogs/content_dialog.dart';
 import 'package:autofinder/widgets/dialogs/header_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-// Import modul lokalisasi aplikasi Anda
 import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
@@ -102,7 +101,6 @@ class OperationalHoursSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                // Menampilkan nama hari yang otomatis diterjemahkan oleh DateFormat
                 todayNameFormatted.isNotEmpty
                     ? todayNameFormatted.toUpperCase() +
                           todayNameFormatted.substring(1)
@@ -305,7 +303,7 @@ class OperationalHoursSection extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: const Text(
-                                      '•', // Menggunakan simbol dot penanda hari aktif agar netral dari bias bahasa/kata
+                                      '•',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,
