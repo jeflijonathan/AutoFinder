@@ -5,12 +5,15 @@ class CommentarModel {
   final String description;
   final String workshopId;
 
+  final List<dynamic> replies;
+
   CommentarModel({
     required this.uid,
     required this.userId,
     required this.rating,
     required this.description,
     required this.workshopId,
+    this.replies = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +22,8 @@ class CommentarModel {
       'userId': userId,
       'rating': rating,
       'description': description,
+      'workshopId': workshopId,
+      'replies': replies,
     };
   }
 
@@ -29,6 +34,7 @@ class CommentarModel {
       rating: map['rating'] ?? 0,
       description: map['description'] ?? '',
       workshopId: map['workshopId'] ?? '',
+      replies: map['replies'] ?? [],
     );
   }
 }

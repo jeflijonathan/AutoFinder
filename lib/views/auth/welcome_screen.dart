@@ -18,14 +18,19 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      GoogleSignIn.instance.initialize(
+        clientId: '241898456284-joqlu7pbg9k3hql9sadmi7qdurdql1fj.apps.googleusercontent.com',
+      );
+    });
+  }
 
   void _handleGoogleSignIn() async {
     try {
-      await _googleSignIn.initialize();
-
-      final GoogleSignInAccount? googleUser = await _googleSignIn
-          .authenticate();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn.instance.authenticate();
 
       if (googleUser == null) return;
 
