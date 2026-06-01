@@ -50,7 +50,7 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Stack(
       children: [
         // Background Image
@@ -68,16 +68,17 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
                   },
                   itemBuilder: (context, index) {
                     return Image.memory(
-                      base64Decode(widget.workshop.image[index].split(',').last),
+                      base64Decode(
+                        widget.workshop.image[index].split(',').last,
+                      ),
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          _buildPlaceholder(),
                     );
                   },
                 )
               : _buildPlaceholder(),
         ),
-        
-        // Gradient Overlay
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
@@ -93,8 +94,6 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
             ),
           ),
         ),
-
-        // Page Indicator - vertical on right side
         if (widget.workshop.image.length > 1)
           Positioned(
             right: 12,
@@ -121,8 +120,6 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
               ),
             ),
           ),
-
-        // Content Overlay
         Positioned(
           bottom: 24,
           left: 24,
@@ -157,7 +154,9 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
                         ),
                       ],
                     ),
-                    child: _FavoriteButton(workshopId: widget.workshop.uid ?? ''),
+                    child: _FavoriteButton(
+                      workshopId: widget.workshop.uid ?? '',
+                    ),
                   ),
                 ],
               ),
@@ -167,21 +166,25 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
                   const Icon(Icons.star, color: Colors.orange, size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    widget.workshop.averageRating > 0 ? widget.workshop.averageRating.toStringAsFixed(1) : '0.0',
+                    widget.workshop.averageRating > 0
+                        ? widget.workshop.averageRating.toStringAsFixed(1)
+                        : '0.0',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Icon(Icons.location_on_outlined, color: Colors.white70, size: 18),
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.white70,
+                    size: 18,
+                  ),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       widget.workshop.address,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                      ),
+                      style: const TextStyle(color: Colors.white70),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -191,7 +194,6 @@ class _HeaderImageSectionState extends State<HeaderImageSection> {
             ],
           ),
         ),
-        
       ],
     );
   }

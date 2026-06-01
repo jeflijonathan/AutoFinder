@@ -7,14 +7,20 @@ import 'package:autofinder/views/detail/provider/detail_page_provider.dart';
 class DetailController {
   final WorkshopService service = WorkshopService();
 
-  Future<void> fetchComments(DetailPageProvider provider, String workshopId) async {
+  Future<void> fetchComments(
+    DetailPageProvider provider,
+    String workshopId,
+  ) async {
     provider.updateState(isLoading: true);
 
     service.getComments(
       workshopId,
       ServiceCallback(
         onSuccessData: (data) {
-          provider.updateState(comments: data as List<CommentarModel>, isLoading: false);
+          provider.updateState(
+            comments: data as List<CommentarModel>,
+            isLoading: false,
+          );
         },
         onErrorData: (error) {
           provider.updateState(isLoading: false);
@@ -27,7 +33,10 @@ class DetailController {
     );
   }
 
-  Future<void> fetchWorkshop(DetailPageProvider provider, String workshopId) async {
+  Future<void> fetchWorkshop(
+    DetailPageProvider provider,
+    String workshopId,
+  ) async {
     final workshop = await service.getWorkshopById(workshopId);
     if (workshop != null) {
       provider.updateState(workshop: workshop);
@@ -43,10 +52,14 @@ class DetailController {
     String description,
   ) async {
     try {
-      // Cek apakah user sudah pernah review
-      final hasReviewed = await service.checkUserHasReviewed(workshopId, userId);
+      final hasReviewed = await service.checkUserHasReviewed(
+        workshopId,
+        userId,
+      );
       if (hasReviewed) {
-        SnackbarHelper.showError('Anda sudah memberikan ulasan untuk bengkel ini.');
+        SnackbarHelper.showError(
+          'Anda sudah memberikan ulasan untuk bengkel ini.',
+        );
         return false;
       }
 
@@ -62,7 +75,6 @@ class DetailController {
       await service.addComment(comment);
       SnackbarHelper.showSuccess('Ulasan berhasil dikirim!');
 
-      // Refresh comments and rating
       await fetchComments(provider, workshopId);
       await fetchWorkshop(provider, workshopId);
       return true;
