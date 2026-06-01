@@ -2,6 +2,8 @@ import 'package:autofinder/views/detail/widget/full_screen_map.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class LocationSection extends StatefulWidget {
   final String address;
@@ -27,7 +29,15 @@ class _LocationSectionState extends State<LocationSection> {
   @override
   void initState() {
     super.initState();
-    final htmlContent = '''
+
+    // Mendapatkan kode bahasa aktif saat ini untuk disematkan ke URL Google Maps
+    final String currentLangCode =
+        FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
+
+    // Perbaikan typo '1{widget.latitude}' menjadi '${widget.latitude}'
+    // Penambahan '&hl=$currentLangCode' agar antarmuka peta mengikuti bahasa aplikasi
+    final htmlContent =
+        '''
     <!DOCTYPE html>
     <html>
       <head>
@@ -38,31 +48,37 @@ class _LocationSectionState extends State<LocationSection> {
         </style>
       </head>
       <body>
-        <iframe src="https://maps.google.com/maps?q=${widget.latitude},${widget.longitude}&hl=en&z=15&output=embed" allowfullscreen></iframe>
+        <iframe src="https://maps.google.com/maps?q=${widget.latitude},${widget.longitude}&hl=$currentLangCode&z=15&output=embed" allowfullscreen></iframe>
       </body>
     </html>
     ''';
-    
+
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadHtmlString(htmlContent);
   }
 
   void _openFullScreenMap() {
+    // Menggunakan terjemahan untuk Judul halaman Peta Penuh
+    final String mapTitle = AppLocale.location.getString(context);
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => FullScreenMap(
           latitude: widget.latitude,
           longitude: widget.longitude,
-          title: 'Workshop Location',
+          title: mapTitle,
         ),
       ),
     );
   }
 
   Future<void> _launchMaps() async {
-    final url = Uri.parse('https://maps.google.com/maps?daddr=${widget.latitude},${widget.longitude}');
+    // Perbaikan format URL maps universal yang kompatibel baik di Android maupun iOS
+    final url = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=${widget.latitude},${widget.longitude}',
+    );
     try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } catch (e) {
@@ -94,15 +110,17 @@ class _LocationSectionState extends State<LocationSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'LOCATION',
+            AppLocale.locationTitle.getString(
+              context,
+            ), // "LOCATION" Terlokalisasi
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              color: isDark ? Colors.grey : Colors.grey,
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Google Maps Iframe via WebView
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -116,44 +134,52 @@ class _LocationSectionState extends State<LocationSection> {
                   Positioned.fill(
                     child: Material(
                       color: Colors.transparent,
-                      child: InkWell(
-                        onTap: _openFullScreenMap,
-                      ),
+                      child: InkWell(onTap: _openFullScreenMap),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.location_on_outlined, color: Colors.blue.shade700, size: 20),
+              Icon(
+                Icons.location_on_outlined,
+                color: Colors.blue.shade700,
+                size: 20,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   widget.address,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: isDark ? Colors.grey[300] : Colors.grey[700],
+                    color: isDark ? Colors.grey : Colors.grey,
                     height: 1.4,
                   ),
                 ),
               ),
             ],
           ),
-          
+
           const SizedBox(height: 24),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _launchMaps,
-                  icon: const Icon(Icons.directions, color: Colors.white, size: 20),
-                  label: const Text(
-                    'Get Directions',
-                    style: TextStyle(
+                  icon: const Icon(
+                    Icons.directions,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  label: Text(
+                    AppLocale.getDirections.getString(
+                      context,
+                    ), // "Get Directions" Terlokalisasi
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -175,16 +201,20 @@ class _LocationSectionState extends State<LocationSection> {
               Expanded(
                 child: TextButton.icon(
                   onPressed: _launchPhone,
-                  icon: Icon(Icons.phone, color: isDark ? Colors.white : Colors.black87, size: 20),
+                  icon: Icon(
+                    Icons.phone,
+                    color: isDark ? Colors.white : Colors.black87,
+                    size: 20,
+                  ),
                   label: Text(
-                    'Call',
+                    AppLocale.call.getString(context), // "Call" Terlokalisasi
                     style: TextStyle(
                       color: isDark ? Colors.white : Colors.black87,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                    backgroundColor: isDark ? Colors.grey : Colors.grey,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

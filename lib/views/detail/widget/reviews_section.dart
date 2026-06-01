@@ -26,12 +26,10 @@ class ReviewsSection extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final state = provider.state;
 
-    // Ambil userId dari AuthController
     final currentUser = context.watch<AuthController>().currentUser;
     final userId = currentUser?.uid ?? '';
     final userName = currentUser?.username ?? 'Unknown User';
 
-    // Cek apakah user sudah me-review dari list comments yang sudah di-fetch
     final alreadyReviewed =
         userId.isNotEmpty && state.comments.any((c) => c.userId == userId);
 
@@ -89,7 +87,8 @@ class ReviewsSection extends StatelessWidget {
           )
         else
           ...state.comments.map(
-            (comment) => _buildReviewCard(context, comment, isDark, userId, userName),
+            (comment) =>
+                _buildReviewCard(context, comment, isDark, userId, userName),
           ),
       ],
     );
@@ -150,7 +149,10 @@ class ReviewsSection extends StatelessWidget {
               ),
               if (isOwner)
                 PopupMenuButton<String>(
-                  icon: Icon(Icons.more_vert, color: isDark ? Colors.grey[400] : Colors.grey[600]),
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  ),
                   onSelected: (value) {
                     if (value == 'edit') {
                       _showEditCommentDialog(context, comment);
@@ -158,16 +160,20 @@ class ReviewsSection extends StatelessWidget {
                       _showDeleteDialog(context, comment.uid!);
                     }
                   },
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'edit',
-                      child: Text('Edit'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Text('Hapus', style: TextStyle(color: Colors.red)),
-                    ),
-                  ],
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'edit',
+                          child: Text('Edit'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'delete',
+                          child: Text(
+                            'Hapus',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
                 ),
             ],
           ),
@@ -181,13 +187,18 @@ class ReviewsSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          
+
           // Balas Button
           if (currentUserId.isNotEmpty)
             Align(
               alignment: Alignment.centerLeft,
               child: InkWell(
-                onTap: () => _showReplyDialog(context, comment.uid!, currentUserId, currentUserName),
+                onTap: () => _showReplyDialog(
+                  context,
+                  comment.uid!,
+                  currentUserId,
+                  currentUserName,
+                ),
                 child: Text(
                   'Balas',
                   style: TextStyle(
@@ -198,8 +209,7 @@ class ReviewsSection extends StatelessWidget {
                 ),
               ),
             ),
-            
-          // List Replies
+
           if (comment.replies.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 24.0),
@@ -211,7 +221,9 @@ class ReviewsSection extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8.0),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
+                      color: isDark
+                          ? const Color(0xFF2C2C2C)
+                          : Colors.grey[100],
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -219,16 +231,15 @@ class ReviewsSection extends StatelessWidget {
                       children: [
                         Text(
                           replyMap['userName'] ?? 'Unknown',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           replyMap['text'] ?? '',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            height: 1.4,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(height: 1.4),
                         ),
                       ],
                     ),
@@ -236,7 +247,7 @@ class ReviewsSection extends StatelessWidget {
                 }).toList(),
               ),
             ),
-            
+
           const SizedBox(height: 16),
           Divider(color: isDark ? Colors.grey[800] : Colors.grey[200]),
         ],
@@ -269,7 +280,11 @@ class ReviewsSection extends StatelessWidget {
     );
   }
 
-  void _showAddCommentDialog(BuildContext context, String userId, String userName) {
+  void _showAddCommentDialog(
+    BuildContext context,
+    String userId,
+    String userName,
+  ) {
     int selectedRating = 5;
     final textController = TextEditingController();
     bool isSubmitting = false;
@@ -528,7 +543,12 @@ class ReviewsSection extends StatelessWidget {
     );
   }
 
-  void _showReplyDialog(BuildContext context, String commentId, String userId, String userName) {
+  void _showReplyDialog(
+    BuildContext context,
+    String commentId,
+    String userId,
+    String userName,
+  ) {
     final textController = TextEditingController();
     bool isSubmitting = false;
 
@@ -544,10 +564,7 @@ class ReviewsSection extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const HeaderDialog(
-                    title: 'Balas Ulasan',
-                    icon: Icons.reply,
-                  ),
+                  const HeaderDialog(title: 'Balas Ulasan', icon: Icons.reply),
                   ContentDialog(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
