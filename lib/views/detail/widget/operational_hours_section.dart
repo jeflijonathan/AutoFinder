@@ -20,17 +20,14 @@ class OperationalHoursSection extends StatelessWidget {
 
     final now = DateTime.now();
 
-    // Mendapatkan kode bahasa yang aktif saat ini (en, id, ja, zh, atau th)
     final String currentLangCode =
         FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
 
-    // Mengonversi hari ini ke format nama hari penuh sesuai bahasa aktif aplikasi
     final String todayNameFormatted = DateFormat(
       'EEEE',
       currentLangCode,
     ).format(now);
 
-    // Fallback nama hari mentah untuk mencocokkan data database/API (antisipasi jika data API berupa teks Inggris atau Indo)
     final String todayEnglish = DateFormat(
       'EEEE',
       'en',
@@ -239,7 +236,6 @@ class OperationalHoursSection extends StatelessWidget {
                               schedule.openTime.toLowerCase() == 'tutup' ||
                               schedule.openTime.toLowerCase() == 'closed';
 
-                          // Mengonversi teks string nama hari dari API agar tampil sesuai bahasa aktif user
                           String displayDay = schedule.day.toUpperCase().trim();
                           try {
                             final tempDays = [
@@ -253,7 +249,6 @@ class OperationalHoursSection extends StatelessWidget {
                             ];
                             final tempIndex = tempDays.indexOf(currentDayStr);
                             if (tempIndex != -1) {
-                              // Mengambil index tanggal yang tepat untuk simulasi nama hari
                               final tempDate = DateTime(2026, 6, tempIndex + 1);
                               displayDay = DateFormat(
                                 'EEEE',
