@@ -159,4 +159,9 @@ const Map<String, dynamic> langEN = {
   'phoneInvalid': 'Invalid phone number format',
   'passwordConfirmEmpty': 'Please confirm your password',
   'loading': "Please wait...",
+  'featuredWorkshops': 'Featured Workshops',
+  'workshopNearby': 'Workshop Nearby',
+  'findSpecialist': 'Find a specialist workshop...',
+  'viewAll': 'View all',
+  'workshopDetails': 'Workshop Details',
 };

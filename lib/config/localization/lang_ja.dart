@@ -151,4 +151,9 @@ const Map<String, dynamic> langJA = {
   'phoneInvalid': '電話番号の形式が正しくありません',
   'passwordConfirmEmpty': 'パスワードの確認を入力してください',
   'loadingMessage': '少々お待ちください...',
+  'featuredWorkshops': '最も人気',
+  'workshopNearby': '近くのワークショップ',
+  'findSpecialist': '専門のワークショップを探す...',
+  'viewAll': 'すべて表示',
+  'workshopDetails': 'ワークショップの詳細',
 };

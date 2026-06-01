@@ -159,4 +159,9 @@ const Map<String, dynamic> langTH = {
   'phoneInvalid': 'รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง',
   'passwordConfirmEmpty': 'กรุณากรอกเพื่อยืนยันรหัสผ่านของคุณ',
   'loadingMessage': 'โปรดรอสักครู่...',
+  'featuredWorkshops': 'ยอดนิยมที่สุด',
+  'workshopNearby': 'อู่ซ่อมรถใกล้เคียง',
+  'findSpecialist': 'ค้นหาอู่ซ่อมรถเฉพาะทาง...',
+  'viewAll': 'ดูทั้งหมด',
+  'workshopDetails': 'รายละเอียดเวิร์กชอป',
 };

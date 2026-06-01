@@ -143,4 +143,9 @@ const Map<String, dynamic> langZH = {
   'phoneInvalid': '电话号码格式不正确',
   'passwordConfirmEmpty': '请填写确认密码',
   'loadingMessage': '请稍候...',
+  'featuredWorkshops': '最受欢迎',
+  'workshopNearby': '附近维修厂',
+  'findSpecialist': '寻找专业维修厂...',
+  'viewAll': '查看全部',
+  'workshopDetails': '车间详细信息',
 };

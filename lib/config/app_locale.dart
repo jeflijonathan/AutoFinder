@@ -100,7 +100,7 @@ mixin AppLocale {
   static const String changeProfilePhoto = 'changeProfilePhoto';
   static const String takePhotoCamera = 'takePhotoCamera';
   static const String chooseFromGallery = 'chooseFromGallery';
-
+  static const String detailWorkshop = 'detailWorkshop';
   static const String addWorkshopTitle = 'addWorkshopTitle';
 
   static const String identityTitle = 'identityTitle';
@@ -162,6 +162,11 @@ mixin AppLocale {
   static const String phoneInvalid = 'phoneInvalid';
   static const String passwordConfirmEmpty = 'passwordConfirmEmpty';
   static const String loadingMessage = 'loadingMessage';
+
+  static const String featuredWorkshops = 'featuredWorkshops';
+  static const String workshopNearby = 'workshopNearby';
+  static const String findSpecialist = 'findSpecialist';
+  static const String viewAll = 'viewAll';
 
   static const Map<String, dynamic> EN = langEN;
   static const Map<String, dynamic> ID = langID;

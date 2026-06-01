@@ -160,4 +160,9 @@ const Map<String, dynamic> langID = {
   'phoneInvalid': 'Format nomor telepon tidak valid',
   'passwordConfirmEmpty': 'Silakan konfirmasi kata sandi Anda',
   'loadingMessage': 'Mohon tunggu...',
+  'featuredWorkshops': 'Paling populer',
+  'workshopNearby': 'Bengkel Terdekat',
+  'findSpecialist': 'Cari bengkel spesialis...',
+  'viewAll': 'Lihat semua',
+  'workshopDetails': 'Detail Bengkel',
 };
