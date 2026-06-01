@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class ServicesSection extends StatelessWidget {
   final List<String> services;
@@ -16,20 +18,31 @@ class ServicesSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Available Services',
+          AppLocale.availableServices.getString(context),
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 16),
         ...services.map((service) {
-          // Provide some default icons based on keywords in the service string
           IconData icon = Icons.build_circle_outlined;
           final s = service.toLowerCase();
-          if (s.contains('oil')) icon = Icons.oil_barrel_outlined;
-          if (s.contains('brake')) icon = Icons.album_outlined;
-          if (s.contains('align') || s.contains('chassis')) icon = Icons.compare_arrows;
-          if (s.contains('ecu') || s.contains('remap') || s.contains('tune')) icon = Icons.memory;
+
+          if (s.contains('oil') || s.contains('oli') || s.contains('オイル')) {
+            icon = Icons.oil_barrel_outlined;
+          }
+          if (s.contains('brake') || s.contains('rem') || s.contains('ブレーキ')) {
+            icon = Icons.album_outlined;
+          }
+          if (s.contains('align') ||
+              s.contains('chassis') ||
+              s.contains('kaki') ||
+              s.contains('sasis')) {
+            icon = Icons.compare_arrows;
+          }
+          if (s.contains('ecu') || s.contains('remap') || s.contains('tune')) {
+            icon = Icons.memory;
+          }
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
@@ -41,7 +54,7 @@ class ServicesSection extends StatelessWidget {
                   child: Text(
                     service,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: isDark ? Colors.grey[300] : Colors.grey[800],
+                      color: isDark ? Colors.grey : Colors.grey,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
