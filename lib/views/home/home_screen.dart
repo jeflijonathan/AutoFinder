@@ -1,5 +1,9 @@
+import 'package:autofinder/views/home/controller/home_controller.dart';
+import 'package:autofinder/views/home/controller/home_filter_controller.dart';
+import 'package:autofinder/views/home/provider/home_page_provider.dart';
+import 'package:autofinder/views/home/widget/search_bar.dart';
+import 'package:autofinder/views/home/widget/workshop_list.dart';
 import 'package:autofinder/widgets/buttom_nav_bar.dart';
-import 'package:autofinder/widgets/header.dart';
 import 'package:autofinder/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -15,31 +19,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String contohTeks = "-";
+  final HomeController homeController = HomeController();
+  final HomeFilterController filterController = HomeFilterController();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    ambilTerjemahan();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final homeProvider = context.read<HomePageProvider>();
+      homeController.fetchDataRequest(homeProvider);
       context.read<LocationController>().fetchUserLocation();
     });
   }
 
-  void ambilTerjemahan() async {
-    String hasil = await AppLocale.translateLive("test");
-
-    if (!mounted) return;
-
-    setState(() {
-      contohTeks = hasil;
-    });
+  @override
+  void dispose() {
+    searchController.dispose();
+    filterController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final homeProvider = context.watch<HomePageProvider>();
+    final workshopList = homeProvider.state.data;
+    final searchValue = homeProvider.state.params.values.toLowerCase();
+    final filteredWorkshops = workshopList.where((w) {
+      return w.title.toLowerCase().contains(searchValue) ||
+          w.specialization.toLowerCase().contains(searchValue);
+    }).toList();
+
+    final featuredList = filteredWorkshops.take(3).toList();
+    final nearbyList = filteredWorkshops;
 
     return Scaffold(
       appBar: const Navbar(),
@@ -61,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         theme.scaffoldBackgroundColor,
                       ]
                     : [
-                        const Color(0xFFEFF3F9),
-                        const Color(0xFFF6F8FC),
+                        const Color(0xFFF9FAFB),
+                        const Color(0xFFF3F4F6),
                         Colors.white,
                       ],
               ),
@@ -76,23 +90,106 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: 16.0,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(contohTeks),
-
-                      Consumer<LocationController>(
-                        builder: (context, locationController, child) {
-                          return Header(
-                            fontSizeTitle: 32,
-                            fontSizeSubtitle: 16,
-                            title: AppLocale.findWorkshop.getString(context),
-                            subtitle: locationController.isLoading
-                                ? AppLocale.detectingLocation.getString(context)
-                                : '${AppLocale.locationLabel.getString(context)}${locationController.currentCity}',
-                          );
-                        },
+                      Text(
+                        AppLocale.findWorkshop.getString(context),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF1E293B),
+                        ),
                       ),
+                      const SizedBox(height: 24),
+
+                      HomeSearchBar(
+                        controller: searchController,
+                        hintText: AppLocale.findSpecialist.getString(context),
+                        readOnly: true,
+                        onTap: () => Navigator.pushNamed(context, '/search'),
+                        onChanged: (value) =>
+                            filterController.onSearchChanged(context, value),
+                      ),
+                      const SizedBox(height: 32),
+
+                      if (homeProvider.state.isLoading)
+                        const Center(child: CircularProgressIndicator())
+                      else ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocale.featuredWorkshops.getString(context),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                AppLocale.viewAll.getString(context),
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        WorkshopList(
+                          workshops: featuredList,
+                          listType: WorkshopListType.featured,
+                        ),
+                        const SizedBox(height: 32),
+
+                        // Workshop Nearby Section
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocale.workshopNearby.getString(context),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.grey[800]
+                                    : Colors.grey[200],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                Icons.map_outlined,
+                                size: 20,
+                                color: isDark
+                                    ? Colors.grey[300]
+                                    : Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        Consumer<LocationController>(
+                          builder: (context, locationController, child) {
+                            if (locationController.isLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            // Normally you'd filter nearbyList based on locationController.currentPosition
+                            // For this UI implementation, we show the list directly.
+                            return WorkshopList(
+                              workshops: nearbyList,
+                              listType: WorkshopListType.nearby,
+                            );
+                          },
+                        ),
+                      ],
                     ],
                   ),
                 ),
