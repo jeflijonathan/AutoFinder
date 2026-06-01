@@ -39,7 +39,7 @@ class ButtonNavBar extends StatelessWidget {
               context,
               index: 1,
               icon: Icons.search_outlined,
-              route: AppRoutes.home,
+              route: AppRoutes.search,
               label: AppLocale.search.getString(context).toUpperCase(),
             ),
             _buildNavItem(
