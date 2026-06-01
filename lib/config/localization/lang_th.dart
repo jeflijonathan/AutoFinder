@@ -163,5 +163,5 @@ const Map<String, dynamic> langTH = {
   'workshopNearby': 'อู่ซ่อมรถใกล้เคียง',
   'findSpecialist': 'ค้นหาอู่ซ่อมรถเฉพาะทาง...',
   'viewAll': 'ดูทั้งหมด',
-  'workshopDetails': 'รายละเอียดเวิร์กชอป',
+  'detailWorkshop': 'รายละเอียดเวิร์กชอป',
 };

@@ -163,5 +163,5 @@ const Map<String, dynamic> langEN = {
   'workshopNearby': 'Workshop Nearby',
   'findSpecialist': 'Find a specialist workshop...',
   'viewAll': 'View all',
-  'workshopDetails': 'Workshop Details',
+  'detailWorkshop': 'Workshop Details',
 };

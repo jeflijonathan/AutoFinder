@@ -155,5 +155,5 @@ const Map<String, dynamic> langJA = {
   'workshopNearby': '近くのワークショップ',
   'findSpecialist': '専門のワークショップを探す...',
   'viewAll': 'すべて表示',
-  'workshopDetails': 'ワークショップの詳細',
+  'detailWorkshop': 'ワークショップの詳細',
 };

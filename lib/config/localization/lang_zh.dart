@@ -147,5 +147,5 @@ const Map<String, dynamic> langZH = {
   'workshopNearby': '附近维修厂',
   'findSpecialist': '寻找专业维修厂...',
   'viewAll': '查看全部',
-  'workshopDetails': '车间详细信息',
+  'detailWorkshop': '车间详细信息',
 };
