@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           obscureText: true,
                           isPassword: true,
-                          validator: (value) => LoginForm.email(context)(value),
+                          validator: (value) => LoginForm.password(context)(value),
                         ),
                         const SizedBox(height: 36),
 

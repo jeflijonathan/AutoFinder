@@ -17,7 +17,8 @@ mixin AppLocale {
   static const String confirmPasswordHint = 'confirmPasswordHint';
   static const String updatePassword = 'updatePassword';
   static const String accountSecuritySettings = 'accountSecuritySettings';
-
+  static const String getDirections = 'getDirections';
+  static const String call = 'call';
   static const String personalInformation = 'personalInformation';
   static const String personalInfoDesc = 'personalInfoDesc';
   static const String fullName = 'fullName';
@@ -46,6 +47,26 @@ mixin AppLocale {
   static const String search = 'search';
   static const String post = 'post';
   static const String favorite = 'favorite';
+  static const String clientReviews = 'clientReviews';
+  static const String alreadyReviewed = 'alreadyReviewed';
+  static const String writeReview = 'writeReview';
+  static const String noReviewsYet = 'noReviewsYet';
+  static const String customerLabel = 'customerLabel';
+  static const String editLabel = 'editLabel';
+  static const String deleteLabel = 'deleteLabel';
+  static const String replyLabel = 'replyLabel';
+  static const String cancelLabel = 'cancelLabel';
+  static const String deleteReviewTitle = 'deleteReviewTitle';
+  static const String deleteReviewContent = 'deleteReviewContent';
+  static const String rateExperienceInstruction = 'rateExperienceInstruction';
+  static const String updateExperienceInstruction =
+      'updateExperienceInstruction';
+  static const String reviewFieldHint = 'reviewFieldHint';
+  static const String submitReview = 'submitReview';
+  static const String editReviewTitle = 'editReviewTitle';
+  static const String replyReviewTitle = 'replyReviewTitle';
+  static const String replyFieldHint = 'replyFieldHint';
+  static const String sendReply = 'sendReply';
 
   // Auth
   static const String back = 'back';
@@ -100,7 +121,7 @@ mixin AppLocale {
   static const String changeProfilePhoto = 'changeProfilePhoto';
   static const String takePhotoCamera = 'takePhotoCamera';
   static const String chooseFromGallery = 'chooseFromGallery';
-
+  static const String detailWorkshop = 'detailWorkshop';
   static const String addWorkshopTitle = 'addWorkshopTitle';
 
   static const String identityTitle = 'identityTitle';
@@ -162,6 +183,15 @@ mixin AppLocale {
   static const String phoneInvalid = 'phoneInvalid';
   static const String passwordConfirmEmpty = 'passwordConfirmEmpty';
   static const String loadingMessage = 'loadingMessage';
+
+  static const String featuredWorkshops = 'featuredWorkshops';
+  static const String workshopNearby = 'workshopNearby';
+  static const String findSpecialist = 'findSpecialist';
+  static const String viewAll = 'viewAll';
+  static const String aboutTheWorkshop = 'aboutTheWorkshop';
+  static const String oprationalHours = 'oprationalHours';
+  static const String availableServices = 'availableServices';
+  static const String location = 'location';
 
   static const Map<String, dynamic> EN = langEN;
   static const Map<String, dynamic> ID = langID;
