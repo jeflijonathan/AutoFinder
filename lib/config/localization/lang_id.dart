@@ -165,4 +165,8 @@ const Map<String, dynamic> langID = {
   'findSpecialist': 'Cari bengkel spesialis...',
   'viewAll': 'Lihat semua',
   'detailWorkshop': 'Detail Bengkel',
+  'aboutTheWorkshop': 'Tentang Bengkel',
+  'oprationalHours': 'Jam Operasional',
+  'availableServices': 'Layanan yang Tersedia',
+  'location': 'Lokasi',
 };

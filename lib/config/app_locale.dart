@@ -167,6 +167,10 @@ mixin AppLocale {
   static const String workshopNearby = 'workshopNearby';
   static const String findSpecialist = 'findSpecialist';
   static const String viewAll = 'viewAll';
+  static const String aboutTheWorkshop = 'aboutTheWorkshop';
+  static const String oprationalHours = 'oprationalHours';
+  static const String availableServices = 'availableServices';
+  static const String location = 'location';
 
   static const Map<String, dynamic> EN = langEN;
   static const Map<String, dynamic> ID = langID;
