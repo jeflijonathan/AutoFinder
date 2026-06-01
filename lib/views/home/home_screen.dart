@@ -144,7 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 32),
 
-                        // Workshop Nearby Section
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -181,8 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            // Normally you'd filter nearbyList based on locationController.currentPosition
-                            // For this UI implementation, we show the list directly.
+
                             return WorkshopList(
                               workshops: nearbyList,
                               listType: WorkshopListType.nearby,
