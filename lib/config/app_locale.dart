@@ -47,6 +47,26 @@ mixin AppLocale {
   static const String search = 'search';
   static const String post = 'post';
   static const String favorite = 'favorite';
+  static const String clientReviews = 'clientReviews';
+  static const String alreadyReviewed = 'alreadyReviewed';
+  static const String writeReview = 'writeReview';
+  static const String noReviewsYet = 'noReviewsYet';
+  static const String customerLabel = 'customerLabel';
+  static const String editLabel = 'editLabel';
+  static const String deleteLabel = 'deleteLabel';
+  static const String replyLabel = 'replyLabel';
+  static const String cancelLabel = 'cancelLabel';
+  static const String deleteReviewTitle = 'deleteReviewTitle';
+  static const String deleteReviewContent = 'deleteReviewContent';
+  static const String rateExperienceInstruction = 'rateExperienceInstruction';
+  static const String updateExperienceInstruction =
+      'updateExperienceInstruction';
+  static const String reviewFieldHint = 'reviewFieldHint';
+  static const String submitReview = 'submitReview';
+  static const String editReviewTitle = 'editReviewTitle';
+  static const String replyReviewTitle = 'replyReviewTitle';
+  static const String replyFieldHint = 'replyFieldHint';
+  static const String sendReply = 'sendReply';
 
   // Auth
   static const String back = 'back';
