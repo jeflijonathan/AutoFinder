@@ -47,7 +47,6 @@ class DetailController {
     DetailPageProvider provider,
     String workshopId,
     String userId,
-    String userName,
     int rating,
     String description,
   ) async {
@@ -66,7 +65,6 @@ class DetailController {
       final comment = CommentarModel(
         uid: null,
         userId: userId,
-        userName: userName,
         rating: rating,
         description: description,
         workshopId: workshopId,
@@ -125,13 +123,11 @@ class DetailController {
     String workshopId,
     String commentId,
     String userId,
-    String userName,
     String text,
   ) async {
     try {
       final reply = {
         'userId': userId,
-        'userName': userName,
         'text': text,
         'timestamp': DateTime.now().toIso8601String(),
       };
