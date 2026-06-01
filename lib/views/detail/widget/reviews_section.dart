@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:autofinder/services/users/users_service.dart';
 import 'package:autofinder/services/workshop/commentar_model.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/views/detail/controller/detail_controller.dart';
@@ -10,6 +12,23 @@ import 'package:provider/provider.dart';
 // Tambahkan import lokalisasi Anda
 import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+
+ImageProvider? _getProfileImage(String? imageString) {
+  if (imageString == null || imageString.trim().isEmpty) return null;
+  try {
+    if (imageString.startsWith('http')) {
+      return NetworkImage(imageString);
+    } else {
+      String base64Str = imageString;
+      if (imageString.contains('base64,')) {
+        base64Str = imageString.split('base64,').last;
+      }
+      return MemoryImage(base64Decode(base64Str));
+    }
+  } catch (e) {
+    return null;
+  }
+}
 
 class ReviewsSection extends StatelessWidget {
   final DetailPageProvider provider;
@@ -31,7 +50,6 @@ class ReviewsSection extends StatelessWidget {
 
     final currentUser = context.watch<AuthController>().currentUser;
     final userId = currentUser?.uid ?? '';
-    final userName = currentUser?.username ?? 'Unknown User';
 
     final alreadyReviewed =
         userId.isNotEmpty && state.comments.any((c) => c.userId == userId);
@@ -71,7 +89,7 @@ class ReviewsSection extends StatelessWidget {
               TextButton(
                 onPressed: userId.isEmpty
                     ? null
-                    : () => _showAddCommentDialog(context, userId, userName),
+                    : () => _showAddCommentDialog(context, userId),
                 child: Text(
                   AppLocale.writeReview.getString(
                     context,
@@ -99,7 +117,7 @@ class ReviewsSection extends StatelessWidget {
         else
           ...state.comments.map(
             (comment) =>
-                _buildReviewCard(context, comment, isDark, userId, userName),
+                _buildReviewCard(context, comment, isDark, userId),
           ),
       ],
     );
@@ -110,47 +128,63 @@ class ReviewsSection extends StatelessWidget {
     CommentarModel comment,
     bool isDark,
     String currentUserId,
-    String currentUserName,
   ) {
     final isOwner = currentUserId.isNotEmpty && comment.userId == currentUserId;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+      child: FutureBuilder(
+        future: UsersService().getDataById('users', comment.userId),
+        builder: (context, snapshot) {
+          String displayName = 'Unknown User';
+          String? displayProfileUrl;
+
+          if (snapshot.hasData && snapshot.data?.status == "success") {
+            final userData = snapshot.data!.data;
+            if (userData != null) {
+              displayName = userData['username'] ?? displayName;
+              displayProfileUrl = userData['profilePictureUrl'] ?? displayProfileUrl;
+            }
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: isDark ? Colors.grey : Colors.grey,
-                child: Icon(
-                  Icons.person,
-                  color: isDark ? Colors.white54 : Colors.black54,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      comment.userName,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: isDark ? Colors.grey : Colors.white,
+                    backgroundImage: _getProfileImage(displayProfileUrl),
+                    child: _getProfileImage(displayProfileUrl) == null
+                        ? Icon(
+                            Icons.person,
+                            color: isDark ? Colors.white54 : Colors.black54,
+                          )
+                        : null,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          displayName,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          AppLocale.customerLabel.getString(
+                            context,
+                          ), // "Pelanggan" Terlokalisasi
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: isDark ? Colors.grey : Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      AppLocale.customerLabel.getString(
-                        context,
-                      ), // "Pelanggan" Terlokalisasi
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isDark ? Colors.grey : Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
@@ -219,7 +253,6 @@ class ReviewsSection extends StatelessWidget {
                   context,
                   comment.uid!,
                   currentUserId,
-                  currentUserName,
                 ),
                 child: Text(
                   AppLocale.replyLabel.getString(context),
@@ -239,37 +272,75 @@ class ReviewsSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: comment.replies.map((r) {
                   final replyMap = r as Map<String, dynamic>;
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 8.0),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF2C2C2C) : Colors.grey,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          replyMap['userName'] ?? 'Unknown',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                  return FutureBuilder(
+                    future: UsersService().getDataById('users', replyMap['userId'] ?? ''),
+                    builder: (context, snapshot) {
+                      String displayName = replyMap['userName'] ?? 'Unknown';
+                      String? displayProfileUrl;
+
+                      if (snapshot.hasData && snapshot.data?.status == "success") {
+                        final userData = snapshot.data!.data;
+                        if (userData != null) {
+                          displayName = userData['username'] ?? displayName;
+                          displayProfileUrl = userData['profilePictureUrl'];
+                        }
+                      }
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8.0),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        const SizedBox(height: 4),
-                        FutureBuilder<String>(
-                          future: AppLocale.translateLive(replyMap['text'] ?? ''),
-                          builder: (context, snapshot) {
-                            final translatedReply = snapshot.data ?? replyMap['text'] ?? '';
-                            return Text(
-                              translatedReply,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(height: 1.4),
-                            );
-                          },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 14,
+                              backgroundColor: isDark ? Colors.grey : Colors.white,
+                              backgroundImage: _getProfileImage(displayProfileUrl),
+                              child: _getProfileImage(displayProfileUrl) == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 16,
+                                      color: isDark ? Colors.white54 : Colors.black54,
+                                    )
+                                  : null,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    displayName,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  FutureBuilder<String>(
+                                    future: AppLocale.translateLive(
+                                      replyMap['text'] ?? '',
+                                    ),
+                                    builder: (context, translationSnapshot) {
+                                      final translatedReply =
+                                          translationSnapshot.data ?? replyMap['text'] ?? '';
+                                      return Text(
+                                        translatedReply,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall?.copyWith(height: 1.4),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   );
                 }).toList(),
               ),
@@ -278,9 +349,11 @@ class ReviewsSection extends StatelessWidget {
           const SizedBox(height: 16),
           Divider(color: isDark ? Colors.grey : Colors.grey),
         ],
-      ),
-    );
-  }
+      );
+    },
+  ),
+);
+}
 
   void _showDeleteDialog(BuildContext context, String commentId) {
     showDialog(
@@ -313,7 +386,6 @@ class ReviewsSection extends StatelessWidget {
   void _showAddCommentDialog(
     BuildContext context,
     String userId,
-    String userName,
   ) {
     int selectedRating = 5;
     final textController = TextEditingController();
@@ -402,7 +474,6 @@ class ReviewsSection extends StatelessWidget {
                                       provider,
                                       workshopId,
                                       userId,
-                                      userName,
                                       selectedRating,
                                       textController.text.trim(),
                                     );
@@ -587,7 +658,6 @@ class ReviewsSection extends StatelessWidget {
     BuildContext context,
     String commentId,
     String userId,
-    String userName,
   ) {
     final textController = TextEditingController();
     bool isSubmitting = false;
@@ -625,7 +695,7 @@ class ReviewsSection extends StatelessWidget {
                               filled: true,
                               fillColor: isDark
                                   ? const Color(0xFF2C2C2C)
-                                  : Colors.grey,
+                                  : Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -650,7 +720,6 @@ class ReviewsSection extends StatelessWidget {
                                       workshopId,
                                       commentId,
                                       userId,
-                                      userName,
                                       textController.text.trim(),
                                     );
 
