@@ -9,10 +9,7 @@ class FilterDialog extends StatelessWidget {
       title: const Text('Filter Workshops'),
       content: const Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Filter options will go here'),
-          // TODO: Implement actual filters based on specialization, services etc.
-        ],
+        children: [Text('Filter options will go here')],
       ),
       actions: [
         TextButton(

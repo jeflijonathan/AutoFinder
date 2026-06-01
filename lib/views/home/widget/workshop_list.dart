@@ -56,7 +56,6 @@ class WorkshopList extends StatelessWidget {
     }
   }
 
-  /// Haversine formula — returns distance in km between two lat/lng points.
   double? _calculateDistance(
     double? userLat,
     double? userLng,
@@ -67,7 +66,8 @@ class WorkshopList extends StatelessWidget {
     const earthRadius = 6371.0;
     final dLat = _toRad(workshopLat - userLat);
     final dLng = _toRad(workshopLng - userLng);
-    final a = sin(dLat / 2) * sin(dLat / 2) +
+    final a =
+        sin(dLat / 2) * sin(dLat / 2) +
         cos(_toRad(userLat)) *
             cos(_toRad(workshopLat)) *
             sin(dLng / 2) *
@@ -89,7 +89,11 @@ class WorkshopList extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final loc = context.watch<LocationController>();
     final distance = _calculateDistance(
-        loc.latitude, loc.longitude, item.latitude, item.longitude);
+      loc.latitude,
+      loc.longitude,
+      item.latitude,
+      item.longitude,
+    );
 
     return GestureDetector(
       onTap: () {
@@ -115,13 +119,18 @@ class WorkshopList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
               child: item.image.isNotEmpty
                   ? Image.memory(
                       base64Decode(
-                          (item.image.length > 1 ? item.image[1] : item.image.first)
-                              .split(',')
-                              .last),
+                        (item.image.length > 1
+                                ? item.image[1]
+                                : item.image.first)
+                            .split(',')
+                            .last,
+                      ),
                       height: 140,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -189,7 +198,11 @@ class WorkshopList extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final loc = context.watch<LocationController>();
     final distance = _calculateDistance(
-        loc.latitude, loc.longitude, item.latitude, item.longitude);
+      loc.latitude,
+      loc.longitude,
+      item.latitude,
+      item.longitude,
+    );
 
     return GestureDetector(
       onTap: () {
@@ -219,9 +232,12 @@ class WorkshopList extends StatelessWidget {
                 child: item.image.isNotEmpty
                     ? Image.memory(
                         base64Decode(
-                            (item.image.length > 1 ? item.image[1] : item.image.first)
-                                .split(',')
-                                .last),
+                          (item.image.length > 1
+                                  ? item.image[1]
+                                  : item.image.first)
+                              .split(',')
+                              .last,
+                        ),
                         height: 80,
                         width: 80,
                         fit: BoxFit.cover,

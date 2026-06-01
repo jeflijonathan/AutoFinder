@@ -6,14 +6,6 @@ class HomeFilterController extends ChangeNotifier {
   void onSearchChanged(BuildContext context, String value) {
     final provider = context.read<HomePageProvider>();
     final currentParams = provider.state.params;
-    provider.updateState(
-      params: currentParams.copyWith(values: value),
-    );
-    // You could trigger a local filtering here if data is already fetched
-  }
-
-  void openFilterDialog(BuildContext context) {
-    // Show filter dialog implementation
-    // showDialog(context: context, builder: (context) => FilterDialog());
+    provider.updateState(params: currentParams.copyWith(values: value));
   }
 }
