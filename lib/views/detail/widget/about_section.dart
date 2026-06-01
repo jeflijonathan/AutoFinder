@@ -1,5 +1,8 @@
 import 'package:autofinder/widgets/translated_text.dart';
 import 'package:flutter/material.dart';
+// Tambahkan import lokalisasi berikut
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class AboutSection extends StatelessWidget {
   final String description;
@@ -22,7 +25,7 @@ class AboutSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'About the Workshop',
+            AppLocale.aboutTheWorkshop.getString(context),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -33,7 +36,7 @@ class AboutSection extends StatelessWidget {
                 ? description
                 : 'No description available for this workshop.',
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: isDark ? Colors.grey[400] : Colors.grey[700],
+              color: isDark ? Colors.grey : Colors.grey,
               height: 1.6,
             ),
           ),
