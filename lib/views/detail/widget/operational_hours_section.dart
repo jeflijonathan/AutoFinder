@@ -4,6 +4,9 @@ import 'package:autofinder/widgets/dialogs/content_dialog.dart';
 import 'package:autofinder/widgets/dialogs/header_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+// Import modul lokalisasi aplikasi Anda
+import 'package:autofinder/config/app_locale.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class OperationalHoursSection extends StatelessWidget {
   final List<OperationTimeModel>? operationTimes;
@@ -17,46 +20,35 @@ class OperationalHoursSection extends StatelessWidget {
 
     final now = DateTime.now();
 
-    // Sesuaikan nama hari dengan format yang dikembalikan oleh API Anda.
-    // Jika API mengembalikan bahasa Inggris (MONDAY, TUESDAY), ubah isi array ini ke bahasa Inggris.
-    final dayNames = [
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu',
-    ];
+    // Mendapatkan kode bahasa yang aktif saat ini (en, id, ja, zh, atau th)
+    final String currentLangCode =
+        FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
 
-    final todayName = dayNames[now.weekday - 1];
+    // Mengonversi hari ini ke format nama hari penuh sesuai bahasa aktif aplikasi
+    final String todayNameFormatted = DateFormat(
+      'EEEE',
+      currentLangCode,
+    ).format(now);
+
+    // Fallback nama hari mentah untuk mencocokkan data database/API (antisipasi jika data API berupa teks Inggris atau Indo)
+    final String todayEnglish = DateFormat(
+      'EEEE',
+      'en',
+    ).format(now).toLowerCase();
+    final String todayIndonesian = DateFormat(
+      'EEEE',
+      'id',
+    ).format(now).toLowerCase();
 
     OperationTimeModel? todaySchedule;
     if (operationTimes != null) {
       try {
-        todaySchedule = operationTimes!.firstWhere(
-          (element) =>
-              element.day.trim().toLowerCase() == todayName.toLowerCase(),
-        );
+        todaySchedule = operationTimes!.firstWhere((element) {
+          final dayRaw = element.day.trim().toLowerCase();
+          return dayRaw == todayEnglish || dayRaw == todayIndonesian;
+        });
       } catch (e) {
-        // Jika tidak ketemu berdasarkan bahasa Indonesia, mari coba fallback pencarian ke bahasa Inggris
-        try {
-          final englishDays = [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday',
-            'sunday',
-          ];
-          final todayEnglish = englishDays[now.weekday - 1];
-          todaySchedule = operationTimes!.firstWhere(
-            (element) => element.day.trim().toLowerCase() == todayEnglish,
-          );
-        } catch (_) {
-          todaySchedule = null;
-        }
+        todaySchedule = null;
       }
     }
 
@@ -80,7 +72,7 @@ class OperationalHoursSection extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Operational Hours',
+                AppLocale.oprationalHours.getString(context),
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -96,7 +88,9 @@ class OperationalHoursSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  isOpen ? 'Open' : 'Closed',
+                  isOpen
+                      ? AppLocale.scheduleOpen.getString(context)
+                      : AppLocale.scheduleClosed.getString(context),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
@@ -111,15 +105,20 @@ class OperationalHoursSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                todayName,
+                // Menampilkan nama hari yang otomatis diterjemahkan oleh DateFormat
+                todayNameFormatted.isNotEmpty
+                    ? todayNameFormatted.toUpperCase() +
+                          todayNameFormatted.substring(1)
+                    : todayNameFormatted,
                 style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
               ),
               Text(
                 todaySchedule != null &&
                         todaySchedule.openTime.isNotEmpty &&
-                        todaySchedule.openTime.toLowerCase() != 'tutup'
+                        todaySchedule.openTime.toLowerCase() != 'tutup' &&
+                        todaySchedule.openTime.toLowerCase() != 'closed'
                     ? '${todaySchedule.openTime} - ${todaySchedule.closeTime}'
-                    : 'Tutup',
+                    : AppLocale.scheduleClosed.getString(context),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -130,21 +129,26 @@ class OperationalHoursSection extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: InkWell(
-              onTap: () => _showScheduleDialog(context, todayName),
+              onTap: () => _showScheduleDialog(
+                context,
+                todayEnglish,
+                todayIndonesian,
+                currentLangCode,
+              ),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey : Colors.white,
+                  color: isDark ? const Color(0xFF334155) : Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isDark ? Colors.grey! : Colors.grey!,
+                    color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                   ),
                 ),
                 child: Text(
-                  'view more...',
+                  AppLocale.viewAll.getString(context),
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -160,22 +164,20 @@ class OperationalHoursSection extends StatelessWidget {
   bool _checkIsOpen(OperationTimeModel? schedule) {
     if (schedule == null ||
         schedule.openTime.isEmpty ||
-        schedule.openTime.toLowerCase() == 'tutup') {
+        schedule.openTime.toLowerCase() == 'tutup' ||
+        schedule.openTime.toLowerCase() == 'closed') {
       return false;
     }
 
     try {
       final now = DateTime.now();
-
       final cleanOpenTime = schedule.openTime.trim();
       final cleanCloseTime = schedule.closeTime.trim();
 
-      // Mendeteksi apakah data dari API mengandung teks AM atau PM
       final bool is12HourFormat =
           cleanOpenTime.toLowerCase().contains('am') ||
           cleanOpenTime.toLowerCase().contains('pm');
 
-      // Menggunakan pola "hh:mm a" jika terdeteksi format 12 jam (AM/PM)
       final DateFormat format = is12HourFormat
           ? DateFormat("hh:mm a")
           : DateFormat("HH:mm");
@@ -183,24 +185,26 @@ class OperationalHoursSection extends StatelessWidget {
       final openTime = format.parse(cleanOpenTime);
       final closeTime = format.parse(cleanCloseTime);
 
-      // Konversi semua waktu ke total menit sejak tengah malam (00:00)
       final currentMinutes = (now.hour * 60) + now.minute;
       final openMinutes = (openTime.hour * 60) + openTime.minute;
       final closeMinutes = (closeTime.hour * 60) + closeTime.minute;
 
-      // Antisipasi jika ada jadwal operasional melewati tengah malam (misal 17:00 - 02:00)
       if (closeMinutes < openMinutes) {
         return currentMinutes >= openMinutes || currentMinutes < closeMinutes;
       }
 
-      // Kondisi normal (misal 08:00 AM hingga 05:00 PM)
       return currentMinutes >= openMinutes && currentMinutes < closeMinutes;
     } catch (e) {
       return false;
     }
   }
 
-  void _showScheduleDialog(BuildContext context, String todayName) {
+  void _showScheduleDialog(
+    BuildContext context,
+    String todayEnglish,
+    String todayIndonesian,
+    String currentLangCode,
+  ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -211,8 +215,8 @@ class OperationalHoursSection extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const HeaderDialog(
-                title: 'Operational Hours',
+              HeaderDialog(
+                title: AppLocale.oprationalHours.getString(context),
                 icon: Icons.access_time_rounded,
               ),
               ContentDialog(
@@ -224,29 +228,39 @@ class OperationalHoursSection extends StatelessWidget {
                     : Column(
                         mainAxisSize: MainAxisSize.min,
                         children: operationTimes!.map((schedule) {
-                          // Pencarian kecocokan hari ini di dalam Dialog (Mendukung Indo & Inggris)
                           final String currentDayStr = schedule.day
                               .trim()
                               .toLowerCase();
-                          final englishDays = [
-                            'monday',
-                            'tuesday',
-                            'wednesday',
-                            'thursday',
-                            'friday',
-                            'saturday',
-                            'sunday',
-                          ];
-                          final todayEnglish =
-                              englishDays[DateTime.now().weekday - 1];
-
                           final isToday =
-                              currentDayStr == todayName.toLowerCase() ||
-                              currentDayStr == todayEnglish;
-
+                              currentDayStr == todayEnglish ||
+                              currentDayStr == todayIndonesian;
                           final isClosed =
                               schedule.openTime.isEmpty ||
-                              schedule.openTime.toLowerCase() == 'tutup';
+                              schedule.openTime.toLowerCase() == 'tutup' ||
+                              schedule.openTime.toLowerCase() == 'closed';
+
+                          // Mengonversi teks string nama hari dari API agar tampil sesuai bahasa aktif user
+                          String displayDay = schedule.day.toUpperCase().trim();
+                          try {
+                            final tempDays = [
+                              'monday',
+                              'tuesday',
+                              'wednesday',
+                              'thursday',
+                              'friday',
+                              'saturday',
+                              'sunday',
+                            ];
+                            final tempIndex = tempDays.indexOf(currentDayStr);
+                            if (tempIndex != -1) {
+                              // Mengambil index tanggal yang tepat untuk simulasi nama hari
+                              final tempDate = DateTime(2026, 6, tempIndex + 1);
+                              displayDay = DateFormat(
+                                'EEEE',
+                                currentLangCode,
+                              ).format(tempDate).toUpperCase();
+                            }
+                          } catch (_) {}
 
                           return Container(
                             margin: const EdgeInsets.only(bottom: 8),
@@ -266,7 +280,7 @@ class OperationalHoursSection extends StatelessWidget {
                                 color: isClosed
                                     ? Colors.red.shade200
                                     : (isDark
-                                          ? Colors.grey!
+                                          ? Colors.grey.shade700
                                           : Colors.grey.shade300),
                               ),
                               borderRadius: BorderRadius.circular(8),
@@ -274,7 +288,7 @@ class OperationalHoursSection extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  schedule.day.toUpperCase().trim(),
+                                  displayDay,
                                   style: TextStyle(
                                     color: isClosed
                                         ? Colors.red
@@ -292,11 +306,11 @@ class OperationalHoursSection extends StatelessWidget {
                                       vertical: 2,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.black,
+                                      color: theme.primaryColor,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: const Text(
-                                      'HARI INI',
+                                      '•', // Menggunakan simbol dot penanda hari aktif agar netral dari bias bahasa/kata
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,
@@ -308,7 +322,9 @@ class OperationalHoursSection extends StatelessWidget {
                                 const Spacer(),
                                 Text(
                                   isClosed
-                                      ? 'Tutup'
+                                      ? AppLocale.scheduleClosed.getString(
+                                          context,
+                                        )
                                       : '${schedule.openTime} - ${schedule.closeTime}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
