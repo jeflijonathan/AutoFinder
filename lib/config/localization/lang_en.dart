@@ -168,4 +168,6 @@ const Map<String, dynamic> langEN = {
   'oprationalHours': 'Operational Hours',
   'availableServices': 'Available Services',
   'location': 'Location',
+  'getDirections': 'Get Directions',
+  'call': 'Call',
 };

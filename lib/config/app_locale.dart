@@ -17,7 +17,8 @@ mixin AppLocale {
   static const String confirmPasswordHint = 'confirmPasswordHint';
   static const String updatePassword = 'updatePassword';
   static const String accountSecuritySettings = 'accountSecuritySettings';
-
+  static const String getDirections = 'getDirections';
+  static const String call = 'call';
   static const String personalInformation = 'personalInformation';
   static const String personalInfoDesc = 'personalInfoDesc';
   static const String fullName = 'fullName';

@@ -169,4 +169,6 @@ const Map<String, dynamic> langID = {
   'oprationalHours': 'Jam Operasional',
   'availableServices': 'Layanan yang Tersedia',
   'location': 'Lokasi',
+  'getDirections': 'Dapatkan Arah',
+  'call': 'Panggil',
 };

@@ -168,4 +168,6 @@ const Map<String, dynamic> langTH = {
   'oprationalHours': 'เวลาทำการ',
   'availableServices': 'บริการที่สามารถทำได้',
   'location': 'ที่อยู่',
+  'getDirections': 'ขอเส้นทาง',
+  'call': 'โทร',
 };

@@ -160,4 +160,6 @@ const Map<String, dynamic> langJA = {
   'oprationalHours': '営業時間',
   'availableServices': '利用可能なサービス',
   'location': '位置情報',
+  'getDirections': '道順を取得',
+  'call': '電話',
 };

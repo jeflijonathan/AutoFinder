@@ -152,4 +152,6 @@ const Map<String, dynamic> langZH = {
   'oprationalHours': '营业时间',
   'availableServices': '可用服务',
   'location': '位置',
+  'getDirections': '获取路线',
+  'call': '致电',
 };
