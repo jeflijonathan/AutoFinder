@@ -1,3 +1,5 @@
+import 'package:autofinder/utils/snackbar.dart';
+import 'package:autofinder/views/home/provider/home_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +68,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthController()),
         ChangeNotifierProvider(create: (_) => LocationController()),
         ChangeNotifierProvider(create: (_) => LocationPickerController()),
+        ChangeNotifierProvider(create: (_) => HomePageProvider()),
       ],
       child: const MyApp(),
     ),
@@ -98,6 +101,7 @@ class _MyAppState extends State<MyApp> {
       valueListenable: themeNotifier,
       builder: (_, ThemeMode currentMode, __) {
         return MaterialApp(
+          scaffoldMessengerKey: SnackbarHelper.messengerKey,
           title: 'Auto Finder',
           debugShowCheckedModeBanner: false,
           themeMode: currentMode,
