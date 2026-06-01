@@ -102,8 +102,7 @@ class OperationalHoursSection extends StatelessWidget {
             children: [
               Text(
                 todayNameFormatted.isNotEmpty
-                    ? todayNameFormatted.toUpperCase() +
-                          todayNameFormatted.substring(1)
+                    ? '${todayNameFormatted[0].toUpperCase()}${todayNameFormatted.substring(1)}'
                     : todayNameFormatted,
                 style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
               ),
