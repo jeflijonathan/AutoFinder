@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/services/workshop/workshop_model.dart';
 import 'package:autofinder/widgets/buttom_nav_bar.dart';
 import 'package:autofinder/widgets/navbar.dart';
@@ -8,6 +9,7 @@ import 'package:autofinder/views/my_post/provider/my_post_provider.dart';
 import 'package:autofinder/views/my_post/controller/my_post_controller.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/views/my_post/widgets/edit_workshop_popup.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class MyPostScreen extends StatefulWidget {
   const MyPostScreen({super.key});
@@ -33,7 +35,6 @@ class _MyPostScreenState extends State<MyPostScreen> {
     });
   }
 
-  // Dialog konfirmasi hapus agar tidak memicu UnimplementedError
   void _showDeleteConfirmation(
     BuildContext context,
     String workshopId,
@@ -43,10 +44,8 @@ class _MyPostScreenState extends State<MyPostScreen> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Hapus Workshop?'),
-          content: const Text(
-            'Apakah Anda yakin ingin menghapus postingan workshop ini?',
-          ),
+          title: Text(AppLocale.deleteTitleConfirmation.getString(context)),
+          content: Text(AppLocale.deleteConfirmation.getString(context)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
@@ -63,7 +62,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
                 );
               },
               style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: const Text('Hapus'),
+              child: Text(AppLocale.deleteLabel.getString(context)),
             ),
           ],
         );
@@ -83,7 +82,6 @@ class _MyPostScreenState extends State<MyPostScreen> {
     final currentUserId = authController.currentUser?.uid ?? "";
 
     return Scaffold(
-      // 🟢 PERBAIKAN: Kata kunci 'const' dihapus dari Navbar() agar tidak crash
       appBar: Navbar(),
       bottomNavigationBar: const ButtonNavBar(currentIndex: -1),
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -121,7 +119,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Manage My Posts',
+                        AppLocale.titleMyPost.getString(context),
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: isDark
@@ -131,7 +129,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Precision control over your service listings. Keep your workshop details accurate to ensure high customer trust and booking rates.',
+                        AppLocale.myPostDescription.getString(context),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: isDark ? Colors.grey : Colors.grey,
                         ),
@@ -208,9 +206,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: item.image.isNotEmpty
                 ? Image.memory(
-                    base64Decode(
-                      item.image.first.split(',').last,
-                    ),
+                    base64Decode(item.image.first.split(',').last),
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -326,7 +322,11 @@ class _MyPostScreenState extends State<MyPostScreen> {
           color: isDark ? const Color(0xFF334155) : const Color(0xFFF1F5F9),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(icon, size: 20, color: isDark ? Colors.white70 : const Color(0xFF475569)),
+        child: Icon(
+          icon,
+          size: 20,
+          color: isDark ? Colors.white70 : const Color(0xFF475569),
+        ),
       ),
     );
   }

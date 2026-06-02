@@ -47,8 +47,8 @@ class StepLocation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Header(
-          title: AppLocale.locationTitle.getString(context), // 🟢 Diubah
-          subtitle: AppLocale.locationSubtitle.getString(context), // 🟢 Diubah
+          title: AppLocale.locationTitle.getString(context),
+          subtitle: AppLocale.locationSubtitle.getString(context),
         ),
 
         const SizedBox(height: 32),

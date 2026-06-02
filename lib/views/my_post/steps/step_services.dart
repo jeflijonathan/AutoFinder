@@ -12,7 +12,9 @@ class StepServices extends StatelessWidget {
   const StepServices({super.key});
 
   Future<void> _showServicePicker(
-      BuildContext context, EditWorkshopProvider provider) async {
+    BuildContext context,
+    EditWorkshopProvider provider,
+  ) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -95,7 +97,6 @@ class StepServices extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          // Warna latar tombol tambah adaptif terhadap mode kegelapan sistem
           color: isDark ? primaryColor.withAlpha(20) : const Color(0xFFF0F4FF),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
