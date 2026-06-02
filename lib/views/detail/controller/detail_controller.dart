@@ -37,10 +37,26 @@ class DetailController {
     DetailPageProvider provider,
     String workshopId,
   ) async {
-    final workshop = await service.getWorkshopById(workshopId);
-    if (workshop != null) {
-      provider.updateState(workshop: workshop);
-    }
+    provider.updateState(isLoading: true);
+
+    await service.getWorkshopById(
+      workshopId,
+      ServiceCallback(
+        onSuccessData: (data) {
+          provider.updateState(
+            workshop: data,
+            isLoading: false,
+            errorMessage: "",
+          );
+        },
+        onErrorData: (error) {
+          provider.updateState(errorMessage: error, isLoading: false);
+        },
+        onFullFailed: () {
+          provider.updateState(isLoading: false);
+        },
+      ),
+    );
   }
 
   Future<bool> submitComment(
