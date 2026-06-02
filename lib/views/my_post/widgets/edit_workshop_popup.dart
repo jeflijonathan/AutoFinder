@@ -1,4 +1,5 @@
 import 'package:autofinder/config/app_colors.dart';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:autofinder/services/workshop/workshop_model.dart';
 import 'package:autofinder/views/my_post/provider/edit_workshop_provider.dart';
 import 'package:autofinder/views/my_post/provider/my_post_provider.dart';
@@ -7,6 +8,7 @@ import 'package:autofinder/views/my_post/utils/workshop_step_helper.dart';
 import 'package:autofinder/views/add_workshop/widgets/build_step_item.dart';
 import 'package:autofinder/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/widgets/header.dart';
 
@@ -48,7 +50,9 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
     final isLastStep = provider.currentStep == 4;
     final myPostController = MyPostController();
 
-    final errorMessage = await provider.processNextOrSubmit(userId, (updatedWorkshop) async {
+    final errorMessage = await provider.processNextOrSubmit(userId, (
+      updatedWorkshop,
+    ) async {
       await myPostController.updatePost(
         workshopId: updatedWorkshop.uid ?? '',
         updatedWorkshop: updatedWorkshop,
@@ -111,8 +115,8 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
                     Header(
                       fontSizeTitle: 24,
                       fontSizeSubtitle: 14,
-                      title: 'Edit Workshop',
-                      subtitle: 'Update your workshop details and information',
+                      title: AppLocale.titleEditWorkshop.getString(context),
+                      subtitle: AppLocale.descEditWorkshop.getString(context),
                     ),
                     const SizedBox(height: 24),
                     Container(
@@ -121,7 +125,9 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
                         horizontal: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isDark ? AppColors.cardBgDark : AppColors.cardBgLight,
+                        color: isDark
+                            ? AppColors.cardBgDark
+                            : AppColors.cardBgLight,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -157,14 +163,20 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
                               child: OutlinedButton(
                                 onPressed: () => provider.previousStep(),
                                 style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   side: BorderSide(
-                                    color: isDark ? const Color(0xFF333333) : const Color(0xFFE5E7EB),
+                                    color: isDark
+                                        ? const Color(0xFF333333)
+                                        : const Color(0xFFE5E7EB),
                                   ),
-                                  backgroundColor: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFE5E7EB),
+                                  backgroundColor: isDark
+                                      ? const Color(0xFF2C2C2C)
+                                      : const Color(0xFFE5E7EB),
                                 ),
                                 child: Text(
                                   'Back',
@@ -183,9 +195,14 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
                               _handleNextOrSubmit(context, provider);
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: (provider.currentStep == 3 &&
-                                      provider.getInvalidUptimeDays().isNotEmpty)
-                                  ? (isDark ? const Color(0xFF3A4B5C) : const Color(0xFFB0C4DE))
+                              backgroundColor:
+                                  (provider.currentStep == 3 &&
+                                      provider
+                                          .getInvalidUptimeDays()
+                                          .isNotEmpty)
+                                  ? (isDark
+                                        ? const Color(0xFF3A4B5C)
+                                        : const Color(0xFFB0C4DE))
                                   : theme.colorScheme.primary,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
@@ -194,7 +211,9 @@ class _EditWorkshopBottomSheet extends StatelessWidget {
                               elevation: 0,
                             ),
                             child: Text(
-                              provider.currentStep == 4 ? 'Save Changes' : 'Next',
+                              provider.currentStep == 4
+                                  ? 'Save Changes'
+                                  : 'Next',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

@@ -49,7 +49,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Batal'),
+              child: Text(AppLocale.cancel.getString(context)),
             ),
             TextButton(
               onPressed: () {
