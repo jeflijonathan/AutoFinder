@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:autofinder/views/favorite/widgets/favorite_empty_state.dart';
 import 'package:autofinder/views/favorite/widgets/favorite_workshop_card.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:autofinder/config/app_locale.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -107,7 +109,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
                         Text(
-                          'Favorite Workshops',
+                          AppLocale.titleFavoriteWorkshops.getString(context),
                           style: theme.textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: isDark
@@ -119,7 +121,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         Text(
                           _isLoadingFavorites || isLoading
                               ? ''
-                              : '${favoriteWorkshops.length} workshop tersimpan',
+                              : '${favoriteWorkshops.length} ${AppLocale.savedWorkshops.getString(context)}',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: isDark ? Colors.grey[400] : Colors.grey[600],
                           ),
