@@ -25,7 +25,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final homeProvider = context.read<HomePageProvider>();
-      // Fetch workshops if not yet loaded
       if (homeProvider.state.data.isEmpty) {
         _homeController.fetchDataRequest(homeProvider);
       }
@@ -73,7 +72,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
-          // Gradient Background (same as home)
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -108,7 +106,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        // Page Title
                         Text(
                           'Favorite Workshops',
                           style: theme.textTheme.headlineMedium?.copyWith(
@@ -124,9 +121,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               ? ''
                               : '${favoriteWorkshops.length} workshop tersimpan',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: isDark
-                                ? Colors.grey[400]
-                                : Colors.grey[600],
+                            color: isDark ? Colors.grey[400] : Colors.grey[600],
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -134,30 +129,23 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ),
                   ),
 
-                  // Content
                   if (isLoading)
                     const SliverFillRemaining(
                       child: Center(child: CircularProgressIndicator()),
                     )
                   else if (favoriteWorkshops.isEmpty)
-                    const SliverFillRemaining(
-                      child: FavoriteEmptyState(),
-                    )
+                    const SliverFillRemaining(child: FavoriteEmptyState())
                   else
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final workshop = favoriteWorkshops[index];
-                            return FavoriteWorkshopCard(
-                              workshop: workshop,
-                              onRemove: () =>
-                                  _removeFavorite(workshop.uid ?? ''),
-                            );
-                          },
-                          childCount: favoriteWorkshops.length,
-                        ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final workshop = favoriteWorkshops[index];
+                          return FavoriteWorkshopCard(
+                            workshop: workshop,
+                            onRemove: () => _removeFavorite(workshop.uid ?? ''),
+                          );
+                        }, childCount: favoriteWorkshops.length),
                       ),
                     ),
 

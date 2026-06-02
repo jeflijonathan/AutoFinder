@@ -38,10 +38,8 @@ class FavoriteWorkshopCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Section with heart button
             Stack(
               children: [
-                // Workshop Image
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(20),
@@ -49,7 +47,6 @@ class FavoriteWorkshopCard extends StatelessWidget {
                   child: _buildImage(),
                 ),
 
-                // Gradient Overlay on image
                 Positioned.fill(
                   child: ClipRRect(
                     borderRadius: const BorderRadius.vertical(
@@ -70,7 +67,6 @@ class FavoriteWorkshopCard extends StatelessWidget {
                   ),
                 ),
 
-                // Specialization Badge
                 if (workshop.specialization.isNotEmpty)
                   Positioned(
                     bottom: 12,
@@ -96,7 +92,6 @@ class FavoriteWorkshopCard extends StatelessWidget {
                     ),
                   ),
 
-                // Favorite (Remove) Button
                 Positioned(
                   top: 12,
                   right: 12,
@@ -127,13 +122,11 @@ class FavoriteWorkshopCard extends StatelessWidget {
               ],
             ),
 
-            // Info Section
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title + Rating
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -151,7 +144,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      // Rating Badge
+
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -176,8 +169,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
                             const SizedBox(width: 3),
                             Text(
                               workshop.averageRating > 0
-                                  ? workshop.averageRating
-                                      .toStringAsFixed(1)
+                                  ? workshop.averageRating.toStringAsFixed(1)
                                   : '0.0',
                               style: TextStyle(
                                 fontSize: 12,
@@ -193,7 +185,6 @@ class FavoriteWorkshopCard extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
-                  // Description
                   Text(
                     workshop.description,
                     maxLines: 2,
@@ -206,7 +197,6 @@ class FavoriteWorkshopCard extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // Address + Detail Button
                   Row(
                     children: [
                       Icon(
@@ -221,9 +211,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isDark
-                                ? Colors.grey[400]
-                                : Colors.grey[600],
+                            color: isDark ? Colors.grey[400] : Colors.grey[600],
                           ),
                         ),
                       ),
