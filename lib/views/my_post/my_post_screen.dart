@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:autofinder/views/my_post/provider/my_post_provider.dart';
 import 'package:autofinder/views/my_post/controller/my_post_controller.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
+import 'package:autofinder/views/my_post/widgets/edit_workshop_popup.dart';
 
 class MyPostScreen extends StatefulWidget {
   const MyPostScreen({super.key});
@@ -276,8 +277,12 @@ class _MyPostScreenState extends State<MyPostScreen> {
                         context,
                         icon: Icons.edit_outlined,
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Edit ${item.title}')),
+                          final myPostProvider = context.read<MyPostProvider>();
+                          showEditWorkshopPopup(
+                            context,
+                            item,
+                            myPostProvider,
+                            currentUserId,
                           );
                         },
                       ),
