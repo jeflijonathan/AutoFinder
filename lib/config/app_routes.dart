@@ -13,6 +13,8 @@ import 'package:autofinder/views/profile/screens/edit_profile_screen.dart';
 import 'package:autofinder/views/profile/screens/account_security_screen.dart';
 import 'package:autofinder/views/detail/detail_screen.dart';
 import 'package:autofinder/views/detail/provider/detail_page_provider.dart';
+import 'package:autofinder/views/my_post/my_post_screen.dart';
+import 'package:autofinder/views/my_post/provider/my_post_provider.dart';
 
 class AuthGuard extends StatelessWidget {
   final Widget child;
@@ -59,6 +61,7 @@ class AppRoutes {
   static const String editProfile = '/edit-profile';
   static const String accountSecurity = '/account-security';
   static const String detail = '/detail';
+  static const String myPost = '/my-post';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -80,6 +83,12 @@ class AppRoutes {
         child: ChangeNotifierProvider(
           create: (_) => DetailPageProvider(),
           child: const DetailScreen(),
+        ),
+      ),
+      myPost: (context) => AuthGuard(
+        child: ChangeNotifierProvider(
+          create: (_) => MyPostProvider(),
+          child: const MyPostScreen(),
         ),
       ),
     };
