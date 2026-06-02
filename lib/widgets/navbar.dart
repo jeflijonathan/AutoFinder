@@ -33,42 +33,72 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       centerTitle: false,
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.profile);
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: imageUrl.startsWith('http')
-                  ? Image.network(
-                      imageUrl,
-                      width: 36,
-                      height: 36,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.person,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        );
-                      },
-                    )
-                  : Image.memory(
-                      base64Decode(imageUrl),
-                      width: 36,
-                      height: 36,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.person,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        );
-                      },
-                    ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'my_post') {
+                  Navigator.pushNamed(context, AppRoutes.myPost);
+                } else if (value == 'logout') {
+                  authController.handleLogoutRequest(context: context);
+                }
+              },
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'my_post',
+                  child: Row(
+                    children: [
+                      Icon(Icons.post_add, color: theme.colorScheme.onSurface),
+                      const SizedBox(width: 8),
+                      Text('My Post'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: theme.colorScheme.error),
+                      const SizedBox(width: 8),
+                      Text('Logout', style: TextStyle(color: theme.colorScheme.error)),
+                    ],
+                  ),
+                ),
+              ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: imageUrl.startsWith('http')
+                    ? Image.network(
+                        imageUrl,
+                        width: 36,
+                        height: 36,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.person,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          );
+                        },
+                      )
+                    : Image.memory(
+                        base64Decode(imageUrl),
+                        width: 36,
+                        height: 36,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.person,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          );
+                        },
+                      ),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
