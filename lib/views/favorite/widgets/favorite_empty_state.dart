@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:autofinder/config/app_locale.dart';
 
 class FavoriteEmptyState extends StatelessWidget {
   const FavoriteEmptyState({super.key});
@@ -18,7 +20,9 @@ class FavoriteEmptyState extends StatelessWidget {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF3F4F6),
+                color: isDark
+                    ? const Color(0xFF1E293B)
+                    : const Color(0xFFF3F4F6),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -29,7 +33,7 @@ class FavoriteEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Belum Ada Favorit',
+              AppLocale.notHaveFavorite.getString(context),
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : const Color(0xFF1E293B),
@@ -37,7 +41,7 @@ class FavoriteEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Tambahkan workshop ke favorit dengan menekan ikon ❤️ pada halaman detail workshop.',
+              AppLocale.descFavoriteWorkshops.getString(context),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: isDark ? Colors.grey[400] : Colors.grey[600],
