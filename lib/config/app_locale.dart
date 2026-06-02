@@ -8,6 +8,10 @@ import 'package:translator/translator.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
 mixin AppLocale {
+  static const String myPostDescription = 'myPostDescription';
+  static const String titleMyPost = 'titleMyPost';
+  static const String deleteTitleConfirmation = 'deleteTitleConfirmation';
+  static const String deleteConfirmation = 'deleteConfirmation';
   static const String securityOfAccount = 'securityOfAccount';
   static const String securityDesc = 'securityDesc';
   static const String password = 'password';
@@ -68,7 +72,6 @@ mixin AppLocale {
   static const String replyFieldHint = 'replyFieldHint';
   static const String sendReply = 'sendReply';
 
-  // Auth
   static const String back = 'back';
   static const String signIn = 'signIn';
   static const String signUp = 'signUp';
@@ -85,12 +88,10 @@ mixin AppLocale {
   static const String username = 'username';
   static const String googleSignInFailed = 'googleSignInFailed';
 
-  // Home
   static const String findWorkshop = 'findWorkshop';
   static const String detectingLocation = 'detectingLocation';
   static const String locationLabel = 'locationLabel';
 
-  // Location Picker
   static const String pickLocation = 'pickLocation';
   static const String confirm = 'confirm';
   static const String searchLocation = 'searchLocation';
@@ -98,7 +99,6 @@ mixin AppLocale {
   static const String confirmLocation = 'confirmLocation';
   static const String tapMapToSelect = 'tapMapToSelect';
 
-  // Add Workshop Screen
   static const String createNewPost = 'createNewPost';
   static const String createNewPostSubtitle = 'createNewPostSubtitle';
   static const String workshopAddedSuccess = 'workshopAddedSuccess';
@@ -110,14 +110,12 @@ mixin AppLocale {
   static const String stepUptime = 'stepUptime';
   static const String stepVerify = 'stepVerify';
 
-  // Validation errors
   static const String completeAllFields = 'completeAllFields';
   static const String minServiceWarning = 'minServiceWarning';
   static const String fixScheduleWarning = 'fixScheduleWarning';
   static const String invalidUptimeWarning = 'invalidUptimeWarning';
   static const String failedToSubmit = 'failedToSubmit';
 
-  // Profile - image source
   static const String changeProfilePhoto = 'changeProfilePhoto';
   static const String takePhotoCamera = 'takePhotoCamera';
   static const String chooseFromGallery = 'chooseFromGallery';
@@ -142,7 +140,6 @@ mixin AppLocale {
   static const String servicesSubtitle = 'servicesSubtitle';
   static const String addService = 'addService';
 
-  // Service Picker Sheet
   static const String chooseService = 'chooseService';
   static const String searchService = 'searchService';
   static const String selected = 'selected';

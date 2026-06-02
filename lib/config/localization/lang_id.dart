@@ -1,4 +1,10 @@
 const Map<String, dynamic> langID = {
+  'myPostDescription':
+      'Kontrol presisi atas daftar layanan Anda. Jaga detail bengkel Anda tetap akurat untuk memastikan kepercayaan pelanggan yang tinggi dan tingkat pemesanan yang baik.',
+  'titleMyPost': 'Kelola Postingan Saya',
+  'deleteTitleConfirmation': 'Hapus Workshop?',
+  'deleteConfirmation':
+      'Apakah Anda yakin ingin menghapus postingan workshop ini?',
   'securityOfAccount': 'Keamanan Akun Anda',
   'securityDesc':
       'Lindungi data bengkel dan kendaraan Anda dengan enkripsi canggih dan otentikasi berlapis.',

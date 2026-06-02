@@ -1,4 +1,8 @@
 const Map<String, dynamic> langZH = {
+  'myPostDescription': '精确控制您的服务列表。保持您的车间详情准确，以确保高客户信任度和预订率。',
+  'titleMyPost': '管理我的帖子',
+  'deleteTitleConfirmation': '删除研讨会吗？',
+  'deleteConfirmation': '您确定要删除此研讨会帖子吗？',
   'securityOfAccount': '账户安全',
   'securityDesc': '通过高级加密和多层身份验证保护您的车间和车辆数据。',
   'password': '密码',

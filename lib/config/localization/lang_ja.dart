@@ -1,4 +1,8 @@
 const Map<String, dynamic> langJA = {
+  'myPostDescription': 'サービスリストを精密に管理。ワークショップの詳細を正確に保ち、高い顧客信頼と予約率を確保します。',
+  'titleMyPost': '私の投稿を管理',
+  'deleteTitleConfirmation': 'ワークショップを削除しますか？',
+  'deleteConfirmation': 'このワークショップの投稿を削除してもよろしいですか？',
   'securityOfAccount': 'アカウントのセキュリティ',
   'securityDesc': '高度な暗号化と多層認証により、ワークショップと車両のデータを保護します。',
   'password': 'パスワード',
