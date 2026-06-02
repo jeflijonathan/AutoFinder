@@ -1,4 +1,7 @@
 const Map<String, dynamic> langEN = {
+  'titleEditWorkshop': 'Edit Workshop',
+  'descEditWorkshop':
+      'Update your workshop details to ensure an accurate and personalized Auto Finder experience.',
   'myPostDescription':
       'Precision control over your service listings. Keep your workshop details accurate to ensure high customer trust and booking rates.',
   'titleMyPost': 'Manage My Posts',

@@ -1,4 +1,7 @@
 const Map<String, dynamic> langID = {
+  'titleEditWorkshop': 'Edit Workshop',
+  'descEditWorkshop':
+      'Perbarui detail bengkel Anda untuk memastikan pengalaman layanan Auto Finder yang akurat dan personal.',
   'myPostDescription':
       'Kontrol presisi atas daftar layanan Anda. Jaga detail bengkel Anda tetap akurat untuk memastikan kepercayaan pelanggan yang tinggi dan tingkat pemesanan yang baik.',
   'titleMyPost': 'Kelola Postingan Saya',

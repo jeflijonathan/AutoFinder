@@ -8,6 +8,8 @@ import 'package:translator/translator.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
 mixin AppLocale {
+  static const String titleEditWorkshop = 'titleEditWorkshop';
+  static const String descEditWorkshop = 'descEditWorkshop';
   static const String myPostDescription = 'myPostDescription';
   static const String titleMyPost = 'titleMyPost';
   static const String deleteTitleConfirmation = 'deleteTitleConfirmation';

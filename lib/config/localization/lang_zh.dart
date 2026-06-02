@@ -1,4 +1,6 @@
 const Map<String, dynamic> langZH = {
+  'titleEditWorkshop': '编辑车间',
+  'descEditWorkshop': '更新您的工作坊详情与信息',
   'myPostDescription': '精确控制您的服务列表。保持您的车间详情准确，以确保高客户信任度和预订率。',
   'titleMyPost': '管理我的帖子',
   'deleteTitleConfirmation': '删除研讨会吗？',

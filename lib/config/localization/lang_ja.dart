@@ -1,4 +1,6 @@
 const Map<String, dynamic> langJA = {
+  'titleEditWorkshop': 'ワークショップを編集',
+  'descEditWorkshop': 'ワークショップの詳細を更新して、正確でパーソナライズされたAuto Finder体験を確保してください。',
   'myPostDescription': 'サービスリストを精密に管理。ワークショップの詳細を正確に保ち、高い顧客信頼と予約率を確保します。',
   'titleMyPost': '私の投稿を管理',
   'deleteTitleConfirmation': 'ワークショップを削除しますか？',
