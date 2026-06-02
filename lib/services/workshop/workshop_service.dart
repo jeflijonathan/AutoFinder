@@ -19,24 +19,30 @@ class WorkshopService {
     }
   }
 
-  Future<WorkshopModel?> getWorkshopById(String workshopId) async {
+  Future<void> getWorkshopById(
+    String workshopId,
+    ServiceCallback callback,
+  ) async {
     try {
-      final doc = await _firestore.collection(_collection).doc(workshopId).get();
-      if (doc.exists) {
-        return WorkshopModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-      return null;
+      final doc = await _firestore
+          .collection(_collection)
+          .doc(workshopId)
+          .get();
+
+      callback.onSuccessData(
+        WorkshopModel.fromMap(doc.data() as Map<String, dynamic>),
+      );
     } catch (e) {
-      return null;
+      callback.onErrorData('Failed to get workshop by ID: $e');
+    } finally {
+      callback.onFullFailed?.call();
     }
   }
 
   Stream<WorkshopModel?> workshopStream(String workshopId) {
-    return _firestore
-        .collection(_collection)
-        .doc(workshopId)
-        .snapshots()
-        .map((doc) {
+    return _firestore.collection(_collection).doc(workshopId).snapshots().map((
+      doc,
+    ) {
       if (doc.exists) {
         return WorkshopModel.fromMap(doc.data() as Map<String, dynamic>);
       }
@@ -57,9 +63,32 @@ class WorkshopService {
       );
     } catch (e) {
       callback.onErrorData('Failed to get workshops: $e');
-      // throw Exception('Failed to get workshops: $e');
     } finally {
       callback.onFullFailed;
+    }
+  }
+
+  Future<void> getWorkshopsByUserId(
+    String userId,
+    ServiceCallback callback,
+  ) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(_collection)
+          .where('idUser', isEqualTo: userId)
+          .get();
+      callback.onSuccessData(
+        snapshot.docs
+            .map(
+              (doc) =>
+                  WorkshopModel.fromMap(doc.data() as Map<String, dynamic>),
+            )
+            .toList(),
+      );
+    } catch (e) {
+      callback.onErrorData('Failed to get workshops: $e');
+    } finally {
+      callback.onFullFailed?.call();
     }
   }
 
@@ -141,7 +170,11 @@ class WorkshopService {
     }
   }
 
-  Future<void> updateComment(String commentId, int rating, String description) async {
+  Future<void> updateComment(
+    String commentId,
+    int rating,
+    String description,
+  ) async {
     final doc = await _firestore.collection('comments').doc(commentId).get();
     if (doc.exists) {
       await _firestore.collection('comments').doc(commentId).update({
@@ -166,9 +199,58 @@ class WorkshopService {
     }
   }
 
-  Future<void> addReplyToComment(String commentId, Map<String, dynamic> reply) async {
+  Future<void> addReplyToComment(
+    String commentId,
+    Map<String, dynamic> reply,
+  ) async {
     await _firestore.collection('comments').doc(commentId).update({
       'replies': FieldValue.arrayUnion([reply]),
     });
+  }
+
+  Future<void> updateWorkshop(
+    String workshopId,
+    WorkshopModel workshop,
+    ServiceCallback callback,
+  ) async {
+    try {
+      await _firestore
+          .collection(_collection)
+          .doc(workshopId)
+          .update(workshop.toMap());
+
+      callback.onSuccessData([]);
+    } catch (e) {
+      callback.onErrorData('Failed to update workshop: $e');
+    } finally {
+      callback.onFullFailed?.call();
+    }
+  }
+
+  Future<void> deleteWorkshop(
+    String workshopId,
+    ServiceCallback callback,
+  ) async {
+    try {
+      final commentSnapshot = await _firestore
+          .collection('comments')
+          .where('workshopId', isEqualTo: workshopId)
+          .get();
+
+      final batch = _firestore.batch();
+      for (var doc in commentSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      batch.delete(_firestore.collection(_collection).doc(workshopId));
+
+      await batch.commit();
+
+      callback.onSuccessData([]);
+    } catch (e) {
+      callback.onErrorData('Failed to delete workshop: $e');
+    } finally {
+      callback.onFullFailed?.call();
+    }
   }
 }

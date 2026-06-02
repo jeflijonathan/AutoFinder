@@ -79,7 +79,6 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: const ButtonNavBar(currentIndex: 1),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [

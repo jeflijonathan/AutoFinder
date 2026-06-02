@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:autofinder/config/app_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
 import 'package:autofinder/config/app_routes.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   const Navbar({super.key});
@@ -17,8 +19,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
     final imageUrl =
         (user?.profilePictureUrl != null && user!.profilePictureUrl!.isNotEmpty)
-            ? user.profilePictureUrl!
-            : 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(username)}&background=0D8ABC&color=fff';
+        ? user.profilePictureUrl!
+        : 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(username)}&background=0D8ABC&color=fff';
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -35,10 +37,43 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.profile);
+          child: PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'my_post') {
+                Navigator.pushNamed(context, AppRoutes.myPost);
+              } else if (value == 'logout') {
+                authController.handleLogoutRequest(context: context);
+              }
             },
+            offset: const Offset(0, 48),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'my_post',
+                child: Row(
+                  children: [
+                    Icon(Icons.post_add, color: theme.colorScheme.onSurface),
+                    const SizedBox(width: 8),
+                    Text(AppLocale.titleMyPost.getString(context)),
+                  ],
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: theme.colorScheme.error),
+                    const SizedBox(width: 8),
+                    Text(
+                      AppLocale.logout.getString(context),
+                      style: TextStyle(color: theme.colorScheme.error),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: imageUrl.startsWith('http')

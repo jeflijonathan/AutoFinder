@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: const Navbar(),
-      bottomNavigationBar: const ButtonNavBar(currentIndex: 4),
+      bottomNavigationBar: const ButtonNavBar(currentIndex: 3),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(

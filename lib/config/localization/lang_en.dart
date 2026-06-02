@@ -1,4 +1,12 @@
 const Map<String, dynamic> langEN = {
+  'titleEditWorkshop': 'Edit Workshop',
+  'descEditWorkshop':
+      'Update your workshop details to ensure an accurate and personalized Auto Finder experience.',
+  'myPostDescription':
+      'Precision control over your service listings. Keep your workshop details accurate to ensure high customer trust and booking rates.',
+  'titleMyPost': 'Manage My Posts',
+  'deleteTitleConfirmation': 'Delete Workshop?',
+  'deleteConfirmation': 'Are you sure you want to delete this workshop post?',
   'securityOfAccount': 'Security of Your Account',
   'securityDesc':
       'Protect your workshop and vehicle data with advanced encryption and multi-layered authentication.',
