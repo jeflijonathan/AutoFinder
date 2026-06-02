@@ -1,4 +1,8 @@
 const Map<String, dynamic> langZH = {
+  'titleFavoriteWorkshops': '收藏的车间',
+  'savedWorkshops': '已保存的车间',
+  'descFavoriteWorkshops': '您信任的车间收藏。访问您保存的车间以快速参考和轻松预订。',
+  'notHaveFavorite': '还没有收藏',
   'titleEditWorkshop': '编辑车间',
   'descEditWorkshop': '更新您的工作坊详情与信息',
   'myPostDescription': '精确控制您的服务列表。保持您的车间详情准确，以确保高客户信任度和预订率。',
