@@ -108,12 +108,13 @@ class AddWorkshopView extends StatelessWidget {
                       children: List.generate(5, (index) {
                         final isActive = provider.currentStep == index;
                         final isCompleted = provider.currentStep > index;
-                        return BuildStepItem(
-                          stepNumber: index + 1,
-                          title: WorkshopStepHelper.getStepName(index),
-                          isCompleted: isActive || isCompleted,
-                          isActive: isActive,
-                        );
+                          return BuildStepItem(
+                            stepNumber: index + 1,
+                            title: WorkshopStepHelper.getStepName(index),
+                            isCompleted: isActive || isCompleted,
+                            isActive: isActive,
+                            onTap: () => provider.setStep(index),
+                          );
                       }),
                     ),
                   ),
@@ -207,7 +208,7 @@ class AddWorkshopView extends StatelessWidget {
           if (provider.isLoading) const Loading(asOverlay: true),
         ],
       ),
-      bottomNavigationBar: const ButtonNavBar(currentIndex: 2),
+      bottomNavigationBar: const ButtonNavBar(currentIndex: 1),
     );
   }
 }

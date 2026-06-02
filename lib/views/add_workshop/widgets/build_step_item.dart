@@ -6,6 +6,7 @@ class BuildStepItem extends StatelessWidget {
   final String title;
   final bool isCompleted;
   final bool isActive;
+  final VoidCallback? onTap;
 
   const BuildStepItem({
     super.key,
@@ -13,6 +14,7 @@ class BuildStepItem extends StatelessWidget {
     required this.title,
     required this.isCompleted,
     required this.isActive,
+    this.onTap,
   });
 
   @override
@@ -37,50 +39,54 @@ class BuildStepItem extends StatelessWidget {
         : theme.colorScheme.onSurface;
 
     return Flexible(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: circleColor,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Center(
-              child: Text(
-                '$stepNumber',
-                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: circleColor,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Center(
+                child: Text(
+                  '$stepNumber',
+                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
+            const SizedBox(height: 8),
 
-          FutureBuilder<String>(
-            future: AppLocale.translateLive(title),
-            builder: (context, snapshot) {
-              final displayedTitle = snapshot.data ?? title;
+            FutureBuilder<String>(
+              future: AppLocale.translateLive(title),
+              builder: (context, snapshot) {
+                final displayedTitle = snapshot.data ?? title;
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    displayedTitle,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: isActive ? primaryColor : unselectedColor,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      displayedTitle,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: isActive ? primaryColor : unselectedColor,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
