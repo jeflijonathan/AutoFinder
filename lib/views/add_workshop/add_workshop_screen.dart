@@ -207,7 +207,7 @@ class AddWorkshopView extends StatelessWidget {
           if (provider.isLoading) const Loading(asOverlay: true),
         ],
       ),
-      bottomNavigationBar: const ButtonNavBar(currentIndex: 2),
+      bottomNavigationBar: const ButtonNavBar(currentIndex: 1),
     );
   }
 }
