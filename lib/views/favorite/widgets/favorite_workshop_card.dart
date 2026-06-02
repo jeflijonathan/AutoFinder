@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:autofinder/services/workshop/workshop_model.dart';
-import 'package:autofinder/widgets/translated_text.dart';
+import 'package:autofinder/widgets/translated_text.dart'; // Sudah menggunakan widget ini
 import 'package:flutter/material.dart';
 
 class FavoriteWorkshopCard extends StatelessWidget {
@@ -185,12 +185,12 @@ class FavoriteWorkshopCard extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
-                  Text(
+                  TranslatedText(
                     workshop.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: isDark ? Colors.grey : Colors.grey,
                       height: 1.4,
                     ),
                   ),
@@ -202,7 +202,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
                       Icon(
                         Icons.location_on_outlined,
                         size: 14,
-                        color: isDark ? Colors.grey[400] : Colors.grey[500],
+                        color: isDark ? Colors.grey : Colors.grey,
                       ),
                       const SizedBox(width: 4),
                       Expanded(
@@ -211,7 +211,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            color: isDark ? Colors.grey : Colors.grey,
                           ),
                         ),
                       ),
@@ -275,7 +275,7 @@ class FavoriteWorkshopCard extends StatelessWidget {
     return Container(
       height: 200,
       width: double.infinity,
-      color: Colors.grey[300],
+      color: Colors.grey,
       child: const Icon(Icons.image, color: Colors.grey, size: 48),
     );
   }
