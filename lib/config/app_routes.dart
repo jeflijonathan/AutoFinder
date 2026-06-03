@@ -15,6 +15,7 @@ import 'package:autofinder/views/detail/detail_screen.dart';
 import 'package:autofinder/views/detail/provider/detail_page_provider.dart';
 import 'package:autofinder/views/my_post/my_post_screen.dart';
 import 'package:autofinder/views/my_post/provider/my_post_provider.dart';
+import 'package:autofinder/views/favorite/favorite_screen.dart';
 
 class AuthGuard extends StatelessWidget {
   final Widget child;
@@ -62,6 +63,7 @@ class AppRoutes {
   static const String accountSecurity = '/account-security';
   static const String detail = '/detail';
   static const String myPost = '/my-post';
+  static const String favorite = '/favorite';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -91,6 +93,7 @@ class AppRoutes {
           child: const MyPostScreen(),
         ),
       ),
+      favorite: (context) => const AuthGuard(child: FavoriteScreen()),
     };
   }
 }

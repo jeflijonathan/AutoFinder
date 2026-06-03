@@ -1,5 +1,10 @@
 const Map<String, dynamic> langID = {
-  'titleEditWorkshop': 'Edit Workshop',
+  'titleFavoriteWorkshops': 'Bengkel Favorit',
+  'savedWorkshops': 'Bengkel Tersimpan',
+  'descFavoriteWorkshops':
+      'Tambahkan workshop ke favorit dengan menekan ikon ❤️ pada halaman detail workshop.',
+  'notHaveFavorite': 'Belum Ada Favorit',
+  'titleEditWorkshop': 'Ubah Bengkel',
   'descEditWorkshop':
       'Perbarui detail bengkel Anda untuk memastikan pengalaman layanan Auto Finder yang akurat dan personal.',
   'myPostDescription':
