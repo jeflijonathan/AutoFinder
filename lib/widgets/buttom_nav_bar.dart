@@ -46,7 +46,7 @@ class ButtonNavBar extends StatelessWidget {
               context,
               index: 2,
               icon: Icons.favorite_outline,
-              route: AppRoutes.home,
+              route: AppRoutes.favorite,
               label: AppLocale.favorite.getString(context).toUpperCase(),
             ),
             _buildNavItem(

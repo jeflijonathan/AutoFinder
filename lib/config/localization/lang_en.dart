@@ -1,4 +1,9 @@
 const Map<String, dynamic> langEN = {
+  'titleFavoriteWorkshops': 'Favorite Workshops',
+  'savedWorkshops': 'Saved Workshops',
+  'notHaveFavorite': 'No Favorites Yet',
+  'descFavoriteWorkshops':
+      'Your collection of trusted workshops. Access your saved workshops for quick reference and easy booking.',
   'titleEditWorkshop': 'Edit Workshop',
   'descEditWorkshop':
       'Update your workshop details to ensure an accurate and personalized Auto Finder experience.',

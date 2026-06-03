@@ -1,4 +1,9 @@
 const Map<String, dynamic> langJA = {
+  'titleFavoriteWorkshops': 'お気に入りのワークショップ',
+  'savedWorkshops': '保存されたワークショップ',
+  'descFavoriteWorkshops':
+      '信頼できるワークショップのコレクション。保存されたワークショップにアクセスして、迅速な参照と簡単な予約を可能にします。',
+  'notHaveFavorite': 'まだお気に入りはありません',
   'titleEditWorkshop': 'ワークショップを編集',
   'descEditWorkshop': 'ワークショップの詳細を更新して、正確でパーソナライズされたAuto Finder体験を確保してください。',
   'myPostDescription': 'サービスリストを精密に管理。ワークショップの詳細を正確に保ち、高い顧客信頼と予約率を確保します。',
