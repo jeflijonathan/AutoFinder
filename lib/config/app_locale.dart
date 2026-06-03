@@ -34,6 +34,10 @@ mixin AppLocale {
   static const String saveChanges = 'saveChanges';
   static const String cancel = 'cancel';
   static const String profileSettings = 'profileSettings';
+  static const String titleFavoriteWorkshops = 'titleFavoriteWorkshops';
+  static const String savedWorkshops = 'savedWorkshops';
+  static const String notHaveFavorite = 'notHaveFavorite';
+  static const String descFavoriteWorkshops = 'descFavoriteWorkshops';
 
   static const String title = 'title';
   static const String theme = 'theme';
