@@ -11,7 +11,11 @@ import 'package:autofinder/config/app_routes.dart';
 import 'package:autofinder/config/app_theme.dart';
 import 'package:autofinder/controllers/location_controller.dart';
 import 'package:autofinder/controllers/location_picker_controller.dart';
+import 'dart:convert';
+import 'package:autofinder/services/users/models/user_model.dart';
 import 'package:autofinder/views/auth/controllers/auth_controller.dart';
+import 'package:autofinder/views/detail/detail_screen.dart';
+import 'package:autofinder/views/detail/provider/detail_page_provider.dart';
 
 final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 
@@ -42,6 +46,17 @@ void main() async {
 
   final String savedLanguage = prefs.getString('language_code') ?? 'en';
 
+  final String? currentUserStr = prefs.getString('current_user');
+  final bool isGoogleLogin = prefs.getBool('is_google_login') ?? false;
+
+  UserModel? initialUser;
+  if (currentUserStr != null) {
+    try {
+      initialUser = UserModel.fromMap(jsonDecode(currentUserStr));
+    } catch (e) {
+      debugPrint("Error parsing current_user: $e");
+    }
+  }
   await FlutterLocalization.instance.ensureInitialized();
   FlutterLocalization.instance.init(
     mapLocales: [
@@ -65,18 +80,19 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => AuthController(initialUser: initialUser, isGoogleLogin: isGoogleLogin)),
         ChangeNotifierProvider(create: (_) => LocationController()),
         ChangeNotifierProvider(create: (_) => LocationPickerController()),
         ChangeNotifierProvider(create: (_) => HomePageProvider()),
       ],
-      child: const MyApp(),
+      child: MyApp(isLoggedIn: initialUser != null),
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  const MyApp({super.key, this.isLoggedIn = false});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -109,8 +125,28 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkTheme,
           supportedLocales: localization.supportedLocales,
           localizationsDelegates: localization.localizationsDelegates,
-          initialRoute: AppRoutes.welcome,
-          routes: AppRoutes.getRoutes(),
+          routes: AppRoutes.getRoutes(widget.isLoggedIn),
+          onGenerateRoute: (settings) {
+            if (settings.name != null) {
+              final uri = Uri.parse(settings.name!);
+              if (uri.path == '/workshop') {
+                final id = uri.queryParameters['id'];
+                if (id != null) {
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      return AuthGuard(
+                        child: ChangeNotifierProvider(
+                          create: (_) => DetailPageProvider(),
+                          child: DetailScreen(workshopId: id),
+                        ),
+                      );
+                    },
+                  );
+                }
+              }
+            }
+            return null;
+          },
         );
       },
     );

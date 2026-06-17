@@ -262,6 +262,30 @@ class _MyPostScreenState extends State<MyPostScreen> {
                           ),
                         ],
                       ),
+                      if (item.priceEstimate != null && item.priceEstimate!.isNotEmpty) ...[
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.payments_outlined,
+                              size: 14,
+                              color: isDark ? Colors.green[300] : Colors.green[700],
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                item.priceEstimate!,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: isDark ? Colors.green[300] : Colors.green[700],
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),

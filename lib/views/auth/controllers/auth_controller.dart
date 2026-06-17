@@ -8,6 +8,7 @@ import 'package:autofinder/views/profile/widgets/image_source_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends ChangeNotifier {
   final UsersService _usersService = UsersService();
@@ -15,6 +16,24 @@ class AuthController extends ChangeNotifier {
   UserModel? _currentUser;
   bool _isLoading = false;
   bool _isGoogleLogin = false;
+
+  AuthController({UserModel? initialUser, bool isGoogleLogin = false}) {
+    _currentUser = initialUser;
+    _isGoogleLogin = isGoogleLogin;
+  }
+
+  Future<void> _saveUserToPrefs(UserModel user, bool isGoogle) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('current_user', jsonEncode(user.toMap()));
+    await prefs.setBool('is_google_login', isGoogle);
+  }
+
+  Future<void> _clearUserFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('current_user');
+    await prefs.remove('is_google_login');
+  }
+
 
   UserModel? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
@@ -59,6 +78,7 @@ class AuthController extends ChangeNotifier {
                   _currentUser = UserModel.fromMap(
                     createdMap as Map<String, dynamic>,
                   );
+                  _saveUserToPrefs(_currentUser!, false);
                   notifyListeners();
 
                   Navigator.pushReplacementNamed(context, '/home');
@@ -109,6 +129,7 @@ class AuthController extends ChangeNotifier {
 
           _currentUser = user;
           _isGoogleLogin = false;
+          _saveUserToPrefs(user, false);
           notifyListeners();
           Navigator.pushReplacementNamed(context, '/home');
         },
@@ -137,6 +158,7 @@ class AuthController extends ChangeNotifier {
           if (user != null) {
             _currentUser = user;
             _isGoogleLogin = true;
+            _saveUserToPrefs(user, true);
             notifyListeners();
             Navigator.pushReplacementNamed(context, '/home');
           } else {
@@ -149,6 +171,7 @@ class AuthController extends ChangeNotifier {
                     createdMap as Map<String, dynamic>,
                   );
                   _isGoogleLogin = true;
+                  _saveUserToPrefs(_currentUser!, true);
                   notifyListeners();
                   Navigator.pushReplacementNamed(context, '/home');
                 },
@@ -180,6 +203,7 @@ class AuthController extends ChangeNotifier {
     _setLoading(true);
 
     try {
+      await _clearUserFromPrefs();
       await GoogleSignIn.instance.signOut();
 
       _currentUser = null;
@@ -244,6 +268,7 @@ class AuthController extends ChangeNotifier {
                 password: _currentUser!.password,
                 profilePictureUrl: base64Image,
               );
+              _saveUserToPrefs(_currentUser!, _isGoogleLogin);
               notifyListeners();
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -302,6 +327,7 @@ class AuthController extends ChangeNotifier {
               password: _currentUser!.password,
               profilePictureUrl: _currentUser!.profilePictureUrl,
             );
+            _saveUserToPrefs(_currentUser!, _isGoogleLogin);
             notifyListeners();
             _setLoading(false);
             if (context.mounted) {
@@ -366,6 +392,7 @@ class AuthController extends ChangeNotifier {
               password: newPassword,
               profilePictureUrl: _currentUser!.profilePictureUrl,
             );
+            _saveUserToPrefs(_currentUser!, _isGoogleLogin);
             notifyListeners();
             _setLoading(false);
             if (context.mounted) {
