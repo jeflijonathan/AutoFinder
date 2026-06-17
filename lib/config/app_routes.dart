@@ -65,9 +65,9 @@ class AppRoutes {
   static const String myPost = '/my-post';
   static const String favorite = '/favorite';
 
-  static Map<String, WidgetBuilder> getRoutes() {
+  static Map<String, WidgetBuilder> getRoutes(bool isLoggedIn) {
     return {
-      welcome: (context) => const GuestGuard(child: WelcomeScreen()),
+      welcome: (context) => isLoggedIn ? const AuthGuard(child: HomeScreen()) : const GuestGuard(child: WelcomeScreen()),
       login: (context) => const GuestGuard(child: LoginScreen()),
       register: (context) => const GuestGuard(child: RegisterScreen()),
       home: (context) => const AuthGuard(child: HomeScreen()),

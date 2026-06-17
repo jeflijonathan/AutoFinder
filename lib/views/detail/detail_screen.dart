@@ -1,4 +1,7 @@
+import 'package:autofinder/config/app_locale.dart';
+import 'package:autofinder/models/service_callback.dart';
 import 'package:autofinder/services/workshop/workshop_model.dart';
+import 'package:autofinder/services/workshop/workshop_service.dart';
 import 'package:autofinder/views/detail/controller/detail_controller.dart';
 import 'package:autofinder/views/detail/provider/detail_page_provider.dart';
 import 'package:autofinder/views/detail/widget/about_section.dart';
@@ -8,13 +11,13 @@ import 'package:autofinder/views/detail/widget/operational_hours_section.dart';
 import 'package:autofinder/views/detail/widget/reviews_section.dart';
 import 'package:autofinder/views/detail/widget/services_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:autofinder/config/app_locale.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen({super.key});
+  final String? workshopId;
+  const DetailScreen({super.key, this.workshopId});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -33,13 +36,35 @@ class _DetailScreenState extends State<DetailScreen> {
         setState(() {
           _workshop = args;
         });
-        if (_workshop?.uid != null) {
-          final provider = context.read<DetailPageProvider>();
-          provider.updateState(workshop: _workshop);
-          _controller.fetchComments(provider, _workshop!.uid!);
-        }
+        _setupProviderAndComments();
+      } else if (widget.workshopId != null) {
+        // Fetch from Firestore
+        final service = WorkshopService();
+        service.getWorkshopById(widget.workshopId!, ServiceCallback(
+          onSuccessData: (data) {
+            if (mounted) {
+              setState(() {
+                _workshop = data as WorkshopModel;
+              });
+              _setupProviderAndComments();
+            }
+          },
+          onErrorData: (error) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+            }
+          }
+        ));
       }
     });
+  }
+
+  void _setupProviderAndComments() {
+    if (_workshop?.uid != null && mounted) {
+      final provider = context.read<DetailPageProvider>();
+      provider.updateState(workshop: _workshop);
+      _controller.fetchComments(provider, _workshop!.uid!);
+    }
   }
 
   void _shareWorkshopLocation(WorkshopModel workshop) {
@@ -48,16 +73,21 @@ class _DetailScreenState extends State<DetailScreen> {
 
     final String googleMapsUrl =
         'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+    final String viewFromApp =
+        'https://autofinder-7d747.web.app/workshop?id=${workshop.uid}';
 
     final String shareMessage =
         '''
-      📍 *${workshop.title}*
+    📍 *${workshop.title}*
 
-      Alamat:
-      ${workshop.address}
+    Alamat:
+    ${workshop.address}
 
-      Buka di Google Maps:
-      $googleMapsUrl
+    Buka di Google Maps:
+    $googleMapsUrl
+
+    Buka di Aplikasi Auto Finder
+    $viewFromApp
       ''';
 
     SharePlus.instance.share(ShareParams(text: shareMessage));
