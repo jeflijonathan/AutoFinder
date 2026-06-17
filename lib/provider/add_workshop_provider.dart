@@ -65,6 +65,8 @@ class AddWorkshopProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController missionController = TextEditingController();
+  final TextEditingController priceStartController = TextEditingController();
+  final TextEditingController priceEndController = TextEditingController();
   String _selectedSpecialization = 'car';
   String get selectedSpecialization => _selectedSpecialization;
   bool _isLoading = false;
@@ -225,6 +227,19 @@ class AddWorkshopProvider extends ChangeNotifier {
       if (!isValid) {
         return 'Please complete all required fields correctly';
       }
+      
+      final startText = priceStartController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final endText = priceEndController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      
+      if (startText.isNotEmpty && endText.isNotEmpty) {
+        final start = int.tryParse(startText) ?? 0;
+        final end = int.tryParse(endText) ?? 0;
+        if (start >= end) {
+          return 'Harga awal harus lebih kecil dari harga akhir';
+        }
+      } else if (startText.isNotEmpty || endText.isNotEmpty) {
+        return 'Harap isi kedua estimasi harga atau kosongkan keduanya';
+      }
     }
     if (_currentStep == 1) {
       if (_selectedServices.isEmpty) {
@@ -290,6 +305,9 @@ class AddWorkshopProvider extends ChangeNotifier {
         longitude: _longitude,
         operationTimes: activeOperationTimes,
         image: _images,
+        priceEstimate: (priceStartController.text.isNotEmpty && priceEndController.text.isNotEmpty)
+            ? 'Rp ${priceStartController.text} - Rp ${priceEndController.text}'
+            : null,
       );
 
       await _workshopService.addWorkshop(workshop);
@@ -306,6 +324,8 @@ class AddWorkshopProvider extends ChangeNotifier {
     phoneController.dispose();
     nameController.dispose();
     missionController.dispose();
+    priceStartController.dispose();
+    priceEndController.dispose();
     super.dispose();
   }
 

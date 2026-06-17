@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.autofinder",
+      "sha256_cert_fingerprints": [
+        "9D:A9:F9:3C:E0:C3:4E:E7:48:08:95:E4:58:4A:BF:C6:B6:B1:F6:E3:FF:A3:9B:FA:2E:BC:A8:DE:75:33:2F:71"
+      ]
+    }
+  }
+]

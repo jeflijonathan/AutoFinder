@@ -146,6 +146,90 @@ class StepIdentity extends StatelessWidget {
               },
             ),
           ),
+          const SizedBox(height: 24),
+          Text(
+            'Estimasi Harga',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: provider.priceStartController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: 'Harga Awal',
+                    hintStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant.withAlpha(150), fontSize: 14),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.payments_outlined, color: theme.colorScheme.primary, size: 20),
+                          const SizedBox(width: 4),
+                          Text('Rp', style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    fillColor: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF9FAFB),
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: theme.colorScheme.outlineVariant, width: 1.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: theme.colorScheme.primary, width: 2.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text('-', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: provider.priceEndController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: 'Harga Akhir',
+                    hintStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant.withAlpha(150), fontSize: 14),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.payments_outlined, color: theme.colorScheme.primary, size: 20),
+                          const SizedBox(width: 4),
+                          Text('Rp', style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    fillColor: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF9FAFB),
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: theme.colorScheme.outlineVariant, width: 1.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: theme.colorScheme.primary, width: 2.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
