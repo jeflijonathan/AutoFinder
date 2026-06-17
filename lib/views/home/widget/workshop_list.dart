@@ -184,6 +184,10 @@ class WorkshopList extends StatelessWidget {
                     const SizedBox(height: 6),
                     _buildDistanceBadge(context, _formatDistance(distance)),
                   ],
+                  if (item.priceEstimate != null && item.priceEstimate!.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    _buildPriceBadge(context, item.priceEstimate!),
+                  ],
                 ],
               ),
             ),
@@ -282,6 +286,10 @@ class WorkshopList extends StatelessWidget {
                       const SizedBox(height: 6),
                       _buildDistanceBadge(context, _formatDistance(distance)),
                     ],
+                    if (item.priceEstimate != null && item.priceEstimate!.isNotEmpty) ...[
+                      const SizedBox(height: 6),
+                      _buildPriceBadge(context, item.priceEstimate!),
+                    ],
                   ],
                 ),
               ),
@@ -298,6 +306,33 @@ class WorkshopList extends StatelessWidget {
       width: size == 140 ? double.infinity : size,
       color: Colors.grey[300],
       child: const Icon(Icons.image, color: Colors.grey),
+    );
+  }
+
+  Widget _buildPriceBadge(BuildContext context, String price) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.payments_outlined,
+          size: 12,
+          color: isDark ? Colors.green[300] : Colors.green[700],
+        ),
+        const SizedBox(width: 3),
+        Flexible(
+          child: Text(
+            price,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: isDark ? Colors.green[300] : Colors.green[700],
+              fontWeight: FontWeight.w600,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 

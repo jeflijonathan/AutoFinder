@@ -16,6 +16,14 @@ class EditWorkshopProvider extends ChangeNotifier {
     nameController.text = workshop.title;
     missionController.text = workshop.description;
     
+    if (workshop.priceEstimate != null && workshop.priceEstimate!.isNotEmpty) {
+      final parts = workshop.priceEstimate!.replaceAll('Rp', '').split('-');
+      if (parts.length == 2) {
+        priceStartController.text = parts[0].trim();
+        priceEndController.text = parts[1].trim();
+      }
+    }
+    
     // Parse Phone Number
     String fullPhone = workshop.phoneNumber;
     if (fullPhone.startsWith('+62')) {
@@ -69,6 +77,8 @@ class EditWorkshopProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController missionController = TextEditingController();
+  final TextEditingController priceStartController = TextEditingController();
+  final TextEditingController priceEndController = TextEditingController();
   String _selectedSpecialization = 'car';
   String get selectedSpecialization => _selectedSpecialization;
   bool _isLoading = false;
@@ -209,6 +219,19 @@ class EditWorkshopProvider extends ChangeNotifier {
       if (!isValid) {
         return 'Please complete all required fields correctly';
       }
+
+      final startText = priceStartController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final endText = priceEndController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      
+      if (startText.isNotEmpty && endText.isNotEmpty) {
+        final start = int.tryParse(startText) ?? 0;
+        final end = int.tryParse(endText) ?? 0;
+        if (start >= end) {
+          return 'Harga awal harus lebih kecil dari harga akhir';
+        }
+      } else if (startText.isNotEmpty || endText.isNotEmpty) {
+        return 'Harap isi kedua estimasi harga atau kosongkan keduanya';
+      }
     }
     if (_currentStep == 1) {
       if (_selectedServices.isEmpty) {
@@ -271,6 +294,9 @@ class EditWorkshopProvider extends ChangeNotifier {
         longitude: _longitude,
         operationTimes: activeOperationTimes,
         image: _images,
+        priceEstimate: (priceStartController.text.isNotEmpty && priceEndController.text.isNotEmpty)
+            ? 'Rp ${priceStartController.text} - Rp ${priceEndController.text}'
+            : null,
       );
 
       // Kita bisa langsung memanggil callback yang akan menggunakan MyPostController
@@ -287,6 +313,8 @@ class EditWorkshopProvider extends ChangeNotifier {
     phoneController.dispose();
     nameController.dispose();
     missionController.dispose();
+    priceStartController.dispose();
+    priceEndController.dispose();
     super.dispose();
   }
 

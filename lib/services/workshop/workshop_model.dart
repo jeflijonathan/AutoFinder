@@ -15,6 +15,7 @@ class WorkshopModel {
   final String address;
   final double averageRating;
   final int totalReviews;
+  final String? priceEstimate;
 
   WorkshopModel({
     required this.uid,
@@ -31,6 +32,7 @@ class WorkshopModel {
     required this.address,
     this.averageRating = 0.0,
     this.totalReviews = 0,
+    this.priceEstimate,
   });
 
   Map<String, dynamic> toMap() {
@@ -48,6 +50,7 @@ class WorkshopModel {
       'address': address,
       'averageRating': averageRating,
       'totalReviews': totalReviews,
+      'priceEstimate': priceEstimate,
       'operationTimes': operationTimes?.map((e) => e.toMap()).toList(),
     };
   }
@@ -68,6 +71,7 @@ class WorkshopModel {
       address: map['address'] ?? '',
       averageRating: (map['averageRating'] ?? 0.0).toDouble(),
       totalReviews: map['totalReviews'] ?? 0,
+      priceEstimate: map['priceEstimate'],
       operationTimes: map['operationTimes'] != null
           ? List<OperationTimeModel>.from(
               map['operationTimes'].map(
