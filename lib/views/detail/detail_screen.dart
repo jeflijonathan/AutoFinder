@@ -8,6 +8,7 @@ import 'package:autofinder/views/detail/widget/about_section.dart';
 import 'package:autofinder/views/detail/widget/header_image_section.dart';
 import 'package:autofinder/views/detail/widget/location_section.dart';
 import 'package:autofinder/views/detail/widget/operational_hours_section.dart';
+import 'package:autofinder/views/detail/widget/price_estimate_section.dart';
 import 'package:autofinder/views/detail/widget/reviews_section.dart';
 import 'package:autofinder/views/detail/widget/services_section.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: [
                   AboutSection(description: workshop.description),
                   const SizedBox(height: 24),
+                  PriceEstimateSection(priceEstimate: workshop.priceEstimate),
+                  if (workshop.priceEstimate != null && workshop.priceEstimate!.isNotEmpty)
+                    const SizedBox(height: 24),
                   OperationalHoursSection(
                     operationTimes: workshop.operationTimes,
                   ),
