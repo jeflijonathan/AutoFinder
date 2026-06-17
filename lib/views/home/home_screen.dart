@@ -26,10 +26,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final locController = context.read<LocationController>();
+      await locController.fetchUserLocation();
+
       final homeProvider = context.read<HomePageProvider>();
-      homeController.fetchDataRequest(homeProvider);
-      context.read<LocationController>().fetchUserLocation();
+      if (locController.latitude != null && locController.longitude != null) {
+        homeController.fetchDataRequest(
+          homeProvider,
+          lat: locController.latitude,
+          lng: locController.longitude,
+        );
+      } else {
+        homeController.fetchDataRequest(homeProvider);
+      }
     });
   }
 

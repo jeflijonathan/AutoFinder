@@ -2,6 +2,7 @@ import 'package:autofinder/models/service_callback.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:autofinder/services/workshop/workshop_model.dart';
 import 'package:autofinder/services/workshop/commentar_model.dart';
+import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 
 class WorkshopService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -9,9 +10,13 @@ class WorkshopService {
 
   Future<String> addWorkshop(WorkshopModel workshop) async {
     try {
+      Map<String, dynamic> data = workshop.toMap();
+      final GeoFirePoint geoFirePoint = GeoFirePoint(GeoPoint(workshop.latitude, workshop.longitude));
+      data['geo'] = geoFirePoint.data;
+
       DocumentReference docRef = await _firestore
           .collection(_collection)
-          .add(workshop.toMap());
+          .add(data);
       await docRef.update({'uid': docRef.id});
       return docRef.id;
     } catch (e) {
@@ -64,7 +69,58 @@ class WorkshopService {
     } catch (e) {
       callback.onErrorData('Failed to get workshops: $e');
     } finally {
-      callback.onFullFailed;
+      callback.onFullFailed?.call();
+    }
+  }
+
+  Future<void> getNearbyWorkshops(
+    double lat,
+    double lng,
+    double radiusInKm,
+    ServiceCallback callback,
+  ) async {
+    try {
+      GeoCollectionReference<Map<String, dynamic>> geoCollection =
+          GeoCollectionReference(_firestore.collection(_collection));
+
+      List<DocumentSnapshot<Map<String, dynamic>>> docs = await geoCollection.fetchWithin(
+        center: GeoFirePoint(GeoPoint(lat, lng)),
+        radiusInKm: radiusInKm,
+        field: 'geo',
+        geopointFrom: (data) =>
+            (data['geo'] as Map<String, dynamic>)['geopoint'] as GeoPoint,
+        strictMode: true,
+      );
+
+      callback.onSuccessData(
+        docs
+            .map((doc) => WorkshopModel.fromMap(doc.data()!))
+            .toList(),
+      );
+    } catch (e) {
+      callback.onErrorData('Failed to get nearby workshops: $e');
+    } finally {
+      callback.onFullFailed?.call();
+    }
+  }
+
+  Future<void> migrateWorkshopsToGeohash() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection(_collection).get();
+      WriteBatch batch = _firestore.batch();
+      for (var doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        if (!data.containsKey('geo')) {
+          final lat = (data['latitude'] ?? 0.0).toDouble();
+          final lng = (data['longitude'] ?? 0.0).toDouble();
+          final GeoFirePoint geoFirePoint = GeoFirePoint(GeoPoint(lat, lng));
+          batch.update(doc.reference, {'geo': geoFirePoint.data});
+        }
+      }
+      await batch.commit();
+      print('Migration to geohash completed');
+    } catch (e) {
+      print('Migration failed: $e');
     }
   }
 
@@ -214,10 +270,14 @@ class WorkshopService {
     ServiceCallback callback,
   ) async {
     try {
+      Map<String, dynamic> data = workshop.toMap();
+      final GeoFirePoint geoFirePoint = GeoFirePoint(GeoPoint(workshop.latitude, workshop.longitude));
+      data['geo'] = geoFirePoint.data;
+
       await _firestore
           .collection(_collection)
           .doc(workshopId)
-          .update(workshop.toMap());
+          .update(data);
 
       callback.onSuccessData([]);
     } catch (e) {
